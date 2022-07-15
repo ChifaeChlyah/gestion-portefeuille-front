@@ -1,0 +1,31 @@
+<!-- Bootstrap NavBar -->
+<nav class="navbar navbar-expand-md navbar-dark " id="nav1">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="#">
+    <i class="fa-solid fa-business-time"></i>
+    <span class="menu-collapsed">GEPPI</span>
+  </a>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item " [ngClass]="(getUrl()=='/dashboard/accueil')?'active':''">
+        <a style="padding-top: 15%;padding-bottom: 0px;font-size: 110%;"
+           data-toggle="tooltip" title="Tableau de bord"
+           class="nav-link" routerLink="accueil"><span class="fa fa-dashboard fa-fw "></span></a>
+      </li>
+      <li class="nav-item icon-top " [ngClass]="(getUrl()=='/mes-taches')?'active':''">
+        <a class="nav-link " routerLink="mes-taches" data-toggle="tooltip" title="Tâches"
+        ><i class="fa-solid fa-list-check"></i></a>
+      </li>
+      <li class="nav-item icon-top " [ngClass]="(getUrl()=='/mon-emploi')?'active':''">
+        <a class="nav-link " routerLink="mon-emploi" data-toggle="tooltip" title="Emploi du temps"
+        ><i class="fa-solid fa-calendar"></i></a>
+      </li>
+      <li class="nav-item " [ngClass]="(getUrl()=='/mes-infos')?'active':''">
+        <a class="nav-link " routerLink="mes-infos" data-toggle="tooltip" title="Infos personnelles"
+           style="width: 102px; margin-left: 8%;">Chifae <i class="fa-solid fa-user-gear"></i></a>
+      </li>
+    </ul>
+  </div>
+</nav><!-- NavBar END -->

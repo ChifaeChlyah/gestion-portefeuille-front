@@ -1,0 +1,108 @@
+.my-cards-container{
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.bienvenu{
+  font-weight: 370;
+  margin-left: 0;
+  margin-bottom: 10px;
+  font-size: 250%;
+  background: #c487a745;
+  padding: 20px;
+  border-radius: 10px;
+}
+.card-chart .my-card-header{
+  padding-top: 2%;
+  display: flex;
+  justify-content: center;
+  padding-top: 25px;
+  flex-direction: column;
+  align-items: center;
+}
+.small-cards-wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+/*  width:95%;*/
+}
+.card-header-text{
+  display: flex;
+  justify-content: space-around;
+}
+.icon{
+  color: #343a40;
+}
+.value{
+  background: rgb(196 135 167 / 31%);
+  color: black;
+  width: 50px;
+  text-align: center;
+  border-radius: 5px;
+}
+.small-card .my-card-header{
+  display: flex;
+  flex-direction: column;
+  padding-top: 3%;
+  padding-left: 6%;
+  flex-wrap: wrap;
+  font-size: large;
+}
+.nav-link{
+  color:#880e4f;
+}
+.small-card{
+  background-color: white!important;
+  width: 280px;
+  height:80px;
+  margin-bottom: 20px;
+}
+.chart-card{
+  width:49%;
+  height:450px;
+}
+.chart-card .my-card-header{
+  text-align: center;
+  margin-top: 4%;
+}
+.card{
+  background-color: #f9f9f9;
+  box-shadow: 1px 0px 2px 0px #888888;
+}
+.card-body{
+  padding-top: 0px;
+}
+.familles{
+  background-color: #f9f9f9;
+  box-shadow: 1px 0px 2px 0px #888888;
+  width: 95%;
+  padding: 2%;
+  margin-bottom: 20px;
+}
+.my-charts-container
+{
+  display: flex;
+  flex-wrap: wrap;
+  width: 95%;
+  justify-content: space-between;
+}
+.my-second-container{
+  display:flex;
+  width:100%
+}
+.my-first-container{
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.table-card{
+  margin-top: 20px;
+  width:97%;
+  display: inline-block; /*make a div fit the size of its content  */
+}
+.table-card .my-card-header{
+  text-align: center;
+  margin-top: 4%;
+}

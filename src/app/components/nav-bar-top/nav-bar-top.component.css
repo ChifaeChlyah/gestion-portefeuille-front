@@ -1,0 +1,24 @@
+.icon-top{
+  border-left: 1px solid rgba(255,255,255,.5);
+  width: 17%;
+}
+.navbar-nav {
+  display: flex;
+  flex-direction: row;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+  justify-content: flex-end;
+}
+#nav1{
+  /*background-color:#006064!important*/
+  background-color: #880e4f!important;
+}
+#sidebar-container {
+  min-height: 100vh;
+  background-color: #333;
+  padding: 0;
+}
+.fa-business-time{
+  margin-right: 7%;
+}

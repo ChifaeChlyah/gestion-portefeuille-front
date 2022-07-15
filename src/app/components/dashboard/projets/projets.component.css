@@ -1,0 +1,332 @@
+.icon-top{
+  margin-left: 20px;
+}
+.first-li{
+  margin-left: 0;
+  border-left: 0px!important;
+  padding-left: 0;
+}
+.navbar-nav {
+  display: flex;
+  flex-direction: row;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+  justify-content: flex-end;
+}
+#nav1{
+  padding: 0;
+  background: #333333;
+  color: black;
+  height: 35px;
+}
+icon-dropdown{
+  color:black;
+  margin-right: 20px!important;
+}
+.my-ul{
+  display: flex;
+  margin-left: 0!important;
+  justify-content: space-around;
+  height: 35px;
+  background:#333333 ;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.my-ul li a{
+  display: flex;
+  align-items: center;
+  height: 35px;/*
+  color: #ffffff6e;*/
+}
+my-ul .active li a{
+  color:white!important;
+}
+.my-ul li{
+  border-left: 1px solid rgb(255 255 255 / 28%);
+  width: 220px;
+  display: flex;
+  justify-content: center;
+}
+#navbarNavDropdown{
+  display: flex!important;
+  align-items: center;
+  justify-content: center;
+  background: white;
+}
+:host {
+display: block;
+  left: 0;
+
+  width: 100%;
+}
+.dropdown-item{
+  color:black!important;
+}
+.card{
+  background-color: #f9f9f9;
+  box-shadow: 1px 0px 2px 0px #888888;
+}
+.filtres{
+  background-color: #f9f9f9;
+  box-shadow: 1px 0px 2px 0px #888888;
+  width: 95%;
+  padding: 2%;
+  margin-bottom: 20px;
+}
+.filtres2{
+  background-color: #f9f9f9;
+  box-shadow: 1px 0px 2px 0px #888888;
+  padding: 2%;
+  margin-bottom: 20px;
+  margin-right: 30px;
+}
+.my-container{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+#filter-title{
+  margin-top: 40px;
+  margin-left: 5%;
+  font-size: x-large;
+  font-weight: 480;
+}
+:host ::ng-deep .multiselect-item-checkbox input[type=checkbox]+div:before {
+  box-sizing: content-box;
+  content: "";
+  color: #880e4f!important;
+  border: 2px solid #880e4f!important;
+}
+:host ::ng-deep .multiselect-item-checkbox input[type=checkbox]:checked+div:before {
+  background: #880e4f!important;
+}
+
+/*
+:host ::ng-deep .multiselect-dropdown .dropdown-btn .selected-item {
+  border: 1px solid #880e4f!important;
+  background: #880e4f!important;
+}*/
+.li-last{
+  width: 50px!important;
+}
+.li-last div a i{
+  margin-left: 0;
+}
+.my-slider{
+  margin-top: 20px;
+  width: 90%!important;
+  margin-left: 2% !important;
+}
+.my-slider-left{
+  margin-top: 20px!important;
+  width: 90%!important;
+  margin-left: 0!important;
+}
+:host ::ng-deep .ngx-slider .ngx-slider-pointer {
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  top: -14px;
+  background-color: #880e4f;
+}
+:host ::ng-deep .ngx-slider .ngx-slider-pointer.ngx-slider-active:after {
+  background-color: #d8e0f3;
+}
+.input-p-slider
+{
+  display:flex;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: center;
+}
+:host ::ng-deep .ngx-slider .ngx-slider-selection {
+  background: #a2105e;
+}
+.my-container2{
+  display: flex;
+  width: 100%;
+}
+.small-input{
+  height: 25px;
+  width: 80%;
+}
+.title-slider{
+  font-size: 1.1em!important;
+  border-bottom: rgba(128, 128, 128, 0.58) 1px solid;
+}
+.my-container3{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+
+
+
+
+
+#content {
+  background: transparent;
+  flex-grow: 1;
+  overflow: hidden;
+
+  height: 100%;
+}
+
+#main {
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+
+#top,
+#bottom {
+  background: skyblue;
+}
+
+#middle {
+  flex-grow: 1;
+  position: relative;
+}
+
+#sidebar {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
+  width: 1100px;
+  background: dodgerblue;
+  border-left: solid black;
+  transition: all 0.3s ease-in;
+  color:white;
+}
+
+#sidebar-control {
+  position: absolute;
+  right: 0;
+  opacity: .4;
+  border-radius: 5px 0 0 5px;
+  border-top: solid thin;
+  border-left: solid thin;
+  border-bottom: solid thin;
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+#sidebar-control > i::before {
+  content: "\f0da"; /* fa-caret-right */
+
+  font-size: 1.7rem;
+  margin-right: 2px;
+}
+#sidebar-control {
+  position: absolute;
+  right: 0;
+   opacity: 1;
+  border-radius: 10px 0 0 10px;
+  border-top: solid thin;
+  border-left: solid thin;
+  border-bottom: solid thin;
+  background-color: #343a40;
+  cursor: pointer;
+  top: 20px;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+.sidebar-hidden #sidebar {
+  margin-right: -1090px;
+}
+
+.sidebar-hidden #sidebar-control > i::before {
+  content: "\f0d9"; /* fa-caret-left */
+}
+.overlap-container{
+  position :relative;
+  width: 100%;
+  height: 100%;
+}
+#filtre-sidebar{
+  position: absolute;
+  right: 0;
+  top: 50px;
+  z-index: 9;
+  height: 675px!important;
+  padding-right: 0px;
+
+}
+
+#sidebar {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
+  width: 1100px;
+  background: #343a40;
+  border-left: solid transparent;
+  transition: all 0.3s ease-in;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  font-weight: 300;
+  font-size: large;
+}
+.fa-magnifying-glass-chart{
+
+  color: #ffffff;
+  font-size: large;
+  /* margin-left: 1px; */
+
+}
+#sidebar div h4{
+  color: white;
+  font-size: x-large;
+  font-weight: 300;
+  border-bottom: 1px solid #ffffff2e;
+  width: 97%;
+}
+
+#sidebar div p{
+  color: white;
+  font-size: large;
+  font-weight: 300;
+  border-bottom: 1px solid #ffffff2e;
+  width: 97%;
+}
+#sidebar div {
+  margin-left: 3%;
+  width: 100%;
+  margin-top: 1%;
+}
+:host ::ng-deep .custom-control-label::before {
+  background-color: transparent;
+  border: transparent solid 1px;
+}
+.my-dropdown-container{
+  margin-left:0!important;
+  width: 90%!important;
+}
+.slider-container{
+  margin-left: 0!important;
+  padding: 10px;
+  border: 2px solid #80808066;
+  border-radius: 5px;
+}
+:host ::ng-deep .multiselect-dropdown{
+  height: 35px;
+}
+.slider-container2 {
+  display: flex;
+  margin-right: 5px;
+  margin-left: 0!important;
+  justify-content: center;
+}
+.slider-container2 span{
+  margin-right: 5px;
+}
+#retard{
+  margin-right: 10px;
+}

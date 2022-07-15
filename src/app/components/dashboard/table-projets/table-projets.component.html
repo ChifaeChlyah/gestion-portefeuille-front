@@ -1,0 +1,28 @@
+<table datatable class="row-border hover">
+  <thead>
+  <tr>
+    <th>Code</th>
+    <th>Projet</th>
+    <th>Description</th>
+    <th>Date de fin cible</th>
+    <th>Date de fin effective</th>
+    <th>Pourcentage du progrès</th>
+    <th>Budget initial</th>
+    <th>Coût actuel</th>
+    <th>Portefeuille</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor= "let p of projets">
+    <td>{{p.codeProjet}}</td>
+    <td>{{p.titreProjet}}</td>
+    <td>{{p.description}}</td>
+    <td>{{p.dateFinCible}}</td>
+    <td>{{p.dateFinEffective}}</td>
+    <td>{{p.pourcentageProgres}}</td>
+    <td>{{p.budget}}</td>
+    <td>{{p.cout}}</td>
+    <td>{{p.familleProjet.codeFamille}}</td>
+  </tr>
+  </tbody>
+</table>
