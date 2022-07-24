@@ -1,2 +1,2 @@
-<app-nav-bar-top></app-nav-bar-top>
-<router-outlet></router-outlet>
+<app-nav-bar-top *ngIf="getUrl()!='/connexion'"></app-nav-bar-top>
+<router-outlet style="width: 100%"></router-outlet>

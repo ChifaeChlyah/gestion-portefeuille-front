@@ -1,0 +1,52 @@
+#detail-employe-container1{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+#detail-employe-container2{
+  margin-top: 20px;
+  width: 95%;
+}
+.nav-details{
+  margin-top: 35px;
+}
+.card-info{
+  width: 30%;
+  position: absolute;
+  right: 2%;
+}
+#detail-employe-container1 h4{
+  font-weight: 400;
+  width: fit-content;
+  padding: 10px;
+  border-radius: 10px;
+}
+.fa-user-pen{
+  cursor: pointer;
+}
+:host ::ng-deep .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  color: #495057!important;
+  background-color: #fff!important;
+  border-color: #dee2e6 #dee2e6 #fff!important;
+}
+
+.tab-content{
+  border: 1px #ced4da solid;
+  border-top-color: transparent;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  margin-bottom: 20px;
+}
+#detail-employe-container1 a {
+  color: #75797d;
+  text-decoration: none;
+  background-color: transparent;
+}
+#detail-employe-container1 a:hover {
+  color: #333333cf;
+  text-decoration: none;
+  background-color: transparent;
+}
+.tab-pane{
+  min-height: 463px;
+}

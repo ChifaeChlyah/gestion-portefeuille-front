@@ -1,0 +1,281 @@
+#form-projet{
+  width:90%;
+  background: #996d841a;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #343a405c;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+
+#form-projet-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2%;
+
+}
+#form-projet h4{
+  text-align: center;
+  font-size: 1.4rem;
+}
+.inputs-inline{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  height: 40px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+#codeGroup{
+  width: 22%;
+}
+#titreGroup{
+  width: 50%;
+}
+:host ::ng-deep label{
+  color: #6c757d;
+}
+.input1sur3{
+  width: 33%;
+  margin-bottom: 4px;
+}
+.input1sur2{
+  width: 49.5%;
+  margin-bottom: 4px;
+}
+.btn-light{
+  background: white;
+  border:1px solid #ced4da;
+  color: #6c757d;
+}
+#description{
+}
+
+.input-first-line{
+  height: 100%;
+  margin-bottom: 0!important;
+}
+#preview{
+  height: 100%;
+  width: 90px;
+}
+#imgContainer{
+  width: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#upload{
+  width: 22%;
+}
+/*ngx-select-dropdown style*/
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button .display-text {
+  color: #6c757d;
+}
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-list-container ul li:hover {
+  background: #ced4da69;
+}
+
+
+.titre-group-inputs{
+  border-bottom: 1px solid #6c757d4f;
+  font-weight: 350;
+  color: #6c757d;
+}
+.tab-content{
+  border: 1px #ced4da solid;
+  border-top-color: transparent;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  margin-bottom: 20px;
+}
+#form-projet a {
+  color: #75797d;
+  text-decoration: none;
+  background-color: transparent;
+}
+#form-projet a:hover {
+  color: #333333cf;
+  text-decoration: none;
+  background-color: transparent;
+}
+:host ::ng-deep .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  color: #495057!important;
+  background-color: #fff!important;
+  border-color: #dee2e6 #dee2e6 #fff!important;
+}
+.fa-file-circle-plus{
+  float: right;
+  font-size: x-large;
+  margin-top: 20px;
+  border-radius: 120px;
+  background: white;
+  padding: 10px;
+  border: 1px solid #dee2e6;
+  cursor: pointer;
+}
+.fa-file-circle-plus:hover{
+opacity: 0.75;
+}
+.tab-pane{
+  min-height: 463px;
+}
+:host ::ng-deep .pieceJointe{
+  /*on doit ajouter:host ::ng-deep pour que les style apparaissent dans les élement ajoutés avec append*/
+  border-radius: 10px;
+  background: white;
+  padding: 10px;
+  border: 1px solid #dee2e6;
+  width: 49%;
+  margin-top: 5px;
+  display: flex;
+  flex-direction:column ;
+  margin-right: 5px;
+}
+
+:host ::ng-deep .desc-pieceJointe{
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+.piecesJointes-container{
+  display: flex;
+
+  flex-wrap: wrap;
+}
+:host ::ng-deep .fa-rectangle-xmark{
+  float: right;
+  width: fit-content;
+  margin-bottom: 5px;
+  font-size: large;
+  cursor: pointer;
+}
+:host ::ng-deep .fa-rectangle-xmark:hover{
+  opacity: 0.75;
+}
+#risquesContainer{
+  display: flex;
+  justify-content: space-between;
+  min-height: 460px;
+}
+#risquesFaibles{
+  width: 33%;
+  color: yellowgreen;
+}
+#risquesMoyens{
+  width: 33%;
+  color: orangered;
+}
+#risquesEleves{
+   width: 33%;
+   color: darkred  ;
+ }
+.fa-circle-exclamation{
+
+  font-size: x-large;
+}
+
+.risque1sur3{
+  background: white;
+  border: 1px solid #80808036;
+  border-radius: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+
+}
+.addRisque{
+  float: right;
+  font-weight: 500;
+  margin: 5px;
+  cursor: pointer;
+}
+.addRisque:hover{
+  opacity: 0.75;
+}
+.fa-plus{
+  font-size: large;
+}
+.modal-title{
+  text-align: center;
+  width: 100%;
+}
+.modal-content .form-group{
+  margin-top: 5px;
+}
+.modal-body{
+  background: #f6f6f6;
+}
+:host ::ng-deep .ligne-risque-btn{
+  background: greenyellow;
+  border-color: greenyellow;
+  width: 100%;
+}
+:host ::ng-deep .ligne-risque-btn:hover{
+  opacity: 0.75;
+}
+:host ::ng-deep .ligne-risque:focus{
+  opacity: 0.9;
+  background: yellowgreen!important;
+  box-shadow: none;
+  border-color: white;
+}
+:host ::ng-deep .ligne-risque{
+  display:flex;
+  justify-content: space-between;
+}
+
+:host ::ng-deep .ligne-risque-container{
+  display: flex;
+  width: 100%;
+  margin-top: 5px;
+}
+:host ::ng-deep .ligne-risque-container .fa-x{
+  font-size: small;
+  background: #343a40;
+  color: white;
+  padding: 5px;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+:host ::ng-deep .ligne-risque-container .fa-x:hover{
+  opacity: 0.75;
+}
+:host ::ng-deep .card-body{
+  color: black!important;
+}
+:host ::ng-deep .ligne-risqueM-btn {
+  background: orangered!important;
+  border-color: orangered!important;
+}
+:host ::ng-deep .ligne-risqueM:focus{
+  opacity: 0.9;
+  background: orangered!important;
+  box-shadow: none;
+  border-color: white;
+}
+:host ::ng-deep .ligne-risqueM{
+  display:flex;
+  justify-content: space-between;
+  color:white!important;
+
+}
+
+:host ::ng-deep .ligne-risqueE-btn {
+  background: darkred!important;
+  border-color: darkred!important;
+}
+:host ::ng-deep .ligne-risqueE:focus{
+  opacity: 0.9;
+  background: darkred!important;
+  box-shadow: none;
+  border-color: white;
+}
+:host ::ng-deep .ligne-risqueE{
+  display:flex;
+  justify-content: space-between;
+  color:white!important;
+
+}

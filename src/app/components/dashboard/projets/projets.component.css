@@ -1,68 +1,5 @@
-.icon-top{
-  margin-left: 20px;
-}
-.first-li{
-  margin-left: 0;
-  border-left: 0px!important;
-  padding-left: 0;
-}
-.navbar-nav {
-  display: flex;
-  flex-direction: row;
-  padding-left: 0;
-  margin-bottom: 0;
-  list-style: none;
-  justify-content: flex-end;
-}
-#nav1{
-  padding: 0;
-  background: #333333;
-  color: black;
-  height: 35px;
-}
-icon-dropdown{
-  color:black;
-  margin-right: 20px!important;
-}
-.my-ul{
-  display: flex;
-  margin-left: 0!important;
-  justify-content: space-around;
-  height: 35px;
-  background:#333333 ;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-}
-.my-ul li a{
-  display: flex;
-  align-items: center;
-  height: 35px;/*
-  color: #ffffff6e;*/
-}
-my-ul .active li a{
-  color:white!important;
-}
-.my-ul li{
-  border-left: 1px solid rgb(255 255 255 / 28%);
-  width: 220px;
-  display: flex;
-  justify-content: center;
-}
-#navbarNavDropdown{
-  display: flex!important;
-  align-items: center;
-  justify-content: center;
-  background: white;
-}
-:host {
-display: block;
-  left: 0;
 
-  width: 100%;
-}
-.dropdown-item{
-  color:black!important;
-}
+
 .card{
   background-color: #f9f9f9;
   box-shadow: 1px 0px 2px 0px #888888;
@@ -103,18 +40,17 @@ display: block;
 :host ::ng-deep .multiselect-item-checkbox input[type=checkbox]:checked+div:before {
   background: #880e4f!important;
 }
-
+:host ::ng-deep .md-drppicker td.in-range {
+  background-color: #dde2e4;
+  border-color: transparent;
+  color: #000!important;
+  border-radius: 0;
+}
 /*
 :host ::ng-deep .multiselect-dropdown .dropdown-btn .selected-item {
   border: 1px solid #880e4f!important;
   background: #880e4f!important;
 }*/
-.li-last{
-  width: 50px!important;
-}
-.li-last div a i{
-  margin-left: 0;
-}
 .my-slider{
   margin-top: 20px;
   width: 90%!important;
@@ -256,7 +192,7 @@ display: block;
   right: 0;
   top: 50px;
   z-index: 9;
-  height: 675px!important;
+  height: 695px!important;
   padding-right: 0px;
 
 }
@@ -329,4 +265,16 @@ display: block;
 }
 #retard{
   margin-right: 10px;
+}
+.dateRangeContainer{
+  color: black!important;
+}
+:host ::ng-deep ngx-duration-picker table{
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+:host ::ng-deep .slider-container .ngx-dropdown-container {
+  width: 100%;
+  position: relative;
+  margin-top: 10px;
 }

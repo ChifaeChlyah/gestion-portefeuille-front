@@ -1,1 +1,237 @@
-<p>nouveau-projet works!</p>
+
+<div id="form-projet-container">
+
+  <form id="form-projet" action="#">
+
+    <h4 style="font-weight: 400">Créer un nouveau projet</h4>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#infoProjet">Infos générales</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#piecesJointes">Pièces jointes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#risques">Risques</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#gantt">Gantt</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane container active" id="infoProjet">
+        <br>
+        <p class="titre-group-inputs">Présentation du projet</p>
+        <div class="inputs-inline">
+          <div id="imgContainer"  class="border rounded-lg text-center input-first-line">
+            <img *ngIf="filePath && filePath !== ''" [src]="filePath" [alt]="myForm.value.name" class="img-fluid" id="preview" />
+            <i *ngIf="!filePath || filePath == ''" style="font-size: xx-large;color: #ced4da;"  class="fa-solid fa-image"></i>
+          </div>
+          <div class="input-group mb-3 input-first-line" id="upload">
+            <div class="custom-file">
+              <input type="file" accept="image/*" (change)="imagePreview($event)" class="custom-file-input" id="logo">
+              <label class="custom-file-label" for="logo" aria-describedby="inputGroupFileAddon">Logo</label>
+            </div>
+
+          </div>
+          <div id="codeGroup" class="form-group input-first-line">
+            <input type="text" placeholder="Code du projet" class="form-control" id="code"
+                   name="code">
+          </div>
+          <div id="titreGroup" class="form-group input-first-line">
+            <input type="text" placeholder="Titre du projet" class="form-control" id="titre"
+                   name="titre">
+          </div>
+        </div>
+        <div class="form-group">
+      <textarea rows="4" id="description" placeholder="Description du projet" class="form-control"
+                name="description"></textarea>
+        </div>
+        <p class="titre-group-inputs">Dates du projet</p>
+        <div class="inputs-inline">
+          <input  type="text" ngxDaterangepickerMd placeholder="Date de début - Date de fin (Planifiées)" class="form-control input1sur3"/>
+          <input  type="text" ngxDaterangepickerMd placeholder="Date de début - Date de fin (Prévues)" class="form-control input1sur3"/>
+          <input  type="text" ngxDaterangepickerMd placeholder="Date de début - Date de fin (Réelles)"  class="form-control input1sur3"/>
+        </div>
+        <p class="titre-group-inputs">Gestion du projet</p>
+        <div class="inputs-inline">
+          <div class="input1sur2 ">
+            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedStatut($event)" [config]="configDropdownStatut" [options]="dropdownOptionsStatut"></ngx-select-dropdown>
+          </div>
+          <div  class="form-group input1sur2">
+            <input type="number" min="0" max="100" placeholder="Avancement %" class="form-control" id="avancement"
+                   name="titre">
+          </div>
+        </div>
+        <div class="inputs-inline">
+          <div class="dropdown input1sur2 form-group" >
+            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedChefProjet($event)" [config]="configDropdownChefProjet" [options]="dropdownOptionsChefProjet"></ngx-select-dropdown>
+          </div>
+          <div class="input1sur2 ">
+            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedIntervenants($event)" [multiple]="true" [config]="configDropdownIntervenants" [options]="dropdownOptionsIntervenants"></ngx-select-dropdown>
+          </div>
+        </div>
+        <div class="inputs-inline">
+          <div class="dropdown input1sur3 form-group" >
+            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedPriorite($event)" [config]="configDropdownPriorite" [options]="dropdownOptionsPriorite"></ngx-select-dropdown>
+          </div>
+          <div class="input1sur3 ">
+            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedPortefeuille($event)" [config]="configDropdownPortefeuille" [options]="dropdownOptionsPortefeuille"></ngx-select-dropdown>
+          </div>
+          <div class="input1sur3 ">
+            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedPredecesseurs($event)" [multiple]="true" [config]="configDropdownPredecesseurs" [options]="dropdownOptionsPredecesseurs"></ngx-select-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane container fade" id="piecesJointes">
+        <i class="fa-solid fa-file-circle-plus" (click)="addPieceJointe()" data-toggle="tooltip" title="Ajouter une pièce jointe"></i>
+        <div class="piecesJointes-container">
+
+        </div>
+      </div>
+
+      <div class="tab-pane container fade" id="risques">
+        <div id="risquesContainer">
+
+
+          <div id="risquesFaibles"  class="risque1sur3">
+
+            <div data-toggle="modal" data-target="#modalRisqueFaible" class="addRisque"  >
+              <div title="Ajouter un risque faible" data-toggle="tooltip"> <i class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
+            </div>
+          </div>
+          <div id="risquesMoyens" class="risque1sur3">
+            <div data-toggle="modal" data-target="#modalRisqueMoyen" class="addRisque"  >
+              <div title="Ajouter un risque Moyen" data-toggle="tooltip"> <i class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
+            </div>
+          </div>
+          <div id="risquesEleves" class="risque1sur3">
+            <div data-toggle="modal" data-target="#modalRisqueEleve" class="addRisque"  >
+              <div title="Ajouter un risque élevé" data-toggle="tooltip"> <i class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane container fade" id="gantt">
+        <app-gantt></app-gantt>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom: 0">
+      <button style="color:white; margin-top:0" type="submit" class="btn bg-dark form-control">
+        Enregistrer
+      </button>
+    </div>
+  </form>
+
+</div>
+<!--Modal risque faible -->
+<div data-backdrop="false" class="modal" id="modalRisqueFaible">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Ajouter risque faible <i class="fa-solid fa-circle-exclamation"></i></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="form-group input-first-line">
+          <input type="text" [value]="titreRisqueF" placeholder="Titre du risque" class="form-control" id="titreRisqueF"
+                 name="titreRisqueF">
+        </div>
+        <div class="form-group input-first-line">
+          <input type="number" [value]="probaRisqueF" placeholder="Probabilité du risque %" class="form-control" id="probaRisqueF"
+                 name="probaRisqueF" min="1" max="100">
+        </div>
+
+        <div class="form-group">
+      <textarea rows="4" [value]="descriptionRisqueF" id="descriptionRisqueF" placeholder="Description du risque" class="form-control"
+                name="descriptionRisqueF"></textarea>
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer form-group">
+        <button type="button" class="btn btn-dark form-control" (click)="ajoutRisqueF()" data-dismiss="modal">Enregistrer</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--Modal risque Moyen -->
+<div data-backdrop="false" class="modal" id="modalRisqueMoyen">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Ajouter risque moyen <i class="fa-solid fa-circle-exclamation"></i></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="form-group input-first-line">
+          <input type="text" [value]="titreRisqueM" placeholder="Titre du risque" class="form-control" id="titreRisqueM"
+                 name="titreRisqueM">
+        </div>
+        <div class="form-group input-first-line">
+          <input type="number" [value]="probaRisqueM" placeholder="Probabilité du risque %" class="form-control" id="probaRisqueM"
+                 name="probaRisqueM" min="1" max="100">
+        </div>
+
+        <div class="form-group">
+      <textarea rows="4" [value]="descriptionRisqueM" id="descriptionRisqueM" placeholder="Description du risque" class="form-control"
+                name="descriptionRisqueM"></textarea>
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer form-group">
+        <button type="button" class="btn btn-dark form-control" (click)="ajoutRisqueM()" data-dismiss="modal">Enregistrer</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--Modal risque Eleve -->
+<div data-backdrop="false" class="modal" id="modalRisqueEleve">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Ajouter risque élevé <i class="fa-solid fa-circle-exclamation"></i></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="form-group input-first-line">
+          <input type="text" [value]="titreRisqueE" placeholder="Titre du risque" class="form-control" id="titreRisqueE"
+                 name="titreRisqueE">
+        </div>
+        <div class="form-group input-first-line">
+          <input type="number" [value]="probaRisqueE" placeholder="Probabilité du risque %" class="form-control" id="probaRisqueE"
+                 name="probaRisqueE" min="1" max="100">
+        </div>
+
+        <div class="form-group">
+      <textarea rows="4" [value]="descriptionRisqueE" id="descriptionRisqueE" placeholder="Description du risque" class="form-control"
+                name="descriptionRisqueE"></textarea>
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer form-group">
+        <button type="button" class="btn btn-dark form-control" (click)="ajoutRisqueE()" data-dismiss="modal">Enregistrer</button>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,44 +1,4 @@
-<!-- Bootstrap NavBar -->
-<nav class="navbar navbar-expand-md navbar-dark " id="nav1">
-  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarNavDropdown">
-    <ul class="my-ul navbar-nav ml-auto">
-      <li class="nav-item" [ngClass]="getUrl()==='/projets/liste-projets'?'active':''" >
-        <a class="nav-link" routerLink="liste-projets"  data-toggle="tooltip" title="Liste de projets"
-        >Liste de projets<i class="fa-solid icon-top fa-table-list"></i></a>
-      </li>
-      <li class="nav-item" [ngClass]="getUrl()==='/projets/liste-portefeuilles'?'active':'' ">
-        <a class="nav-link " routerLink="liste-portefeuilles"  data-toggle="tooltip" title="Liste de portefeuilles"
-        >Liste de portefeuilles<i class="fa-solid icon-top fa-table-list"></i></a>
-      </li>
-      <li class="nav-item" [ngClass]="getUrl()==='/projets/gantt'?'active':''">
-        <a class="nav-link " routerLink="gantt"  data-toggle="tooltip" title="Diagramme de Gantt"
-        >Diagramme de Gantt<i class="fa-solid icon-top fa-diagram-successor"></i></a>
-      </li>
-      <li class="nav-item" [ngClass]="getUrl()==='/projets/statistiques'?'active':''">
-        <a class="nav-link " routerLink="statistiques" data-toggle="tooltip" title="Statistiques"
-        >Statistiques<i class="fa-solid icon-top fa-chart-pie"></i></a>
-      </li>
-      <li class="nav-item" [ngClass]="getUrl()==='/projets/intervenants'?'active':''">
-        <a class="nav-link " routerLink="intervenants"  data-toggle="tooltip" title="Intervenants"
-        >Intervenants<i class="fa-solid icon-top fa-users"></i></a>
-      </li>
-      <li class="nav-item li-last">
-        <div class="dropdown">
-          <a class="nav-link dropdown-toggle " role="button" id="dropdownMenuLink" data-toggle="dropdown" title="Nouveau"
-          ><i class="fa-solid icon-top fa-square-plus"></i></a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" routerLink="nouveau-projet"><i style="margin-right: 10px!important;" class="fa-solid icon-dropdown fa-file-circle-plus"></i> Nouveau projet</a>
-            <a class="dropdown-item" routerLink="nouveau-portefeuille"><i style="margin-right: 10px!important;" class="fa-solid icon-dropdown fa-folder-plus"></i>Nouveau portefeuille</a>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </div>
-</nav><!-- NavBar END -->
+<app-navbar-top-projets></app-navbar-top-projets>
 
 <div >
   <!--barre de filtres-->
@@ -59,8 +19,15 @@
           <h4>Filtrer les projets</h4>
 
           <div>
-            <div style=";width: 90%; margin-left: 0; margin-bottom: 30px;margin-top:20px">
-              <date-range-picker [options]="optionsDateRange" [parentFormGroup]="form" [controlName]="'myDateRange'"></date-range-picker>
+            <h4 class="title-slider">Date de début - Date de fin</h4>
+            <div class="dateRangeContainer"style=";width: 90%; margin-left: 0; margin-bottom: 10px;margin-top:5px">
+              <input type="text" placeholder="Date de début - Date de fin (Planifiée)" ngxDaterangepickerMd  class="form-control"/>
+            </div>
+            <div class="dateRangeContainer"style=";width: 90%; margin-left: 0; margin-bottom: 10px;margin-top:5px">
+              <input type="text" placeholder="Date de début - Date de fin (Prévue)" ngxDaterangepickerMd  class="form-control"/>
+            </div>
+            <div class="dateRangeContainer"style=";width: 90%; margin-left: 0; margin-bottom: 30px;margin-top:5px">
+              <input type="text" placeholder="Date de début - Date de fin (Réelle)" ngxDaterangepickerMd  class="form-control"/>
             </div>
             <div class="my-dropdown-container">
               <ng-multiselect-dropdown
@@ -90,16 +57,31 @@
                 [placeholder]="'Statuts'">
               </ng-multiselect-dropdown>
             </div>
+            <div class="my-dropdown-container">
+              <ng-multiselect-dropdown
+                [settings]="dropdownSettings"
+                [data]="dropdownList"
+                [placeholder]="'Risque'">
+              </ng-multiselect-dropdown>
+            </div>
             <div style="margin-top:30px!important;" class="my-slider-left"><h4 class="title-slider">Priorité</h4>
               <div class="slider-container">
                 <ngx-slider [(value)]="priorite" [options]="optionsPriorite"></ngx-slider>
               </div>
             </div>
-            <div class="my-slider-left"><h4 class="title-slider">Risque</h4>
-              <div class="slider-container">
-                <ngx-slider [(value)]="risque" [options]="options2"></ngx-slider>
+            <form>
+              <div class="my-slider-left" >
+                <div class="custom-control custom-checkbox slider-container" >
+                  <input class="checkbox custom-checkbox"  id="retard" data-width="50" data-size="xs" type="checkbox" checked data-toggle="toggle" data-on=" " data-off=" " data-onstyle="secondary" data-offstyle="primary">
+                  <label class="custom-control-label" style="font-size: 1.1em ;margin-left:0px" for="retard">En retard</label>
+                </div>
               </div>
-            </div>
+            </form>
+<!--            <div class="my-slider-left"><h4 class="title-slider">Risque</h4>-->
+<!--              <div class="slider-container">-->
+<!--                <ngx-slider [(value)]="risque" [options]="options2"></ngx-slider>-->
+<!--              </div>-->
+<!--            </div>-->
           </div>
         </div>
         <div>
@@ -128,18 +110,12 @@
           </div>
           <div class="my-slider form-group"><h4 class="title-slider">Durée</h4>
             <div class="slider-container" >
+              <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedTypeDuree($event)" [config]="configDropdownTypeDuree" [options]="dropdownOptionsTypeDuree"></ngx-select-dropdown>
               <ngx-duration-picker [(value)]="duree" [options]="{ showWeeks: false, showHours: false,
           showMinutes:false,showSeconds:false,previewFormat:'{{Y}} années, {{M}} mois, {{D}} jours' }"></ngx-duration-picker>
             </div>
           </div>
-          <form>
-            <div class="my-slider" style="margin-top:-2%">
-              <div class="custom-control custom-checkbox slider-container" >
-                <input class="checkbox custom-checkbox"  id="retard" data-width="50" data-size="xs" type="checkbox" checked data-toggle="toggle" data-on=" " data-off=" " data-onstyle="secondary" data-offstyle="primary">
-                <label class="custom-control-label" style="font-size: 1.1em ;margin-left:10px" for="retard">En retard</label>
-              </div>
-            </div>
-          </form>
+
         </div>
       </div>
     </div>
@@ -147,7 +123,10 @@
   <!--fin barre de filtre-->
 
   <div style="width: 100%; display: flex">
-    <div style=" width: 95%;z-index: 10">
+    <div style="width: 5% ; z-index:-10">
+      <!--    !! div vide-->
+    </div>
+    <div style=" width: 90%;z-index: 10">
       <!--    contenu de la page-->
       <router-outlet></router-outlet>
     </div>

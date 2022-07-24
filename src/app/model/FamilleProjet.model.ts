@@ -1,8 +1,8 @@
-import {ProjetModel} from "./Projet.model";
+import {Projet} from "./Projet.model";
 
-export interface FamilleProjetModel{
+export interface FamilleProjet{
   codeFamille:string;
   titreFamille:string;
   description:string;
-  projets:ProjetModel[];
+  projets:Projet[];
 }

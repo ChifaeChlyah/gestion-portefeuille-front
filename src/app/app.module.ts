@@ -23,7 +23,6 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxSliderModule} from "@angular-slider/ngx-slider";
 
 import {DataTablesModule} from "angular-datatables";
-import {NgxDateRangeModule} from "ngx-daterange";
 import {DurationPickerModule} from "ngx-duration-picker";
 import { ListeProjetsComponent } from './components/dashboard/projets/liste-projets/liste-projets.component';
 import { ListePortefeuillesComponent } from './components/dashboard/projets/liste-portefeuilles/liste-portefeuilles.component';
@@ -35,7 +34,19 @@ import { NouveauPortefeuilleComponent } from './components/dashboard/projets/nou
 import { MesTachesComponent } from './components/mes-taches/mes-taches.component';
 import { MonEmploiComponent } from './components/mon-emploi/mon-emploi.component';
 import { MesInfosComponent } from './components/mes-infos/mes-infos.component';
-
+import { ConnexionComponent } from './components/connexion/connexion.component';
+import { NavbarTopProjetsComponent } from './components/dashboard/projets/navbar-top-projets/navbar-top-projets.component';
+import {DaterangepickerComponent, NgxDaterangepickerMd} from "ngx-daterangepicker-material";
+import {SelectDropDownModule} from "ngx-select-dropdown";
+import {DayPilotModule} from "daypilot-pro-angular";
+import {NgGanttEditorModule} from "ng-gantt";
+import { NavbarTopEmpoyesComponent } from './components/dashboard/employes/navbar-top-empoyes/navbar-top-empoyes.component';
+import { ListeEmployesComponent } from './components/dashboard/employes/liste-employes/liste-employes.component';
+import { ListeEquipesComponent } from './components/dashboard/employes/liste-equipes/liste-equipes.component';
+import { NouvelEmployeComponent } from './components/dashboard/employes/nouvel-employe/nouvel-employe.component';
+import { NouvelleEquipeComponent } from './components/dashboard/employes/nouvelle-equipe/nouvelle-equipe.component';
+import { ChefsProjetsComponent } from './components/dashboard/employes/chefs-projets/chefs-projets.component';
+import { DetailsEmployeComponent } from './components/dashboard/employes/details-employe/details-employe.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +73,15 @@ import { MesInfosComponent } from './components/mes-infos/mes-infos.component';
     MesTachesComponent,
     MonEmploiComponent,
     MesInfosComponent,
+    ConnexionComponent,
+    NavbarTopProjetsComponent,
+    NavbarTopEmpoyesComponent,
+    ListeEmployesComponent,
+    ListeEquipesComponent,
+    NouvelEmployeComponent,
+    NouvelleEquipeComponent,
+    ChefsProjetsComponent,
+    DetailsEmployeComponent
   ],
   imports: [
     BrowserModule,
@@ -72,8 +92,11 @@ import { MesInfosComponent } from './components/mes-infos/mes-infos.component';
     FormsModule,
     NgxSliderModule,
     DurationPickerModule,
-    NgxDateRangeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxDaterangepickerMd.forRoot(),
+    SelectDropDownModule,
+    DayPilotModule,
+    NgGanttEditorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

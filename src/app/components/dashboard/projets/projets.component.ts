@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {IDropdownSettings} from "ng-multiselect-dropdown";
 import {Options} from "@angular-slider/ngx-slider";
-import {IDateRangePickerOptions} from "ngx-daterange";
 import * as moment from 'moment';
 import {Router} from "@angular/router";
 declare var $: any;
@@ -123,12 +122,11 @@ JqueryCode(){
   };
 
   date2 = new Date();
-  optionsDateRange: IDateRangePickerOptions= {
+  optionsDateRange: any/*IDateRangePickerOptions= {
     labelText: 'Date de début - Date de fin',
-    minDate: moment().startOf('day'),
-    maxDate: moment().startOf('day'),
     format: 'DD-MM-YYYY',
-  };
+  };*/
+
 
   ngOnInit() {
     this.dropdownList = [
@@ -161,4 +159,17 @@ JqueryCode(){
   getUrl():string{
     return this.router.url;
 }
+//dropdown type de duree
+  selectionChangedTypeDuree($event: any) {
+
+  }
+  configDropdownTypeDuree={
+    placeholder:'Type de durée'
+  }
+  dropdownOptionsTypeDuree=[
+    'Planifiée',
+    'Prévue',
+    'Réelle',
+
+  ];
 }

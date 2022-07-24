@@ -1,0 +1,68 @@
+#table-employes-container{
+  width: 100%;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+#table-employes-container
+ .fa-solid, .fas {
+  font-weight: 900;
+  font-size: large;
+  margin-left: 4px;
+  margin-right: 4px;
+  cursor: pointer;
+  color: #343a40;
+}
+#table-employes-container
+.fa-solid:hover, .fas :hover{
+  opacity: 0.75;
+}
+
+:host ::ng-deep div.dataTables_wrapper {
+  padding: 20px;
+  border: #8080802e 1px solid;
+  border-radius: 10px;
+  box-shadow: 1px 0px 2px 0px #888888;
+  width: 95%;
+}
+:host ::ng-deep #table-employes-container .btn:not(:disabled):not(.disabled),
+:host ::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current
+{
+  cursor: pointer;
+  background: #f8f8f8de!important;
+  border-color: #8080803b!important;
+}
+:host ::ng-deep #table-employes-container .btn:not(:disabled):not(.disabled):hover{
+  background: #e1e1e1de!important;
+
+}
+:host ::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+:host ::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current :hover{
+  background: #e1e1e1de;
+}
+:host ::ng-deep .dataTables_wrapper .dataTables_filter input
+{
+  border: 1px solid #aaaaaa73;
+  border-radius: 3px;
+  padding: 5px;
+  background-color: transparent;
+  margin-left: 3px;
+}
+:host ::ng-deep table.dataTable thead th, table.dataTable tfoot th {
+  font-weight: 500;
+  background: #e2e2e263;
+  color: black;
+}
+
+
+.modal-title{
+  text-align: center;
+  width: 100%;
+}
+.modal-content .form-group{
+  margin-top: 5px;
+}
+.modal-body{
+  background: #f6f6f6;
+}

@@ -1,0 +1,19 @@
+#form-employe{
+  width:60%;
+  background: #88888814;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #343a405c;
+}
+
+
+#form-employe-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5.5%;
+
+}
+#form-employe h4{
+  text-align: center;
+}

@@ -1,0 +1,86 @@
+<div id="detail-employe-container1">
+  <div id="detail-employe-container2">
+
+    <div class="card-info card bg-light text-dark">
+      <div class=" card-body">
+        <div><span>Email: </span>nom.prenom@gmail.com</div>
+        <div><span>Numéro de telephone : </span>000000000000</div>
+        <div><span>Emploi : </span>empl</div>
+      </div>
+    </div>
+    <h4 >Détails de la ressource : NOM Prénom <span data-toggle="modal" data-target="#modalEdit"  >
+          <span title="Modifier" data-toggle="tooltip" title="Modifier"><i class="fa-solid fa-user-pen"></i></span>
+
+        </span></h4>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs nav-details">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#infoProjet">Tâches</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#piecesJointes">Feuille de temps</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#risques">Projets</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane container active" id="infoProjet">
+
+      </div>
+      <div class="tab-pane container fade" id="piecesJointes">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal Edit Ressource -->
+<div data-backdrop="false" class="modal" id="modalEdit">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Modifier la ressource </h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="form-group input-first-line">
+          <input type="text" placeholder="Nom" class="form-control" id="nom"
+                 name="nom">
+        </div>
+        <div class="form-group input-first-line">
+          <input type="text" placeholder="Prénom" class="form-control" id="prenom"
+                 name="prenom">
+        </div>
+        <div class="form-group input-first-line">
+          <input type="text" placeholder="Email" class="form-control" id="email"
+                 name="email">
+        </div>
+        <div class="form-group input-first-line">
+          <input type="text" placeholder="Numéro de téléphone" class="form-control" id="tel"
+                 name="tel">
+        </div>
+        <div class="form-group input-first-line">
+          <input type="text" placeholder="Emploi" class="form-control" id="emploi"
+                 name="emploi">
+        </div>
+
+
+
+        <!-- Modal footer -->
+        <div class="modal-footer form-group">
+          <button type="button" class="btn btn-dark form-control" data-dismiss="modal">Enregistrer</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+

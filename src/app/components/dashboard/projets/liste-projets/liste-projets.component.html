@@ -1,1 +1,124 @@
-<p>liste-projets works!</p>
+<div id="table-projets-container" >
+  <table *ngIf="projets$" id="table-projets"  datatable [dtOptions]="dtOptions" class="row-border hover">
+    <thead>
+    <tr>
+      <th>Code</th>
+      <th>Titre</th>
+      <th>Description</th>
+      <th>Date début prévue</th>
+      <th>Date fin prévue</th>
+      <th>Priorité</th>
+      <th>% Avancement</th>
+      <th>Statut</th>
+      <th>Coût Initial</th>
+      <th>Coût Réel</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr *ngFor="let p of projets$">
+      <td>{{p.codeProjet}}</td>
+      <td>{{p.titreProjet}}</td>
+      <td>{{p.description}}</td>
+      <td>{{p.dateDebutPrevue}}</td>
+      <td>{{p.dateFinPrevue}}</td>
+      <td>{{p.priorite}}</td>
+      <td>{{p.avancement}}</td>
+      <td>{{p.statut}}</td>
+      <td>{{p.coutInitial}}</td>
+      <td>{{p.coutReel}}</td>
+      <td>
+        <span data-toggle="modal" data-target="#modalEdit1"  >
+          <span title="Modifier" data-toggle="tooltip" title="Modifier"><i class="fa-solid fa-file-pen"></i></span>
+        </span>
+        <span title="Modifier" data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
+        <span data-toggle="modal" data-target="#modalDelete"  >
+          <span title="Modifier" data-toggle="tooltip" title="Supprmier"><i class="fa-solid fa-file-circle-xmark"></i></span>
+        </span>
+      </td>
+    </tr>
+
+
+    </tbody>
+  </table>
+</div>
+
+
+<!--Modal Edit Ressource -->
+<div data-backdrop="false" class="modal" id="modalEdit1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Modifier la ressource </h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="form-group input-first-line">
+          <input type="text" placeholder="Nom" class="form-control" id="nom"
+                 name="nom">
+        </div>
+        <div class="form-group input-first-line">
+          <input type="text" placeholder="Prénom" class="form-control" id="prenom"
+                 name="prenom">
+        </div>
+        <div class="form-group input-first-line">
+          <input type="text" placeholder="Email" class="form-control" id="email"
+                 name="email">
+        </div>
+        <div class="form-group input-first-line">
+          <input type="text" placeholder="Numéro de téléphone" class="form-control" id="tel"
+                 name="tel">
+        </div>
+        <div class="form-group input-first-line">
+          <input type="text" placeholder="Emploi" class="form-control" id="emploi"
+                 name="emploi">
+        </div>
+
+
+
+        <!-- Modal footer -->
+        <div class="modal-footer form-group">
+          <button type="button" class="btn btn-dark form-control" data-dismiss="modal">Enregistrer</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--Modal Delete Ressource -->
+<div data-backdrop="false" class="modal" id="modalDelete">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Etes-vous sûr de vouloir supprimer la ressource :</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <p>Nom : NOMX</p>
+        <p>Prénom : prénomX</p>
+        <p>Emploi : emploiX</p>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer form-group">
+        <button type="button" class="btn btn-dark " data-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-dark " data-dismiss="modal">Oui</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+

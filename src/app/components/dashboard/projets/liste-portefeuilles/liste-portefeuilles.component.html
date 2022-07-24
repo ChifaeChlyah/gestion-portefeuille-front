@@ -1,1 +1,115 @@
-<p>liste-portefeuilles works!</p>
+<div id="table-portefeuilles-container" >
+  <table *ngIf="portefeuilles$" id="table-portefeuilles"  datatable [dtOptions]="dtOptions" class="row-border hover">
+    <thead>
+    <tr>
+      <th>Code</th>
+      <th>Titre</th>
+      <th>Description</th>
+      <th style="min-width: 70px;">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr *ngFor="let p of portefeuilles$">
+      <td>{{p.codeFamille}}</td>
+      <td>{{p.titreFamille}}</td>
+      <td>{{p.description}}</td>
+      <td>
+        <span data-toggle="modal" data-target="#modalEdit1"  >
+          <span  data-toggle="tooltip" (click)="editPortefeuille(p)" title="Modifier"><i class="fa-solid fa-pen-to-square"></i></span>
+        </span>
+        <span t data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
+        <span data-toggle="modal" data-target="#modalDelete"  >
+          <span (click)="confirmDeletePortefeuille(p)" data-toggle="tooltip" title="Supprmier"><i class="fa-solid fa-circle-xmark"></i></span>
+        </span>
+      </td>
+    </tr>
+
+
+    </tbody>
+  </table>
+</div>
+
+
+<!--Modal Edit Ressource -->
+<div data-backdrop="false" class="modal" id="modalEdit1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Modifier le portefeuille </h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form id="form-portefeuille"  [formGroup]="portefeuilleFormGroup" *ngIf="portefeuilleFormGroup">
+          <div hidden class="form-group">
+            <input   type="text" placeholder="Code du portefeuille" class="form-control" id="code"
+                   formControlName="codeFamille">
+          </div>
+          <div class="form-group">
+            <label for="titre">Titre du portefeuille</label>
+            <input type="text" placeholder="Titre du portefeuille" class="form-control" id="titre"
+                   formControlName="titreFamille" [ngClass]="{'is-invalid': submitted && portefeuilleFormGroup.controls.titreFamille.errors}">
+            <div *ngIf="submitted && portefeuilleFormGroup.controls.titreFamille.errors" class=
+              "invalid-feedback">
+              <div *ngIf="portefeuilleFormGroup.controls.titreFamille.errors.required">Ce champs est obligatoire</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-la" for="description">Description du portefeuille</label>
+    <textarea rows="5" placeholder="Description du portefeuille" class="form-control" id="description"
+              formControlName="description" [ngClass]="{'is-invalid': submitted && portefeuilleFormGroup.controls.description.errors}">
+      </textarea>
+            <div *ngIf="submitted && portefeuilleFormGroup.controls.description.errors" class=
+              "invalid-feedback">
+              <div *ngIf="portefeuilleFormGroup.controls.description.errors.required">Ce champs est obligatoire</div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+
+        <!-- Modal footer -->
+        <div class="modal-footer form-group">
+          <button (click)="onSavePortefeuille()" type="button" class="btn btn-dark form-control" data-dismiss="modal">Enregistrer</button>
+        </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!--Modal Delete Ressource -->
+<div data-backdrop="false" class="modal" id="modalDelete">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Etes-vous sûr de vouloir supprimer le portefeuille ?</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <p><span class="delete-label">Code</span> : {{codePortefeuille}}</p>
+        <p><span class="delete-label">Titre : </span>{{titrePortefeuille}}</p>
+        <p><span class="delete-label">Description : </span>{{descPortefeuille}}</p>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer form-group">
+        <button type="button" class="btn btn-dark " data-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-dark " (click)="onDeletePortefeuille()" data-dismiss="modal">Oui</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+

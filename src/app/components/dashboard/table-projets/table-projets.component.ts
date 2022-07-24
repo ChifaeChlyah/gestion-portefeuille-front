@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {ProjetModel} from "../../../model/Projet.model";
 
 @Component({
   selector: 'app-table-projets',

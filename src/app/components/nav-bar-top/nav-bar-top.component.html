@@ -9,7 +9,7 @@
   </a>
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item " [ngClass]="(getUrl()=='/dashboard/accueil')?'active':''">
+      <li class="nav-item " [ngClass]="(getUrl()=='/'||getUrl()=='/accueil'||getUrl().includes('/projets')||getUrl().includes('/ressources'))?'active':''">
         <a style="padding-top: 15%;padding-bottom: 0px;font-size: 110%;"
            data-toggle="tooltip" title="Tableau de bord"
            class="nav-link" routerLink="accueil"><span class="fa fa-dashboard fa-fw "></span></a>
@@ -19,7 +19,7 @@
         ><i class="fa-solid fa-list-check"></i></a>
       </li>
       <li class="nav-item icon-top " [ngClass]="(getUrl()=='/mon-emploi')?'active':''">
-        <a class="nav-link " routerLink="mon-emploi" data-toggle="tooltip" title="Emploi du temps"
+        <a class="nav-link " routerLink="mon-emploi" data-toggle="tooltip" title="Feuille de temps"
         ><i class="fa-solid fa-calendar"></i></a>
       </li>
       <li class="nav-item " [ngClass]="(getUrl()=='/mes-infos')?'active':''">

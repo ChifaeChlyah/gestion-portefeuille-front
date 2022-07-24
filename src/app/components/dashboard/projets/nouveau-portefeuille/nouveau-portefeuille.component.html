@@ -1,1 +1,37 @@
-<p>nouveau-portefeuille works!</p>
+<div id="form-portefeuille-container">
+  <form id="form-portefeuille"  [formGroup]="portefeuilleFormGroup" *ngIf="portefeuilleFormGroup">
+    <h4>Créer un nouveau portefeuille</h4>
+    <br>
+    <div class="form-group">
+      <input type="text" placeholder="Code du portefeuille" class="form-control" id="code"
+             formControlName="codeFamille"
+             [ngClass]="{'is-invalid': submitted && portefeuilleFormGroup.controls.codeFamille.errors}">
+      <div *ngIf="submitted && portefeuilleFormGroup.controls.codeFamille.errors" class=
+        "invalid-feedback">
+        <div *ngIf="portefeuilleFormGroup.controls.codeFamille.errors.required">Ce champs est obligatoire</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="text" placeholder="Titre du portefeuille" class="form-control" id="titre"
+             formControlName="titreFamille" [ngClass]="{'is-invalid': submitted && portefeuilleFormGroup.controls.titreFamille.errors}">
+      <div *ngIf="submitted && portefeuilleFormGroup.controls.titreFamille.errors" class=
+        "invalid-feedback">
+        <div *ngIf="portefeuilleFormGroup.controls.titreFamille.errors.required">Ce champs est obligatoire</div>
+      </div>
+    </div>
+    <div class="form-group">
+    <textarea rows="5" placeholder="Description du portefeuille" class="form-control" id="portefeuille"
+              formControlName="description" [ngClass]="{'is-invalid': submitted && portefeuilleFormGroup.controls.description.errors}">
+      </textarea>
+      <div *ngIf="submitted && portefeuilleFormGroup.controls.description.errors" class=
+        "invalid-feedback">
+        <div *ngIf="portefeuilleFormGroup.controls.description.errors.required">Ce champs est obligatoire</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <button (click)="onSavePortefeuille()" style="color:white; margin-top:5px" type="submit" class="btn bg-dark form-control">
+        Enregistrer
+      </button>
+    </div>
+  </form>
+</div>
