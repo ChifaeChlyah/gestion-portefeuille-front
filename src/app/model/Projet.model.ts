@@ -1,5 +1,5 @@
 import {FamilleProjet} from "./FamilleProjet.model";
-import {Risque} from "./risque.model";
+import {Risque} from "./Risque.model";
 import {Tache} from "./Tache.model";
 
 export interface Projet {

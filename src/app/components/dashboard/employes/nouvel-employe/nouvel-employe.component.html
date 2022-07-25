@@ -27,6 +27,10 @@
       <input type="text" placeholder="Emploi" class="form-control" id="emploi"
              name="emploi">
     </div>
+    <div class="form-group input-first-line">
+      <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedRoles($event)" [config]="configDropdownRoles" [options]="dropdownOptionsRoles"></ngx-select-dropdown>
+
+    </div>
     <div class="form-group">
       <button style="color:white; margin-top:5px" type="submit" class="btn bg-dark form-control">
         Submit

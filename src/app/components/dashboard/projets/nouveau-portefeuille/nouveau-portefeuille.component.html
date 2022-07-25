@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="form-group">
-      <button (click)="onSavePortefeuille()" style="color:white; margin-top:5px" type="submit" class="btn bg-dark form-control">
+      <button (click)="onSavePortefeuille()" [disabled]="portefeuilleFormGroup?.invalid" style="color:white; margin-top:5px" type="submit" class="btn bg-dark form-control">
         Enregistrer
       </button>
     </div>

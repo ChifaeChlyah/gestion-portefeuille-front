@@ -25,11 +25,20 @@ import {NouvelleEquipeComponent} from "./components/dashboard/employes/nouvelle-
 import {NouvelEmployeComponent} from "./components/dashboard/employes/nouvel-employe/nouvel-employe.component";
 import {ChefsProjetsComponent} from "./components/dashboard/employes/chefs-projets/chefs-projets.component";
 import {DetailsEmployeComponent} from "./components/dashboard/employes/details-employe/details-employe.component";
+import {AuthGuard} from "./core/gards/auth.guard";
+import {environment} from "../environments/environment";
+import {RoleGuard} from "./core/gards/role.guard";
 
 const routes: Routes = [
   // {path:"tousLesProjets",component:ProjetsComponent},
   {path:"connexion",component:ConnexionComponent},
   {path:"",component:DashboardComponent,
+  canActivate:[AuthGuard],
+    data:{
+      expectedRoles:[environment.ADMIN_ROLE,
+        environment.GESTIONNAIRE_PORTEFEUILLES_ROLE,
+        environment.CHEF_PROJET_ROLE]
+    },
     children: [
       {path:"accueil",component:AccueilComponent},
       {path:"",component:AccueilComponent},
@@ -95,14 +104,17 @@ const routes: Routes = [
     ]},
   {
     path: 'mes-taches',
-    component:MesTachesComponent
+    component:MesTachesComponent,
+    canActivate:[AuthGuard],
   },
   {
     path: 'mon-emploi',
-    component:MonEmploiComponent
+    component:MonEmploiComponent,
+    canActivate:[AuthGuard],
   },
   {
     path: 'mes-infos',
+    canActivate:[AuthGuard],
     component:MesInfosComponent
   }
   ];

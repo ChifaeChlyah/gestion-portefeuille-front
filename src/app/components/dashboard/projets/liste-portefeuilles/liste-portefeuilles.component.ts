@@ -4,6 +4,7 @@ import {ProjetsService} from "../../../../services/projets.service";
 import {FamilleProjet} from "../../../../model/FamilleProjet.model";
 import {PortefeuilleService} from "../../../../services/portefeuille.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AuthentificationService} from "../../../../services/authentification.service";
 
 @Component({
   selector: 'app-liste-portefeuilles',
@@ -13,12 +14,11 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class ListePortefeuillesComponent implements OnInit {
   dtOptions: any = {};
   portefeuilles$:FamilleProjet[]
-  constructor(private portefeuilleService:PortefeuilleService,private fb:FormBuilder) { }
+  constructor(private portefeuilleService:PortefeuilleService,private fb:FormBuilder,private authService:AuthentificationService) { }
 
   ngOnInit(): void {
     this.tousLesProjets();
     this.dtOptions = {
-
       // Declare the use of the extension in the dom parameter
       dom: 'Bfrtip',
       // Configure the buttons
@@ -61,6 +61,9 @@ export class ListePortefeuillesComponent implements OnInit {
   tousLesProjets() {
     this.portefeuilleService.tousLesPortefeuilles().subscribe((ret:FamilleProjet[])=>{
       this.portefeuilles$=ret;
+      console.log(ret)
+    },error => {
+      console.log(error)
     })
   }
 
@@ -80,6 +83,7 @@ export class ListePortefeuillesComponent implements OnInit {
     this.portefeuilleService.update(this.portefeuilleFormGroup.value).subscribe(data=> {
       this.tousLesProjets();
       alert("success projet update");
+
     }
   );
   }

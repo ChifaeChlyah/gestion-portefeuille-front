@@ -4,7 +4,11 @@
 
 export const environment = {
   production: false,
-  host:"http://localhost:8080"
+  host:"http://localhost:8080",
+  ADMIN_ROLE:"Administrateur",
+  GESTIONNAIRE_PORTEFEUILLES_ROLE:"Gestionnaire de portefeuilles",
+  CHEF_PROJET_ROLE:"Chef de projets",
+  INTERVENANT_DEVELOPPEUR_ROLE:"Intervenant développeur",
 };
 
 /*

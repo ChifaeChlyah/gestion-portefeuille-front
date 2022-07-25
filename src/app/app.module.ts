@@ -101,4 +101,6 @@ import { DetailsEmployeComponent } from './components/dashboard/employes/details
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+}
