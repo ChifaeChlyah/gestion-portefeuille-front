@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthentificationService} from "../../../services/authentification.service";
 declare var $: any;
 @Component({
   selector: 'app-sidebar',
@@ -7,7 +8,7 @@ declare var $: any;
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  constructor(public authService:AuthentificationService) { }
   JqueryCode():void{
     // Hide submenus
     $('#body-row .collapse').collapse('hide');

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthentificationService} from "../../../services/authentification.service";
 
 @Component({
   selector: 'app-accueil',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccueilComponent implements OnInit {
   active:string|null=null;
-  constructor() { }
-
+  constructor(private authService:AuthentificationService) { }
+  prenom:string;
   ngOnInit(): void {
+    this.prenomUser()
   }
 
   clickFamille(famille:string) {
@@ -17,5 +19,14 @@ export class AccueilComponent implements OnInit {
       this.active=null;
     else
       this.active=famille;
+  }
+  prenomUser()
+  {
+    this.authService.getUserbyEmail(this.authService.getEmail()).subscribe(
+      user=>{
+        this.prenom=user.prenom;
+        console.log(this.prenom);
+      }
+    )
   }
 }

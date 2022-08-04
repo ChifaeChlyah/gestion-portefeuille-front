@@ -16,7 +16,7 @@
     </div>
 
     <!-- Email -->
-    <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail" formControlName="email"
+    <input (click)="onInputClick()" type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail" formControlName="email"
            [ngClass]="{'is-invalid': submitted && loginFormGroup.controls.email.errors}">
     <div *ngIf="submitted && loginFormGroup.controls.email.errors" class=
       "invalid-feedback">
@@ -24,7 +24,7 @@
     </div>
 
     <!-- Password -->
-    <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Mot de passe" formControlName="password"
+    <input (click)="onInputClick()" type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Mot de passe" formControlName="password"
            [ngClass]="{'is-invalid': submitted && loginFormGroup.controls.password.errors}">
     <div *ngIf="submitted && loginFormGroup.controls.password.errors" class=
       "invalid-feedback">

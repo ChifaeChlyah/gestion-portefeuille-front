@@ -1,40 +1,70 @@
 <div id="form-employe-container">
-  <form id="form-employe" action="#">
+  <div id="form-portefeuille-container2">
+    <h4 style="font-weight: 300;color: white;text-align: center;margin-bottom: 20px;">Ajouter une nouvelle ressource</h4>
+    <form id="form-employe"  [formGroup]="ressourceFormGroup" *ngIf="ressourceFormGroup">
+      <br>
+      <div class="form-group input-first-line">
+        <input type="text" placeholder="Nom" class="form-control" id="nom"
+               formControlName="nom" [ngClass]="{'is-invalid': submitted && ressourceFormGroup.controls.nom.errors}">
+        <div *ngIf="submitted && ressourceFormGroup.controls.nom.errors" class=
+          "invalid-feedback">
+          <div *ngIf="ressourceFormGroup.controls.nom.errors.required">Ce champs est obligatoire</div>
+        </div>
+      </div>
 
-    <h4>Ajouter une nouvelle ressource</h4>
-    <br>
-    <div class="form-group input-first-line">
-      <input type="text" placeholder="Nom" class="form-control" id="nom"
-             name="nom">
-    </div>
-    <div class="form-group input-first-line">
-      <input type="text" placeholder="Prénom" class="form-control" id="prenom"
-             name="prenom">
-    </div>
-    <div class="form-group input-first-line">
-      <input type="text" placeholder="Email" class="form-control" id="email"
-             name="email">
-    </div>
-    <div class="form-group input-first-line">
-      <input type="password" placeholder="Mot de passe initial" class="form-control" id="motDePasse"
-             name="email">
-    </div>
-    <div class="form-group input-first-line">
-      <input type="text" placeholder="Numéro de téléphone" class="form-control" id="tel"
-             name="tel">
-    </div>
-    <div class="form-group input-first-line">
-      <input type="text" placeholder="Emploi" class="form-control" id="emploi"
-             name="emploi">
-    </div>
-    <div class="form-group input-first-line">
-      <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedRoles($event)" [config]="configDropdownRoles" [options]="dropdownOptionsRoles"></ngx-select-dropdown>
-
-    </div>
-    <div class="form-group">
-      <button style="color:white; margin-top:5px" type="submit" class="btn bg-dark form-control">
-        Submit
-      </button>
-    </div>
-  </form>
+      <div class="form-group input-first-line">
+        <input type="text" placeholder="Prénom" class="form-control" id="prenom"
+               formControlName="prenom" [ngClass]="{'is-invalid': submitted && ressourceFormGroup.controls.prenom.errors}">
+        <div *ngIf="submitted && ressourceFormGroup.controls.prenom.errors" class=
+          "invalid-feedback">
+          <div *ngIf="ressourceFormGroup.controls.prenom.errors.required">Ce champs est obligatoire</div>
+        </div>
+      </div>
+      <div class="form-group input-first-line">
+        <input type="text" placeholder="Email" class="form-control" id="email"
+               formControlName="email" [ngClass]="{'is-invalid': submitted && ressourceFormGroup.controls.email.errors}">
+        <div *ngIf="submitted && ressourceFormGroup.controls.email.errors" class=
+          "invalid-feedback">
+          <div *ngIf="ressourceFormGroup.controls.email.errors.required">Ce champs est obligatoire</div>
+        </div>
+      </div>
+      <div class="form-group input-first-line">
+        <input type="password" placeholder="Mot de passe " class="form-control" id="motDePasse"
+               formControlName="password" [ngClass]="{'is-invalid': submitted && ressourceFormGroup.controls.password.errors}">
+        <div *ngIf="submitted && ressourceFormGroup.controls.password.errors" class=
+          "invalid-feedback">
+          <div *ngIf="ressourceFormGroup.controls.password.errors.required">Ce champs est obligatoire</div>
+        </div>
+      </div>
+      <div class="form-group input-first-line">
+        <input type="text" placeholder="Numéro de téléphone" class="form-control" id="tel"
+               formControlName="tel" [ngClass]="{'is-invalid': submitted && ressourceFormGroup.controls.tel.errors}">
+        <div *ngIf="submitted && ressourceFormGroup.controls.tel.errors" class=
+          "invalid-feedback">
+          <div *ngIf="ressourceFormGroup.controls.tel.errors.required">Ce champs est obligatoire</div>
+        </div>
+      </div>
+      <div class="form-group input-first-line">
+        <input type="text" placeholder="Emploi" class="form-control" id="emploi"
+               formControlName="emploi" [ngClass]="{'is-invalid': submitted && ressourceFormGroup.controls.emploi.errors}">
+        <div *ngIf="submitted && ressourceFormGroup.controls.emploi.errors" class=
+          "invalid-feedback">
+          <div *ngIf="ressourceFormGroup.controls.emploi.errors.required">Ce champs est obligatoire</div>
+        </div>
+      </div>
+      <div class="form-group input-first-line">
+        <ngx-select-dropdown [multiple]="true" id="roles"  [(ngModel)]="rolesSelected" [ngModelOptions]="{standalone: true}" required
+                             (change)="selectionChangedRoles($event)" [config]="configDropdownRoles" [options]="dropdownOptionsRoles">
+          <!--                                 [ngClass]="{'is-invalid': submitted && ressourceFormGroup.controls.roles.errors}">-->
+        </ngx-select-dropdown>
+        <!--            <div *ngIf="submitted && ressourceFormGroup.controls.roles.errors" class=-->
+        <!--              "invalid-feedback">-->
+        <!--              <div *ngIf="ressourceFormGroup.controls.roles.errors.required">Ce champs est obligatoire</div>-->
+        <!--            </div>-->
+      </div>
+      <div class="form-group">
+        <button type="button" [disabled]="ressourceFormGroup?.invalid||noRoleSelected" class="btn bg-dark form-control" (click)="onSaveRessource()" data-dismiss="modal">Enregistrer</button>
+      </div>
+    </form>
+  </div>
 </div>

@@ -1,3 +1,34 @@
 @import "~font-awesome/css/font-awesome.min.css";
 @import "~jsgantt-improved/dist/jsgantt.css";
 html, body { height: 100%; }
+
+:host ::ng-deep #table-employes-container .btn:not(:disabled):not(.disabled),
+:host ::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current
+{
+  cursor: pointer;
+  background: #f8f8f8de!important;
+  border-color: #8080803b!important;
+}
+:host ::ng-deep #table-employes-container .btn:not(:disabled):not(.disabled):hover{
+  background: #e1e1e1de!important;
+
+}
+:host ::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+:host ::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current :hover{
+  background: #e1e1e1de;
+}
+:host ::ng-deep .dataTables_wrapper .dataTables_filter input
+{
+  border: 1px solid #aaaaaa73;
+  border-radius: 3px;
+  padding: 5px;
+  background-color: transparent;
+  margin-left: 3px;
+}
+:host ::ng-deep table.dataTable thead th, table.dataTable tfoot th {
+  font-weight: 500;
+  background: #e2e2e263;
+  color: black;
+}
+

@@ -75,7 +75,7 @@
 
         <!-- Modal footer -->
         <div class="modal-footer form-group">
-          <button (click)="onSavePortefeuille()" type="button" class="btn btn-dark form-control" data-dismiss="modal">Enregistrer</button>
+          <button (click)="onSavePortefeuille()"[disabled]="portefeuilleFormGroup?.invalid" type="button" class="btn btn-dark form-control" data-dismiss="modal">Enregistrer</button>
         </div>
 
     </div>

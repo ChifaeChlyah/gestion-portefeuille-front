@@ -22,3 +22,12 @@
 .fa-business-time{
   margin-right: 7%;
 }
+.logout{
+  background: #c487a7;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.logout:hover
+{
+  opacity: 0.75; ;
+}

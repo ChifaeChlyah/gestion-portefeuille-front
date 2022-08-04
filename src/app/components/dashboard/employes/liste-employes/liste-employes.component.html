@@ -1,6 +1,6 @@
 
 <div id="table-employes-container">
-  <table id="table-employes" datatable [dtOptions]="dtOptions" class="row-border hover">
+  <table *ngIf="ressources" id="table-employes" datatable [dtOptions]="dtOptions" class="row-border hover">
     <thead>
     <tr>
       <th>Code</th>
@@ -13,128 +13,23 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>1</td>
-      <td>Foo</td>
-      <td>Bar</td>
-      <td>Bar</td>
-      <td>0123</td>
-      <td>Emploix</td>
+    <tr *ngFor="let r of ressources">
+      <td>{{r.codeRessource}}</td>
+      <td>{{r.nom}}</td>
+      <td>{{r.prenom}}</td>
+      <td>{{r.email}}</td>
+      <td>{{r.tel}}</td>
+      <td>{{r.emploi}}</td>
       <td>
         <span data-toggle="modal" data-target="#modalEdit1"  >
-          <span title="Modifier" data-toggle="tooltip" title="Modifier"><i class="fa-solid fa-user-pen"></i></span>
+          <span  data-toggle="tooltip" (click)="editRessource(r)" title="Modifier"><i class="fa-solid fa-user-pen"></i></span>
         </span>
-          <span title="Modifier" data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
+        <span  data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
         <span data-toggle="modal" data-target="#modalDelete"  >
-          <span title="Modifier" data-toggle="tooltip" title="Supprmier"><i class="fa-solid fa-user-xmark"></i></span>
-        </span>
-
-
-      </td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>Someone</td>
-      <td>Youknow</td>
-      <td>Youknow</td>
-      <td>0123</td>
-      <td>Emploix</td>
-      <td>
-        <span data-toggle="modal" data-target="#modalEdit1"  >
-          <span title="Modifier" data-toggle="tooltip" title="Modifier"><i class="fa-solid fa-user-pen"></i></span>
-        </span>
-        <span title="Modifier" data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
-        <span data-toggle="modal" data-target="#modalDelete"  >
-          <span title="Modifier" data-toggle="tooltip" title="Supprmier"><i class="fa-solid fa-user-xmark"></i></span>
+          <span data-toggle="tooltip" (click)="confirmDeleteRessource(r)" title="Supprmier"><i class="fa-solid fa-user-xmark"></i></span>
         </span>
       </td>
     </tr>
-    <tr>
-      <td>3</td>
-      <td>Iamout</td>
-      <td>Ofinspiration</td>
-      <td>Ofinspiration</td>
-      <td>0123</td>
-      <td>Emploix</td>
-      <td>
-        <span data-toggle="modal" data-target="#modalEdit1"  >
-          <span title="Modifier" data-toggle="tooltip" title="Modifier"><i class="fa-solid fa-user-pen"></i></span>
-        </span>
-        <span title="Modifier" data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
-        <span data-toggle="modal" data-target="#modalDelete"  >
-          <span title="Modifier" data-toggle="tooltip" title="Supprmier"><i class="fa-solid fa-user-xmark"></i></span>
-        </span>
-      </td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>Yoda</td>
-      <td>Skywalker</td>
-      <td>Skywalker</td>
-      <td>0123</td>
-      <td>Emploix</td>
-      <td>
-        <span data-toggle="modal" data-target="#modalEdit1"  >
-          <span title="Modifier" data-toggle="tooltip" title="Modifier"><i class="fa-solid fa-user-pen"></i></span>
-        </span>
-        <span title="Modifier" data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
-        <span data-toggle="modal" data-target="#modalDelete"  >
-          <span title="Modifier" data-toggle="tooltip" title="Supprmier"><i class="fa-solid fa-user-xmark"></i></span>
-        </span>
-      </td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>Patrick</td>
-      <td>Dupont</td>
-      <td>Dupont</td>
-      <td>0123</td>
-      <td>Emploix</td>
-      <td>
-        <span data-toggle="modal" data-target="#modalEdit1"  >
-          <span title="Modifier" data-toggle="tooltip" title="Modifier"><i class="fa-solid fa-user-pen"></i></span>
-        </span>
-        <span title="Modifier" data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
-        <span data-toggle="modal" data-target="#modalDelete"  >
-          <span title="Modifier" data-toggle="tooltip" title="Supprmier"><i class="fa-solid fa-user-xmark"></i></span>
-        </span>
-      </td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td>Barack</td>
-      <td>Obama</td>
-      <td>Obama</td>
-      <td>0123</td>
-      <td>Emploix</td>
-      <td>
-        <span data-toggle="modal" data-target="#modalEdit1"  >
-          <span title="Modifier" data-toggle="tooltip" title="Modifier"><i class="fa-solid fa-user-pen"></i></span>
-        </span>
-        <span title="Modifier" data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
-        <span data-toggle="modal" data-target="#modalDelete"  >
-          <span title="Modifier" data-toggle="tooltip" title="Supprmier"><i class="fa-solid fa-user-xmark"></i></span>
-        </span>
-      </td>
-    </tr>
-    <tr>
-      <td>7</td>
-      <td>François</td>
-      <td>Holland</td>
-      <td>Holland</td>
-      <td>0123</td>
-      <td>Emploix</td>
-      <td>
-        <span data-toggle="modal" data-target="#modalEdit1"  >
-          <span title="Modifier" data-toggle="tooltip" title="Modifier"><i class="fa-solid fa-user-pen"></i></span>
-        </span>
-        <span title="Modifier" data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
-        <span data-toggle="modal" data-target="#modalDelete"  >
-          <span title="Modifier" data-toggle="tooltip" title="Supprmier"><i class="fa-solid fa-user-xmark"></i></span>
-        </span>
-      </td>
-    </tr>
-
     </tbody>
   </table>
 </div>
@@ -153,66 +48,99 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-        <div class="form-group input-first-line">
-          <input type="text" placeholder="Nom" class="form-control" id="nom"
-                 name="nom">
-        </div>
-        <div class="form-group input-first-line">
-          <input type="text" placeholder="Prénom" class="form-control" id="prenom"
-                 name="prenom">
-        </div>
-        <div class="form-group input-first-line">
-          <input type="text" placeholder="Email" class="form-control" id="email"
-                 name="email">
-        </div>
-        <div class="form-group input-first-line">
-          <input type="text" placeholder="Numéro de téléphone" class="form-control" id="tel"
-                 name="tel">
-        </div>
-        <div class="form-group input-first-line">
-          <input type="text" placeholder="Emploi" class="form-control" id="emploi"
-                 name="emploi">
-        </div>
-
+        <form id="form-portefeuille"  [formGroup]="ressourceFormGroup" *ngIf="ressourceFormGroup">
+          <div hidden class="form-group">
+            <input   type="text" placeholder="Code du portefeuille" class="form-control" id="code"
+                     formControlName="codeRessource">
+          </div>
+          <div class="form-group input-first-line">
+            <input type="text" placeholder="Nom" class="form-control" id="nom"
+                   formControlName="nom" [ngClass]="{'is-invalid': submitted && ressourceFormGroup.controls.nom.errors}">
+            <div *ngIf="submitted && ressourceFormGroup.controls.nom.errors" class=
+              "invalid-feedback">
+              <div *ngIf="ressourceFormGroup.controls.nom.errors.required">Ce champs est obligatoire</div>
+            </div>
+          </div>
+          <div class="form-group input-first-line">
+            <input type="text" placeholder="Prénom" class="form-control" id="prenom"
+                   formControlName="prenom" [ngClass]="{'is-invalid': submitted && ressourceFormGroup.controls.prenom.errors}">
+            <div *ngIf="submitted && ressourceFormGroup.controls.prenom.errors" class=
+              "invalid-feedback">
+              <div *ngIf="ressourceFormGroup.controls.prenom.errors.required">Ce champs est obligatoire</div>
+            </div>
+          </div>
+          <div class="form-group input-first-line">
+            <input type="text" placeholder="Email" class="form-control" id="email"
+                   formControlName="email" [ngClass]="{'is-invalid': submitted && ressourceFormGroup.controls.email.errors}">
+            <div *ngIf="submitted && ressourceFormGroup.controls.email.errors" class=
+              "invalid-feedback">
+              <div *ngIf="ressourceFormGroup.controls.email.errors.required">Ce champs est obligatoire</div>
+            </div>
+          </div>
+          <div class="form-group input-first-line">
+            <input type="text" placeholder="Numéro de téléphone" class="form-control" id="tel"
+                  formControlName="tel" [ngClass]="{'is-invalid': submitted && ressourceFormGroup.controls.tel.errors}">
+            <div *ngIf="submitted && ressourceFormGroup.controls.tel.errors" class=
+              "invalid-feedback">
+              <div *ngIf="ressourceFormGroup.controls.tel.errors.required">Ce champs est obligatoire</div>
+            </div>
+          </div>
+          <div class="form-group input-first-line">
+            <input type="text" placeholder="Emploi" class="form-control" id="emploi"
+                   formControlName="emploi" [ngClass]="{'is-invalid': submitted && ressourceFormGroup.controls.emploi.errors}">
+            <div *ngIf="submitted && ressourceFormGroup.controls.emploi.errors" class=
+              "invalid-feedback">
+              <div *ngIf="ressourceFormGroup.controls.emploi.errors.required">Ce champs est obligatoire</div>
+            </div>
+          </div>
+          <div class="form-group input-first-line">
+            <ngx-select-dropdown [multiple]="true" id="roles"  [(ngModel)]="rolesSelected" [ngModelOptions]="{standalone: true}" required
+                                 (change)="selectionChangedRoles($event)" [config]="configDropdownRoles" [options]="dropdownOptionsRoles">
+<!--                                 [ngClass]="{'is-invalid': submitted && ressourceFormGroup.controls.roles.errors}">-->
+            </ngx-select-dropdown>
+<!--            <div *ngIf="submitted && ressourceFormGroup.controls.roles.errors" class=-->
+<!--              "invalid-feedback">-->
+<!--              <div *ngIf="ressourceFormGroup.controls.roles.errors.required">Ce champs est obligatoire</div>-->
+<!--            </div>-->
+          </div>
+        </form>
+      </div>
 
 
       <!-- Modal footer -->
       <div class="modal-footer form-group">
-        <button type="button" class="btn btn-dark form-control" data-dismiss="modal">Enregistrer</button>
+        <button type="button" [disabled]="ressourceFormGroup?.invalid||noRoleSelected" class="btn btn-dark form-control" (click)="onSaveRessource()" data-dismiss="modal">Enregistrer</button>
       </div>
 
     </div>
   </div>
 </div>
-</div>
 
 
+  <!--Modal Delete RessourceModel -->
+  <div data-backdrop="false" class="modal" id="modalDelete">
+    <div class="modal-dialog">
+      <div class="modal-content">
 
-<!--Modal Delete RessourceModel -->
-<div data-backdrop="false" class="modal" id="modalDelete">
-  <div class="modal-dialog">
-    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Etes-vous sûr de vouloir supprimer la ressource ?</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
 
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Etes-vous sûr de vouloir supprimer la ressource :</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-
-      <!-- Modal body -->
-      <div class="modal-body">
-        <p>Nom : NOMX</p>
-        <p>Prénom : prénomX</p>
-        <p>Emploi : emploiX</p>
-      </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <p><span class="delete-label">Code : </span>{{codeRessource}}</p>
+          <p><span class="delete-label">Nom : </span>{{nom}}</p>
+          <p><span class="delete-label">Prénom : </span>{{prenom}}</p>
+          <p><span class="delete-label">Emploi : </span>{{emploi}}</p>
+        </div>
         <!-- Modal footer -->
         <div class="modal-footer form-group">
           <button type="button" class="btn btn-dark " data-dismiss="modal">Annuler</button>
-          <button type="button" class="btn btn-dark " data-dismiss="modal">Oui</button>
+          <button type="button" class="btn btn-dark " (click)="onDeleteRessource()" data-dismiss="modal">Oui</button>
         </div>
 
       </div>
     </div>
   </div>
-
-

@@ -3,6 +3,7 @@ import {IDropdownSettings} from "ng-multiselect-dropdown";
 import {Options} from "@angular-slider/ngx-slider";
 import * as moment from 'moment';
 import {Router} from "@angular/router";
+import {AuthentificationService} from "../../../services/authentification.service";
 declare var $: any;
 @Component({
   selector: 'app-projets',
@@ -10,7 +11,7 @@ declare var $: any;
   styleUrls: ['./projets.component.css']
 })
 export class ProjetsComponent implements OnInit {
-  constructor(private router:Router) {
+  constructor(private router:Router,public authService:AuthentificationService) {
   }
   dropdownList:any[] = [];
   dropdownSettings:IDropdownSettings={};

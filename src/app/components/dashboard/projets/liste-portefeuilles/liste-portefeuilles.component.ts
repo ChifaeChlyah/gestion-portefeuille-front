@@ -17,7 +17,7 @@ export class ListePortefeuillesComponent implements OnInit {
   constructor(private portefeuilleService:PortefeuilleService,private fb:FormBuilder,private authService:AuthentificationService) { }
 
   ngOnInit(): void {
-    this.tousLesProjets();
+    this.tousLesPortefeuilles();
     this.dtOptions = {
       // Declare the use of the extension in the dom parameter
       dom: 'Bfrtip',
@@ -58,7 +58,7 @@ export class ListePortefeuillesComponent implements OnInit {
     };
   }
 
-  tousLesProjets() {
+  tousLesPortefeuilles() {
     this.portefeuilleService.tousLesPortefeuilles().subscribe((ret:FamilleProjet[])=>{
       this.portefeuilles$=ret;
       console.log(ret)
@@ -81,7 +81,7 @@ export class ListePortefeuillesComponent implements OnInit {
   onSavePortefeuille() {
     this.submitted=true;
     this.portefeuilleService.update(this.portefeuilleFormGroup.value).subscribe(data=> {
-      this.tousLesProjets();
+      this.tousLesPortefeuilles();
       alert("success projet update");
 
     }
@@ -102,7 +102,7 @@ export class ListePortefeuillesComponent implements OnInit {
   onDeletePortefeuille() {
     this.portefeuilleService.delete(this.codePortefeuille).subscribe(
       data=>{
-        this.tousLesProjets()
+        this.tousLesPortefeuilles()
       }
     )
   }

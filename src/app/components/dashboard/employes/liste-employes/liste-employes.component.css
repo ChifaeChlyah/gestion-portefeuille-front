@@ -66,3 +66,6 @@
 .modal-body{
   background: #f6f6f6;
 }
+.delete-label{
+  font-weight: bold;
+}

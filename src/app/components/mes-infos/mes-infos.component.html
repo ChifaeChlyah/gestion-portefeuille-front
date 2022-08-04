@@ -1,1 +1,148 @@
-<p>mes-infos works!</p>
+<app-nav-bar-top></app-nav-bar-top>
+<div id="info-container">
+<div class="container d-flex justify-content-center mt-20">
+
+    <div class="tab-vertical">
+      <ul class="nav nav-tabs" id="myTab3" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="home-vertical-tab" data-toggle="tab" href="#home-vertical" role="tab" aria-controls="home" aria-selected="true">Infos personnelles</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="profile-vertical-tab" data-toggle="tab" href="#profile-vertical" role="tab" aria-controls="profile" aria-selected="false">Mot de passe</a>
+        </li>
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link" id="contact-vertical-tab" data-toggle="tab" href="#contact-vertical" role="tab" aria-controls="contact" aria-selected="false">Tab Vertical #3</a>-->
+<!--        </li>-->
+      </ul>
+      <div class="tab-content" id="myTabContent3">
+        <div class="tab-pane fade show active" id="home-vertical" role="tabpanel" aria-labelledby="home-vertical-tab">
+<!--          <form >-->
+          <form [formGroup]="userFormGroup" *ngIf="userFormGroup">
+          <div class="row">
+                  <div class="picture-container">
+                    <div class="picture">
+                      <img [src]="host+'/photo-user/'+user.codeRessource | authImage | async" class="picture-src" id="wizardPicturePreview" title="">
+<!--                      <img src="" class="picture-src" id="wizardPicturePreview" title="">-->
+                      <i class="fa-solid fa-circle-user"></i>
+<!--                      <input type="file" id="wizard-picture" >-->
+                      <input type="file" id="wizard-picture" (change)="onSelectedFile($event)">
+                    </div>
+                    <h6 class="">Choisissez une photo <i class="fa-solid fa-camera"></i></h6>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-3">
+                <div id="contact-form" class="form">
+                  <div hidden class="form-group">
+                    <input   type="text" placeholder="Code du portefeuille" class="form-control" id="code"
+                             formControlName="codeRessource">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="name">Nom</label>
+                    <input type="text" class="form-control" id="name" formControlName="nom" placeholder="Nom" tabindex="1" required
+                           [ngClass]="{'is-invalid':  userFormGroup.controls.nom.errors}">
+                    <div *ngIf="userFormGroup.controls.nom.errors" class=
+                      "invalid-feedback">
+                      <div *ngIf="userFormGroup.controls.nom.errors.required">Ce champs est obligatoire</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="prenom">Prénom</label>
+                    <input type="text" class="form-control" id="prenom"  formControlName="prenom" placeholder="Prénom" tabindex="2" required
+                           [ngClass]="{'is-invalid':  userFormGroup.controls.prenom.errors}">
+                    <div *ngIf="userFormGroup.controls.prenom.errors" class=
+                      "invalid-feedback">
+                      <div *ngIf="userFormGroup.controls.prenom.errors.required">Ce champs est obligatoire</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" class="form-control" id="email" formControlName="email" placeholder="Email" tabindex="3"
+                           [ngClass]="{'is-invalid':  userFormGroup.controls.email.errors}">
+                    <div *ngIf="userFormGroup.controls.email.errors" class=
+                      "invalid-feedback">
+                      <div *ngIf="userFormGroup.controls.email.errors.required">Ce champs est obligatoire</div>
+                      <div *ngIf="userFormGroup.controls.email.errors.email">Email invalide</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="emploi">Emploi</label>
+                    <input type="text" class="form-control" id="emploi" formControlName="emploi" placeholder="Emploi" tabindex="3"
+                           [ngClass]="{'is-invalid':  userFormGroup.controls.emploi.errors}">
+                    <div *ngIf="userFormGroup.controls.emploi.errors" class=
+                      "invalid-feedback">
+                      <div *ngIf="userFormGroup.controls.emploi.errors.required">Ce champs est obligatoire</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="tel">Numéro de téléphone</label>
+                    <input type="text" class="form-control" id="tel" formControlName="tel" placeholder="Numéro de téléphone" tabindex="3"
+                           [ngClass]="{'is-invalid':  userFormGroup.controls.tel.errors}">
+                    <div *ngIf="userFormGroup.controls.tel.errors" class=
+                      "invalid-feedback">
+                      <div *ngIf="userFormGroup.controls.tel.errors.required">Ce champs est obligatoire</div>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" [disabled]="userFormGroup?.invalid" (click)="onSaveUser()" class="btn btn-start-order">Enregistrer</button>
+                  </div>
+                </div>
+              </div>
+          </div>
+          </form>
+        </div>
+        <div class="tab-pane fade" id="profile-vertical" role="tabpanel" aria-labelledby="profile-vertical-tab">
+          <div class="row">
+            <div class="inputs-container">
+              <form id="password-form" class="form" [formGroup]="passwordFormGroup" *ngIf="passwordFormGroup" >
+                <div class="alert alert-danger" *ngIf="mot_de_passe_invalide">
+                  <strong>Ancien mot de passe invalide </strong>
+                </div>
+                  <div hidden class="form-group">
+                    <input   type="text" placeholder="Code du portefeuille" class="form-control"
+                             formControlName="codeRessource">
+                  </div>
+                <div class="form-group">
+                  <label class="form-label" for="name">Ancien mot de passe</label>
+                  <input (click)="onClickInput()" type="password" class="form-control" id="ancien_password" formControlName="ancien_password"
+                         placeholder="Ancien mot de passe" tabindex="1"
+                         [ngClass]="{'is-invalid':  passwordFormGroup.controls.ancien_password.errors&&passwordSubmitted}">
+                  <div *ngIf="passwordFormGroup.controls.ancien_password.errors&&passwordSubmitted" class=
+                    "invalid-feedback">
+                    <div *ngIf="passwordFormGroup.controls.ancien_password.errors.required&&passwordSubmitted">Ce champs est obligatoire</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="email">Nouveau mot de passe</label>
+                  <input type="password" class="form-control" id="nouveau_password" formControlName="nouveau_password"
+                         placeholder="Nouveau mot de passe" tabindex="2" required
+                         [ngClass]="{'is-invalid':  passwordFormGroup.controls.nouveau_password.errors&&passwordSubmitted}">
+                  <div *ngIf="passwordFormGroup.controls.nouveau_password.errors&&passwordSubmitted" class=
+                    "invalid-feedback">
+                    <div *ngIf="passwordFormGroup.controls.nouveau_password.errors.required&&passwordSubmitted">Ce champs est obligatoire</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="email">Confirmez le nouveau mot de passe</label>
+                  <input type="password" class="form-control" id="confirm_nouveau_password" formControlName="confirm_nouveau_password"
+                         placeholder="Confirmez le nouveau mot de passe" tabindex="2" required
+                         [ngClass]="{'is-invalid':  passwordFormGroup.controls.confirm_nouveau_password.errors&&passwordSubmitted}">
+                  <div *ngIf="passwordFormGroup.controls.confirm_nouveau_password.errors&&passwordSubmitted" class=
+                    "invalid-feedback">
+                    <div *ngIf="!passwords_match&&passwordSubmitted">Le mot de passe et la confirmation ne correspondent pas</div>
+                  </div>
+                </div>
+
+                <div class="text-center">
+                  <button type="submit" (click)="onSavePassword()" class="btn btn-start-order">Enregistrer</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+<!--        <div class="tab-pane fade" id="contact-vertical" role="tabpanel" aria-labelledby="contact-vertical-tab">-->
+<!--          <h3>Tab Heading</h3>-->
+<!--          <p>Sit amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras pulvinar mattis. Amet risus nullam eget felis eget nunc lobortis mattis. Lacus viverra vitae congue eu. Eu tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Est placerat in egestas erat imperdiet sed euismod.</p>-->
+<!--        </div>-->
+      </div>
+    </div>
+  </div>
+</div>

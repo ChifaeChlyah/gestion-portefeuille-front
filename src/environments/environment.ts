@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   host:"http://localhost:8080",
+  path_projet:"C:\\Users\\chifae\\Documents\\Stage Portefeuilles de Projets\\",
   ADMIN_ROLE:"Administrateur",
   GESTIONNAIRE_PORTEFEUILLES_ROLE:"Gestionnaire de portefeuilles",
   CHEF_PROJET_ROLE:"Chef de projets",

@@ -1,0 +1,39 @@
+body {
+  font-family: sans-serif;
+  background: #ccc;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+button:hover,
+button:focus {
+  background: #a3a3ff;
+}
+
+button {
+  border: solid thin grey;
+  border-radius: 3px;
+}
+
+button.selected {
+  background: #a3a3ff;
+}
+
+/* task custom class */
+.gantt-target .bar-milestone .bar {
+  fill: tomato;
+}
+
+/* bar collapsed */
+.parent>.bar-group>.bar {
+  outline: outset 1px #a3a3ff;
+  border-radius: 2px;
+  outline-offset: 2px;
+}
+
+.gantt-target .details-container {
+  padding: 0px 12px;
+}

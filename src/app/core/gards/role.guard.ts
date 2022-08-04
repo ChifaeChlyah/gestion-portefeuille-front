@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import { Observable } from 'rxjs';
 import {AuthentificationService} from "../../services/authentification.service";
 
@@ -7,7 +7,7 @@ import {AuthentificationService} from "../../services/authentification.service";
   providedIn: 'root'
 })
 export class RoleGuard implements CanActivate {
-  constructor(private authService:AuthentificationService) {
+  constructor(private authService:AuthentificationService,private router:Router) {
   }
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -17,22 +17,34 @@ export class RoleGuard implements CanActivate {
   }
   private isAuthorised(route:ActivatedRouteSnapshot):boolean
   {
-    let authorised:boolean=false;
-    const roles=[];
-    console.log(this.authService.userAuthentife);
-    this.authService.userAuthentife.roles.forEach(r=>
-    {
-      roles.push(r.nomRole);
-    })
-    const expectedRoles=route.data['expectedRoles'];
-    roles.forEach(role=>
-    {
-      expectedRoles.forEach(expectedRole=>
-      {
-        if(role==expectedRole)
-          authorised=true;
-      })
-    })
-    return authorised;
+    let accept=false;
+    const RolesPermis=route.data['RolesPermis'];
+    let roles=this.authService.getRoles();
+    roles.forEach(role=>{
+      RolesPermis.forEach(r=>{
+        if(r==role.authority)
+          accept=true;
+      });
+    });
+    let rolesNonPermis=route.data['RolesNonPermis']
+    if(rolesNonPermis!=undefined)
+      roles.forEach(role=>{
+        rolesNonPermis.forEach(r=>{
+          if(r==role.authority)
+            accept=false;
+        });
+      });
+    // if(accept==false)
+    // {
+    //   if(this.router.url=="/accueil") {
+    //     if (this.authService.estChefDeProjet())
+    //       this.router.navigateByUrl("/mes-projets-geres")
+    //     else
+    //       this.router.navigateByUrl("/mes-projets-affectes")
+    //   }
+    //   else
+    //     this.router.navigateByUrl("/forbidden")
+    // }
+    return accept;
   }
 }

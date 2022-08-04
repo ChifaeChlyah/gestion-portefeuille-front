@@ -22,7 +22,9 @@ export class ConnexionComponent implements OnInit {
       });
 
   }
-
+  onInputClick(){
+    this.mode=0;
+  }
   login() {
     this.submitted=true;
     if(this.loginFormGroup?.invalid) return;
@@ -35,9 +37,13 @@ export class ConnexionComponent implements OnInit {
           if(this.authService.estAdmin()||this.authService.estGestionnairePortefeuille())
             this.router.navigateByUrl("/accueil")
           else if(this.authService.estChefDeProjet())
-             this.router.navigateByUrl("/projets/sonProjet")//*** à modifier
+             // this.router.navigateByUrl("/projets/sonProjet")//*** à modifier
+            this.router.navigateByUrl("/mes-projets-geres")
+
           else
-            this.router.navigateByUrl("/projets/sonProjet")//*** à modifier
+            // this.router.navigateByUrl("/projets/sonProjet")//*** à modifier
+          this.router.navigateByUrl("/mes-projets-affectes")
+
         },
         error => {
           this.mode=1;

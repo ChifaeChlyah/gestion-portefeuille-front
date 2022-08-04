@@ -1,5 +1,5 @@
 
-export interface Role {
-  codeRole:bigint;
+export class Role {
+  codeRole:string;
   nomRole:string;
 }

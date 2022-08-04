@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
+import {environment} from "../../../../../environments/environment";
+import {Ressource} from "../../../../model/Ressource.model";
+import {RessourcesService} from "../../../../services/ressources.service";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+declare var $:any;
 @Component({
   selector: 'app-chefs-projets',
   templateUrl: './chefs-projets.component.html',
@@ -8,8 +12,9 @@ import { Component, OnInit } from '@angular/core';
 export class ChefsProjetsComponent implements OnInit {
 // Must be declared as "any", not as "DataTables.Settings"
   dtOptions: any = {};
+  chefsProjets:Ressource[];
 
-  constructor() { }
+  constructor(private ressourceService:RessourcesService,private fb:FormBuilder) { }
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -28,9 +33,9 @@ export class ChefsProjetsComponent implements OnInit {
       language:
         {
           "decimal":        "",
-          "emptyTable":     "Aucun Employé disponible",
-          "info":           "Total des employés : _TOTAL_",
-          "infoEmpty":      "Total des employés : 0 ",
+          "emptyTable":     "Aucun chef de projet disponible",
+          "info":           "Total des chefs de projet : _TOTAL_",
+          "infoEmpty":      "Total des chefs de projet : 0 ",
           "infoFiltered":   "(filtered from _MAX_ total entries)",
           "infoPostFix":    "",
           "thousands":      ",",
@@ -38,7 +43,7 @@ export class ChefsProjetsComponent implements OnInit {
           "loadingRecords": "Chargement...",
           "processing":     "",
           "search":         "Rechercher:",
-          "zeroRecords":    "Aucun employé retrouvé",
+          "zeroRecords":    "Aucun chef de projet retrouvé",
           "paginate": {
             "first":      "Premier",
             "last":       "Dernier",
@@ -52,7 +57,81 @@ export class ChefsProjetsComponent implements OnInit {
         },
       pagingType:'full_numbers'
     };
+    this.tousLesChefs();
+    $(document).ready(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
 
   }
+  tousLesChefs() {
+    this.ressourceService.tousLesChef().subscribe((ret:Ressource[])=>{
+      this.chefsProjets=ret;
+      console.log(ret)
+    },error => {
+      console.log(error)
+    })
+  }
 
+  //modifier une ressource
+  ressourceFormGroup: FormGroup;
+  submitted: boolean;
+  rolesSelected: string[]=[];
+  editRessource(p: Ressource) {
+    let nomsRoles:string[]=[];
+    p.roles.forEach(r=>
+    {
+      nomsRoles.push(r.nomRole)
+    });
+    this.rolesSelected=nomsRoles;
+    console.log(nomsRoles);
+    this.ressourceFormGroup=this.fb.group({
+        codeRessource: [p.codeRessource,Validators.required],
+        nom: [p.nom, Validators.required],
+        prenom: [p.prenom, Validators.required],
+        email: [p.email, Validators.required],
+        tel: [p.tel, Validators.required],
+        emploi: [p.emploi, Validators.required],
+        roles: [nomsRoles],
+      }
+    )
+  }
+  onSaveRessource() {
+    this.submitted=true;
+    if(this.ressourceFormGroup.invalid) {
+      console.log("invalid")
+      const controls = this.ressourceFormGroup.controls;
+      for (const name in controls) {
+        if (controls[name].invalid) {
+          console.log(controls[name])
+        }
+      }
+    }
+    this.ressourceFormGroup.value.roles=this.ressourceService.getRoles(this.rolesSelected);
+    this.ressourceService.update(this.ressourceFormGroup.value).subscribe(data=> {
+        this.tousLesChefs();
+        // alert("success ressource update");
+      }
+    );
+  }
+
+
+  //supprimer une ressource
+  codeRessource:bigint;
+  nom:string;
+  prenom:string;
+  emploi:string;
+  confirmDeleteRessource(p:Ressource){
+    this.codeRessource=p.codeRessource;
+    this.nom=p.nom;
+    this.prenom=p.prenom;
+    this.emploi=p.emploi
+  }
+
+  onDeleteRessource() {
+    this.ressourceService.delete(this.codeRessource).subscribe(
+      data=>{
+        this.tousLesChefs()
+      }
+    )
+  }
 }

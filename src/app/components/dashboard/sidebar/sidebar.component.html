@@ -17,7 +17,7 @@
           <span class="menu-collapsed">Accueil</span>
         </div>
       </a>
-      <a href="#submenu1" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+      <a href="#submenu1" *ngIf="authService.estGestionnairePortefeuille()" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-start align-items-center">
           <span class="fa fa-bell fa-fw mr-3"></span>
           <span class="menu-collapsed">Notifications <span class="badge badge-pill ml-2">5</span></span>
@@ -43,7 +43,7 @@
         </a>
       </div>
 
-      <a href="#" class="bg-dark list-group-item list-group-item-action">
+      <a *ngIf="authService.estAdmin()" href="#" class="bg-dark list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-start align-items-center">
           <span class="fa-solid fa-bug mr-3"></span>
 
@@ -61,7 +61,7 @@
           <span class="menu-collapsed">Portefeuilles</span>
         </div>
       </a>
-      <a routerLink="/ressources/liste-ressources" class="bg-dark list-group-item list-group-item-action">
+      <a *ngIf="authService.estAdmin()" routerLink="/ressources/liste-ressources" class="bg-dark list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-start align-items-center">
           <span class="fa-solid fa-users-gear fa-fw mr-3"></span>
           <span class="menu-collapsed">Ressources</span>

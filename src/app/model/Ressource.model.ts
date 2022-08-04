@@ -3,14 +3,14 @@ import {Risque} from "./Risque.model";
 import {Tache} from "./Tache.model";
 import {Role} from "./Role.model";
 
-export interface Ressource {
+export class Ressource {
   codeRessource:bigint;
   nom:string;
   prenom:string;
   emploi:string;
+  nomPhoto:string;
   email:string;
   tel:string;
   password:string;
   roles:Role[];
-
 }

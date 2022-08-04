@@ -9,22 +9,48 @@
   </a>
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item " [ngClass]="(getUrl()=='/'||getUrl()=='/accueil'||getUrl().includes('/projets')||getUrl().includes('/ressources'))?'active':''">
+      <li class="nav-item "  *ngIf="authService.estAdmin()||authService.estGestionnairePortefeuille()"
+          [ngClass]="(getUrl()=='/'||getUrl()=='/accueil'||getUrl().includes('/projets')||getUrl().includes('/ressources'))?'active':''">
         <a style="padding-top: 15%;padding-bottom: 0px;font-size: 110%;"
-           data-toggle="tooltip" title="Tableau de bord"
-           class="nav-link" routerLink="accueil"><span class="fa fa-dashboard fa-fw "></span></a>
+           data-toggle="" title="Tableau de bord"
+           class="nav-link" routerLink="/accueil"><span class="fa fa-dashboard fa-fw "></span></a>
       </li>
-      <li class="nav-item icon-top " [ngClass]="(getUrl()=='/mes-taches')?'active':''">
-        <a class="nav-link " routerLink="mes-taches" data-toggle="tooltip" title="Tâches"
+      <li class="nav-item " *ngIf="authService.estChefDeProjet()"
+          [ngClass]="((getUrl()=='/mes-projets-geres')?'active':'')"
+          [class.icon-top]="(authService.estAdmin()||authService.estGestionnairePortefeuille())">
+        <a class="nav-link " routerLink="/mes-projet-geres" data-toggle="" title="Mes projets gérés"
+        ><i class="fa-solid fa-gear"></i></a>
+      </li>
+      <li class="nav-item" *ngIf="authService.estDeveloppeur()"
+          [ngClass]="(getUrl()=='/mes-projets-affectes')?'active':''"
+          [class.icon-top]="authService.estAdmin()||authService.estChefDeProjet()||authService.estGestionnairePortefeuille()">
+        <a class="nav-link " routerLink="/mes-projet-affectes" data-toggle="" title="Mes projets affectés"
+        ><i class="fa-solid fa-laptop-file"></i></a>
+      </li>
+      <li class="nav-item icon-top "  *ngIf="authService.estDeveloppeur()"
+          [ngClass]="(getUrl()=='/mes-taches')?'active':''">
+        <a class="nav-link " routerLink="/mes-taches" data-toggle="" title="Tâches"
         ><i class="fa-solid fa-list-check"></i></a>
       </li>
-      <li class="nav-item icon-top " [ngClass]="(getUrl()=='/mon-emploi')?'active':''">
-        <a class="nav-link " routerLink="mon-emploi" data-toggle="tooltip" title="Feuille de temps"
+      <li class="nav-item icon-top " *ngIf="authService.estDeveloppeur()"
+          [ngClass]="(getUrl()=='/mon-emploi')?'active':''">
+        <a class="nav-link " routerLink="/mon-emploi" data-toggle="" title="Feuille de temps"
         ><i class="fa-solid fa-calendar"></i></a>
       </li>
+
+
+      <li class="nav-item icon-top" *ngIf="!authService.estAdmin()"
+          [ngClass]="(getUrl()=='/reporter-un-bug')?'active':''">
+        <a class="nav-link " routerLink="/reporter-un-bug" data-toggle="" title="Reporter un bug"
+        ><i class="fa-solid fa-bug"></i></a>
+      </li>
       <li class="nav-item " [ngClass]="(getUrl()=='/mes-infos')?'active':''">
-        <a class="nav-link " routerLink="mes-infos" data-toggle="tooltip" title="Infos personnelles"
-           style="width: 102px; margin-left: 8%;">Chifae <i class="fa-solid fa-user-gear"></i></a>
+        <a class="nav-link " routerLink="/mes-infos" data-toggle="" title="Infos personnelles"
+           style="display: flex;align-items: center; margin-left: 8%; margin-right: 10px"><span style="margin-right: 5px">{{prenom}}</span> <i class="fa-solid fa-user-gear"></i></a>
+      </li>
+      <li class="nav-item logout" (click)="logout()">
+        <a class="nav-link " data-toggle="" title="Se déconnecter"
+        ><i style="color: #880e4f;" class="fa-solid fa-arrow-right-from-bracket"></i></a>
       </li>
     </ul>
   </div>

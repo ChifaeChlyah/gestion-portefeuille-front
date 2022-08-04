@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
 import {Ressource} from "../model/Ressource.model";
@@ -12,7 +12,6 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 export class AuthentificationService {
   host:string;
   ressources:Ressource[];
-  userAuthentife:Ressource;
   roles:Array<any>
   constructor(private http:HttpClient,private router:Router) {
     this.host=environment.host;
@@ -24,6 +23,10 @@ export class AuthentificationService {
     console.log(user);
     return this.http.post(this.host+"/login",user,{observe:"response"});
   }
+  public getUserbyEmail(email:string):Observable<Ressource>{
+    return this.http.get<Ressource>(this.host+"/ressource-par-email/"+email,
+      {headers:new HttpHeaders({'Authorization':this.getToken()})});
+  }
   public saveToken(jwt:string)
   {
     localStorage.setItem('token',jwt);
@@ -31,7 +34,7 @@ export class AuthentificationService {
     this.roles=jwtHelper.decodeToken(this.getToken()).roles;
   }
 
-  getRoles(){
+  getRoles():any[]{
     let jwtHelper=new JwtHelperService();
     return jwtHelper.decodeToken(this.getToken()).roles;
   }
@@ -75,7 +78,7 @@ export class AuthentificationService {
     }
     return false;
   }
-  getUser()
+  getEmail():string
   {
     let jwtHelper=new JwtHelperService();
     try {
@@ -84,6 +87,7 @@ export class AuthentificationService {
       return null;
     }
   }
+
   estAuthentifie(){
   }
 }

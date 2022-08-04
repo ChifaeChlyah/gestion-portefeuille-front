@@ -1,37 +1,42 @@
 <div id="form-portefeuille-container">
-  <form id="form-portefeuille"  [formGroup]="portefeuilleFormGroup" *ngIf="portefeuilleFormGroup">
-    <h4>Créer un nouveau portefeuille</h4>
-    <br>
-    <div class="form-group">
-      <input type="text" placeholder="Code du portefeuille" class="form-control" id="code"
-             formControlName="codeFamille"
-             [ngClass]="{'is-invalid': submitted && portefeuilleFormGroup.controls.codeFamille.errors}">
-      <div *ngIf="submitted && portefeuilleFormGroup.controls.codeFamille.errors" class=
-        "invalid-feedback">
-        <div *ngIf="portefeuilleFormGroup.controls.codeFamille.errors.required">Ce champs est obligatoire</div>
+  <div id="form-portefeuille-container2">
+    <h4 style="font-weight: 300;color: white;text-align: center;margin-bottom: 20px;">Créer un nouveau portefeuille</h4>
+    <form id="form-portefeuille"  [formGroup]="portefeuilleFormGroup" *ngIf="portefeuilleFormGroup">
+      <br>
+      <div class="form-group">
+        <label class="form-label" for="code">Code du portefeuille</label>
+        <input type="text" placeholder="Code du portefeuille" class="form-control" id="code"
+               formControlName="codeFamille"
+               [ngClass]="{'is-invalid': submitted && portefeuilleFormGroup.controls.codeFamille.errors}">
+        <div *ngIf="submitted && portefeuilleFormGroup.controls.codeFamille.errors" class=
+          "invalid-feedback">
+          <div *ngIf="portefeuilleFormGroup.controls.codeFamille.errors.required">Ce champs est obligatoire</div>
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-      <input type="text" placeholder="Titre du portefeuille" class="form-control" id="titre"
-             formControlName="titreFamille" [ngClass]="{'is-invalid': submitted && portefeuilleFormGroup.controls.titreFamille.errors}">
-      <div *ngIf="submitted && portefeuilleFormGroup.controls.titreFamille.errors" class=
-        "invalid-feedback">
-        <div *ngIf="portefeuilleFormGroup.controls.titreFamille.errors.required">Ce champs est obligatoire</div>
+      <div class="form-group">
+        <label class="form-label" for="titre">Titre du portefeuille</label>
+        <input type="text" placeholder="Titre du portefeuille" class="form-control" id="titre"
+               formControlName="titreFamille" [ngClass]="{'is-invalid': submitted && portefeuilleFormGroup.controls.titreFamille.errors}">
+        <div *ngIf="submitted && portefeuilleFormGroup.controls.titreFamille.errors" class=
+          "invalid-feedback">
+          <div *ngIf="portefeuilleFormGroup.controls.titreFamille.errors.required">Ce champs est obligatoire</div>
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-    <textarea rows="5" placeholder="Description du portefeuille" class="form-control" id="portefeuille"
+      <div class="form-group">
+        <label class="form-label" for="portefeuille">Description du portefeuille</label>
+        <textarea rows="5" placeholder="Description du portefeuille" class="form-control" id="portefeuille"
               formControlName="description" [ngClass]="{'is-invalid': submitted && portefeuilleFormGroup.controls.description.errors}">
       </textarea>
-      <div *ngIf="submitted && portefeuilleFormGroup.controls.description.errors" class=
-        "invalid-feedback">
-        <div *ngIf="portefeuilleFormGroup.controls.description.errors.required">Ce champs est obligatoire</div>
+        <div *ngIf="submitted && portefeuilleFormGroup.controls.description.errors" class=
+          "invalid-feedback">
+          <div *ngIf="portefeuilleFormGroup.controls.description.errors.required">Ce champs est obligatoire</div>
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-      <button (click)="onSavePortefeuille()" [disabled]="portefeuilleFormGroup?.invalid" style="color:white; margin-top:5px" type="submit" class="btn bg-dark form-control">
-        Enregistrer
-      </button>
-    </div>
-  </form>
+      <div class="form-group">
+        <button (click)="onSavePortefeuille()" [disabled]="portefeuilleFormGroup?.invalid" style="color:white; margin-top:5px" type="submit" class="btn bg-dark form-control">
+          Enregistrer
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

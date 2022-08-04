@@ -1,9 +1,9 @@
 
 <div id="form-projet-container">
 
-  <form id="form-projet" action="#">
+  <form id="form-projet" [formGroup]="projetFormGroup" *ngIf="projetFormGroup">
 
-    <h4 style="font-weight: 400">Créer un nouveau projet</h4>
+    <h4 style=" font-weight: 300; color: white;">Créer un nouveau projet</h4>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
       <li class="nav-item">
@@ -24,65 +24,178 @@
     <div class="tab-content">
       <div class="tab-pane container active" id="infoProjet">
         <br>
-        <p class="titre-group-inputs">Présentation du projet</p>
-        <div class="inputs-inline">
-          <div id="imgContainer"  class="border rounded-lg text-center input-first-line">
-            <img *ngIf="filePath && filePath !== ''" [src]="filePath" [alt]="myForm.value.name" class="img-fluid" id="preview" />
-            <i *ngIf="!filePath || filePath == ''" style="font-size: xx-large;color: #ced4da;"  class="fa-solid fa-image"></i>
-          </div>
-          <div class="input-group mb-3 input-first-line" id="upload">
-            <div class="custom-file">
-              <input type="file" accept="image/*" (change)="imagePreview($event)" class="custom-file-input" id="logo">
-              <label class="custom-file-label" for="logo" aria-describedby="inputGroupFileAddon">Logo</label>
-            </div>
+        <p class="titre-group-inputs"><i class="fa-solid fa-angles-right"></i> Présentation du projet</p>
+        <div class="inputs-inline" style="  justify-content: space-around;  height: 60%; ">
 
+          <div class="picture-container">
+            <div class="picture">
+              <img src="" class="picture-src" id="wizardPicturePreview" title="">
+              <i class="fa-solid fa-laptop-file"></i>
+              <input type="file" id="wizard-picture" class="">
+            </div>
+            <h6 style="color: #880e4f" class="">Logo <i class="fa-solid fa-camera"></i></h6>
           </div>
-          <div id="codeGroup" class="form-group input-first-line">
-            <input type="text" placeholder="Code du projet" class="form-control" id="code"
-                   name="code">
+          <div style="width: 80%;">
+            <div class="inputs-inline" >
+              <div id="codeGroup" class="form-group input-first-line">
+                <label class="form-label" for="code">Code du projet</label>
+                <input type="text" placeholder="Code du projet" class="form-control" id="code"
+                        formControlName="codeProjet"
+                       [ngClass]="{'is-invalid': submitted && projetFormGroup.controls.codeProjet.errors}">
+                <div *ngIf="submitted && projetFormGroup.controls.codeProjet.errors" class=
+                  "invalid-feedback">
+                  <div *ngIf="projetFormGroup.controls.codeProjet.errors.required">Ce champs est obligatoire</div>
+                </div>
+              </div>
+              <div id="titreGroup" class="form-group input-first-line">
+                <label class="form-label" for="titre">Titre du projet</label>
+                <input type="text" placeholder="Titre du projet" class="form-control" id="titre"
+                       formControlName="titreProjet"
+                       [ngClass]="{'is-invalid': submitted && projetFormGroup.controls.titreProjet.errors}">
+                <div *ngIf="submitted && projetFormGroup.controls.titreProjet.errors" class=
+                  "invalid-feedback">
+                  <div *ngIf="projetFormGroup.controls.titreProjet.errors.required">Ce champs est obligatoire</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="form-group" style="margin-top: 30px">
+                <label class="form-label" for="description">Description du projet</label>
+                <textarea rows="2" id="description" placeholder="Description du projet" class="form-control"
+                          formControlName="description"
+                          [ngClass]="{'is-invalid': submitted && projetFormGroup.controls.description.errors}">
+                </textarea>
+                <div *ngIf="submitted && projetFormGroup.controls.description.errors" class=
+                  "invalid-feedback">
+                  <div *ngIf="projetFormGroup.controls.description.errors.required">Ce champs est obligatoire</div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div id="titreGroup" class="form-group input-first-line">
-            <input type="text" placeholder="Titre du projet" class="form-control" id="titre"
-                   name="titre">
+
+        </div>
+
+        <p class="titre-group-inputs"><i class="fa-solid fa-angles-right"></i> Dates et coûts du projet</p>
+
+          <div class="inputs-inline" [ngStyle]="{'height':submitted&&(datePlanifiee.startDate==null||datePrevue.startDate==null)?'80px':'40px'}" style="margin-bottom: 0px">
+            <div class=" input1sur3" style="display: flex;flex-direction: column">
+              <input style="width: 98%"  [(ngModel)]="datePlanifiee" (change)="datesChangePlanifiee()" [ngModelOptions]="{standalone: true}"
+                      type="text" id="DatesPanlifies" ngxDaterangepickerMd
+                      placeholder="Date de début - Date de fin (Planifiées)" class="form-control "
+                      [ngClass]="{'is-invalid': submitted && datePlanifiee.startDate==null}">
+              <div *ngIf="submitted && datePlanifiee.startDate==null" class=
+                "invalid-feedback">
+                <div *ngIf="submitted&&datePlanifiee.startDate==null">Ce champs est obligatoire</div>
+              </div>
+            </div>
+            <div class=" input1sur3" style="display: flex;flex-direction: column">
+              <input style="width: 98%"  [(ngModel)]="datePrevue" (change)="datesChangePrevue()" [ngModelOptions]="{standalone: true}" type="text"
+                     id="DatesPrevues" ngxDaterangepickerMd placeholder="Date de début - Date de fin (Prévues)"
+                     class="form-control "
+                     [ngClass]="{'is-invalid': submitted && datePrevue.startDate==null}">
+              <div *ngIf="submitted && datePrevue.startDate==null" class=
+                "invalid-feedback">
+                <div *ngIf="submitted&&datePrevue.startDate==null">Ce champs est obligatoire</div>
+              </div>
+            </div>
+            <input  type="text" id="DatesRelles" (change)="datesChangeRelle()" [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="dateRelle" ngxDaterangepickerMd placeholder="Date de début - Date de fin (Réelles)"
+                    class="form-control input1sur3">
+          </div >
+
+
+        <div class="inputs-inline" style="margin-bottom: 10px">
+          <div class=" input1sur3" style="display: flex;flex-direction: column">
+              <input style="width: 98%" type="number" min="0" max="100" placeholder="Avancement %" class="form-control" id="avancement" [(ngModel)]="avancement"
+                     [ngModelOptions]="{standalone: true}" (change)="avancementChange()"  name="titre"
+                     [ngClass]="{'is-invalid': submitted && avancement==null}">
+              <div *ngIf="submitted && avancement==null" class=
+                "invalid-feedback">
+                <div *ngIf="submitted&&avancement==null">Ce champs est obligatoire</div>
+              </div>
+          </div>
+          <div class=" input1sur3" style="display: flex;flex-direction: column">
+            <input style="width: 98%" type="number" min="0" max="100" placeholder="Coût Initial" class="form-control" id="coutInitial" [(ngModel)]="coutInitial"
+                   [ngModelOptions]="{standalone: true}"   name="titre"
+                   [ngClass]="{'is-invalid': submitted && coutInitial==null}">
+            <div *ngIf="submitted && coutInitial==null" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&coutInitial==null">Ce champs est obligatoire</div>
+            </div>
+          </div>
+          <div class=" input1sur3" style="display: flex;flex-direction: column">
+            <input style="width: 98%" type="number" min="0" max="100" placeholder="Coût Réel" class="form-control" id="coutReel" [(ngModel)]="coutReel"
+                   [ngModelOptions]="{standalone: true}" >
           </div>
         </div>
-        <div class="form-group">
-      <textarea rows="4" id="description" placeholder="Description du projet" class="form-control"
-                name="description"></textarea>
-        </div>
-        <p class="titre-group-inputs">Dates du projet</p>
-        <div class="inputs-inline">
-          <input  type="text" ngxDaterangepickerMd placeholder="Date de début - Date de fin (Planifiées)" class="form-control input1sur3"/>
-          <input  type="text" ngxDaterangepickerMd placeholder="Date de début - Date de fin (Prévues)" class="form-control input1sur3"/>
-          <input  type="text" ngxDaterangepickerMd placeholder="Date de début - Date de fin (Réelles)"  class="form-control input1sur3"/>
-        </div>
-        <p class="titre-group-inputs">Gestion du projet</p>
-        <div class="inputs-inline">
-          <div class="input1sur2 ">
-            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedStatut($event)" [config]="configDropdownStatut" [options]="dropdownOptionsStatut"></ngx-select-dropdown>
+
+
+
+
+        <p class="titre-group-inputs"><i class="fa-solid fa-angles-right"></i> Gestion du projet</p>
+
+        <div class="inputs-inline" [ngStyle]="{'height':submitted&&(chef==null||intervenants==null||statut==null)?'60px':'40px'}">
+          <div class="dropdown input1sur3 form-group" >
+
+            <ngx-select-dropdown *ngIf="authService.estChefDeProjet()" [disabled]="true" [ngModelOptions]="{standalone: true}"
+                                 [(ngModel)]="chef" [instanceId]="'instance1'" (change)="selectionChangedChefProjet($event)"
+                                 [config]="configDropdownChefProjet" [options]="dropdownOptionsChefProjet"></ngx-select-dropdown>
+            <ngx-select-dropdown *ngIf="!authService.estChefDeProjet()" [instanceId]="'instance1'" [ngModelOptions]="{standalone: true}"
+                                 [ngModel]="chef" (change)="selectionChangedChefProjet($event)" [config]="configDropdownChefProjet"
+                                 [options]="dropdownOptionsChefProjet"
+                                 [ngClass]="{'is-invalid': submitted && chef==null}">
+            </ngx-select-dropdown>
+            <div *ngIf="submitted && chef==null" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&chef==null">Ce champs est obligatoire</div>
+            </div>
           </div>
-          <div  class="form-group input1sur2">
-            <input type="number" min="0" max="100" placeholder="Avancement %" class="form-control" id="avancement"
-                   name="titre">
+          <div class="input1sur3 ">
+            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedIntervenants($event)"
+                                 [ngModelOptions]="{standalone: true}" [ngModel]="intervenants" [multiple]="true"
+                                 [config]="configDropdownIntervenants" [options]="dropdownOptionsIntervenants">
+             </ngx-select-dropdown>
           </div>
-        </div>
-        <div class="inputs-inline">
-          <div class="dropdown input1sur2 form-group" >
-            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedChefProjet($event)" [config]="configDropdownChefProjet" [options]="dropdownOptionsChefProjet"></ngx-select-dropdown>
-          </div>
-          <div class="input1sur2 ">
-            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedIntervenants($event)" [multiple]="true" [config]="configDropdownIntervenants" [options]="dropdownOptionsIntervenants"></ngx-select-dropdown>
+          <div class="input1sur3 ">
+            <ngx-select-dropdown [instanceId]="'instance1'" [ngModelOptions]="{standalone: true}" [ngModel]="statut"
+                                 (change)="selectionChangedStatut($event)" [config]="configDropdownStatut"
+                                 [options]="dropdownOptionsStatut"
+                                 [ngClass]="{'is-invalid': submitted && statut==null}">
+            </ngx-select-dropdown>
+            <div *ngIf="submitted && statut==null" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&statut==null">Ce champs est obligatoire</div>
+            </div>
           </div>
         </div>
         <div class="inputs-inline">
           <div class="dropdown input1sur3 form-group" >
-            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedPriorite($event)" [config]="configDropdownPriorite" [options]="dropdownOptionsPriorite"></ngx-select-dropdown>
+            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedPriorite($event)"
+                                 [ngModelOptions]="{standalone: true}" [ngModel]="priorite"
+                                 [config]="configDropdownPriorite" [options]="dropdownOptionsPriorite"
+                                 [ngClass]="{'is-invalid': submitted && priorite==null}">
+            </ngx-select-dropdown>
+            <div *ngIf="submitted && priorite==null" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&priorite==null">Ce champs est obligatoire</div>
+            </div>
           </div>
           <div class="input1sur3 ">
-            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedPortefeuille($event)" [config]="configDropdownPortefeuille" [options]="dropdownOptionsPortefeuille"></ngx-select-dropdown>
+            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedPortefeuille($event)"
+                                 [ngModelOptions]="{standalone: true}" [ngModel]="portefeuille"
+                                 [config]="configDropdownPortefeuille" [options]="dropdownOptionsPortefeuille"
+                                 [ngClass]="{'is-invalid': submitted && portefeuille==null}">
+            </ngx-select-dropdown>
+            <div *ngIf="submitted && portefeuille==null" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&portefeuille==null">Ce champs est obligatoire</div>
+            </div>
           </div>
           <div class="input1sur3 ">
-            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedPredecesseurs($event)" [multiple]="true" [config]="configDropdownPredecesseurs" [options]="dropdownOptionsPredecesseurs"></ngx-select-dropdown>
+            <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedPredecesseurs($event)"
+                                 [ngModelOptions]="{standalone: true}" [ngModel]="predecesseurs"
+                                 [multiple]="true" [config]="configDropdownPredecesseurs" [options]="dropdownOptionsPredecesseurs">
+            </ngx-select-dropdown>
           </div>
         </div>
       </div>
@@ -120,7 +233,7 @@
       </div>
     </div>
     <div class="form-group" style="margin-bottom: 0">
-      <button style="color:white; margin-top:0" type="submit" class="btn bg-dark form-control">
+      <button style="color:white; margin-top:0" (click)="enregistrer()" type="submit" class="btn my-btn form-control">
         Enregistrer
       </button>
     </div>

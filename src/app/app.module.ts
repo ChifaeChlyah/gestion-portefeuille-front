@@ -47,6 +47,12 @@ import { NouvelEmployeComponent } from './components/dashboard/employes/nouvel-e
 import { NouvelleEquipeComponent } from './components/dashboard/employes/nouvelle-equipe/nouvelle-equipe.component';
 import { ChefsProjetsComponent } from './components/dashboard/employes/chefs-projets/chefs-projets.component';
 import { DetailsEmployeComponent } from './components/dashboard/employes/details-employe/details-employe.component';
+import { ForbiddenComponent } from './components/forbidden/forbidden.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { MesProjetsGeresComponent } from './components/mes-projets-geres/mes-projets-geres.component';
+import { MesProjetsAffecteComponent } from './components/mes-projets-affecte/mes-projets-affecte.component';
+import { ReportsBugsComponent } from './components/reports-bugs/reports-bugs.component';
+import {AuthImagePipe} from "./pipes/AuthImagePipe";
 
 @NgModule({
   declarations: [
@@ -81,7 +87,13 @@ import { DetailsEmployeComponent } from './components/dashboard/employes/details
     NouvelEmployeComponent,
     NouvelleEquipeComponent,
     ChefsProjetsComponent,
-    DetailsEmployeComponent
+    DetailsEmployeComponent,
+    ForbiddenComponent,
+    NotFoundComponent,
+    MesProjetsGeresComponent,
+    MesProjetsAffecteComponent,
+    ReportsBugsComponent,
+    AuthImagePipe
   ],
   imports: [
     BrowserModule,
@@ -96,7 +108,7 @@ import { DetailsEmployeComponent } from './components/dashboard/employes/details
     NgxDaterangepickerMd.forRoot(),
     SelectDropDownModule,
     DayPilotModule,
-    NgGanttEditorModule
+    NgGanttEditorModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

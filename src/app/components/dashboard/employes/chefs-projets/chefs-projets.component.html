@@ -1,6 +1,6 @@
 
 <div id="table-employes-container">
-  <table id="table-employes" datatable [dtOptions]="dtOptions" class="row-border hover">
+  <table *ngIf="chefsProjets" id="table-employes" datatable [dtOptions]="dtOptions" class="row-border hover">
     <thead>
     <tr>
       <th>Code</th>
@@ -13,17 +13,15 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>1</td>
-      <td>Foo</td>
-      <td>Bar</td>
-      <td>Bar</td>
-      <td>0123</td>
-      <td>Emploix</td>
+    <tr *ngFor="let r of chefsProjets">
+      <td>{{r.codeRessource}}</td>
+      <td>{{r.nom}}</td>
+      <td>{{r.prenom}}</td>
+      <td>{{r.email}}</td>
+      <td>{{r.tel}}</td>
+      <td>{{r.emploi}}</td>
       <td>
-        <span data-toggle="modal" data-target="#modalEdit1"  >
-          <span title="Modifier" data-toggle="tooltip" title="Modifier"><i class="fa-solid fa-user-pen"></i></span>
-        </span>
+
         <span  data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
         <span data-toggle="modal" data-target="#modalProjets"  >
           <span  data-toggle="tooltip" title="Projets"><i class="fa-solid fa-laptop-file"></i></span>
@@ -31,109 +29,10 @@
 
       </td>
     </tr>
-    <tr>
-      <td>2</td>
-      <td>Someone</td>
-      <td>Youknow</td>
-      <td>Youknow</td>
-      <td>0123</td>
-      <td>Emploix</td>
-      <td>
-        <span data-toggle="modal" data-target="#modalEdit1"  >
-          <span title="Modifier" data-toggle="tooltip" title="Modifier"><i class="fa-solid fa-user-pen"></i></span>
-        </span>
-        <span  data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
-        <span data-toggle="modal" data-target="#modalProjets"  >
-          <span  data-toggle="tooltip" title="Projets"><i class="fa-solid fa-laptop-file"></i></span>
-        </span>
-      </td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>Iamout</td>
-      <td>Ofinspiration</td>
-      <td>Ofinspiration</td>
-      <td>0123</td>
-      <td>Emploix</td>
-      <td>
-        <span data-toggle="modal" data-target="#modalEdit1"  >
-          <span  data-toggle="tooltip" title="Modifier"><i class="fa-solid fa-user-pen"></i></span>
-        </span>
-        <span  data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
-        <span data-toggle="modal" data-target="#modalProjets"  >
-          <span  data-toggle="tooltip" title="Projets"><i class="fa-solid fa-laptop-file"></i></span>
-        </span>
-      </td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>Yoda</td>
-      <td>Skywalker</td>
-      <td>Skywalker</td>
-      <td>0123</td>
-      <td>Emploix</td>
-      <td>
-        <span data-toggle="modal" data-target="#modalEdit1"  >
-          <span title="Modifier" data-toggle="tooltip" title="Modifier"><i class="fa-solid fa-user-pen"></i></span>
-        </span>
-        <span  data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
-        <span data-toggle="modal" data-target="#modalProjets"  >
-          <span  data-toggle="tooltip" title="Projets"><i class="fa-solid fa-laptop-file"></i></span>
-        </span>
-      </td>
-    </tr>
-
     </tbody>
   </table>
 </div>
 
-
-
-<!--Modal Edit RessourceModel -->
-<div data-backdrop="false" class="modal" id="modalEdit1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Modifier la ressource </h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-
-      <!-- Modal body -->
-      <div class="modal-body">
-        <div class="form-group input-first-line">
-          <input type="text" placeholder="Nom" class="form-control" id="nom"
-                 name="nom">
-        </div>
-        <div class="form-group input-first-line">
-          <input type="text" placeholder="Prénom" class="form-control" id="prenom"
-                 name="prenom">
-        </div>
-        <div class="form-group input-first-line">
-          <input type="text" placeholder="Email" class="form-control" id="email"
-                 name="email">
-        </div>
-        <div class="form-group input-first-line">
-          <input type="text" placeholder="Numéro de téléphone" class="form-control" id="tel"
-                 name="tel">
-        </div>
-        <div class="form-group input-first-line">
-          <input type="text" placeholder="Emploi" class="form-control" id="emploi"
-                 name="emploi">
-        </div>
-
-
-
-        <!-- Modal footer -->
-        <div class="modal-footer form-group">
-          <button type="button" class="btn btn-dark form-control" data-dismiss="modal">Enregistrer</button>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>
 
 
 
