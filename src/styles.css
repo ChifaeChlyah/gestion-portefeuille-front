@@ -1,5 +1,6 @@
 @import "~font-awesome/css/font-awesome.min.css";
 @import "~jsgantt-improved/dist/jsgantt.css";
+@import "~ngx-smart-modal/ngx-smart-modal.css";
 html, body { height: 100%; }
 
 :host ::ng-deep #table-employes-container .btn:not(:disabled):not(.disabled),

@@ -1,37 +1,83 @@
 <div id="table-projets-container" >
-  <table *ngIf="projets$" id="table-projets"  datatable [dtOptions]="dtOptions" class="row-border hover">
+  <table *ngIf="projets$" id="table-projets"  datatable [dtOptions]="dtOptions" class="row-border table-bordered hover">
     <thead>
     <tr>
+      <th>Logo</th>
       <th>Code</th>
       <th>Titre</th>
       <th>Description</th>
+      <th>Date début planifiées</th>
+      <th>Date fin planifiées</th>
       <th>Date début prévue</th>
       <th>Date fin prévue</th>
+      <th>Date début Réelle</th>
+      <th>Date fin Réelle</th>
       <th>Priorité</th>
       <th>% Avancement</th>
       <th>Statut</th>
       <th>Coût Initial</th>
       <th>Coût Réel</th>
+      <th>Chef de projet</th>
       <th>Actions</th>
     </tr>
     </thead>
     <tbody>
 
-    <tr *ngFor="let p of projets$">
-      <td>{{p.codeProjet}}</td>
-      <td>{{p.titreProjet}}</td>
-      <td>{{p.description}}</td>
-      <td>{{p.dateDebutPrevue}}</td>
-      <td>{{p.dateFinPrevue}}</td>
-      <td>{{p.priorite}}</td>
-      <td>{{p.avancement}}</td>
-      <td>{{p.statut}}</td>
-      <td>{{p.coutInitial}}</td>
-      <td>{{p.coutReel}}</td>
+    <tr *ngFor="let p of projets$;let i=index; ">
+      <td style="text-align: center">
+        <img [src]="host+'/logoProjet/'+p.codeProjet | authImage | async" class="picture-src" id="wizardPicturePreview" title="">
+      </td>
       <td>
-        <span data-toggle="modal" data-target="#modalEdit1"  >
-          <span title="Modifier" data-toggle="tooltip" title="Modifier"><i class="fa-solid fa-file-pen"></i></span>
-        </span>
+        <input [disabled]="!edit[i]" type="text" [attr.value]="p.codeProjet" class="form-control">
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="text" [attr.value]="p.titreProjet" class="form-control">
+      </td>
+      <td>
+        <textarea [disabled]="!edit[i]"  type="text" rows="1" class="form-control" [attr.value]="p.description" >{{p.description}}</textarea>
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateDebutPlanifiee, 'yyyy-MM-dd')" class="form-control">
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinPlanifiee, 'yyyy-MM-dd')" class="form-control">
+      </td>
+      <td>
+        <input [disabled]="!edit[i]" type="Date" [attr.value]="datepipe.transform(p.dateDebutPrevue, 'yyyy-MM-dd')" class="form-control">
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinPrevue, 'yyyy-MM-dd')" class="form-control">
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateDebutReelle, 'yyyy-MM-dd')" class="form-control">
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinReelle, 'yyyy-MM-dd')" class="form-control">
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="text" [attr.value]="p.priorite" class="form-control">
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="number" [attr.value]="p.avancement" class="form-control">
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="text" [attr.value]="p.statut" class="form-control">
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="text" [attr.value]="p.coutInitial" class="form-control">
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="text" [attr.value]="p.coutReel" class="form-control">
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="text" [attr.value]="p.chefProjet.nom+' '+p.chefProjet.prenom"  class="form-control">
+      </td>
+      <td>
+          <span title="Modifier" (click)="edit[i]=true;">
+            <i *ngIf="!edit[i]" data-toggle="tooltip" title="Modifier" class="fa-solid fa-file-pen"></i>
+            <i *ngIf="edit[i]" data-toggle="tooltip" title="Enregistrer" class="fa-solid fa-check"></i>
+            <i *ngIf="edit[i]" data-toggle="tooltip" title="Annuler" class="fa-solid fa-x"></i>
+          </span>
         <span title="Modifier" data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
         <span data-toggle="modal" data-target="#modalDelete"  >
           <span title="Modifier" data-toggle="tooltip" title="Supprmier"><i class="fa-solid fa-file-circle-xmark"></i></span>

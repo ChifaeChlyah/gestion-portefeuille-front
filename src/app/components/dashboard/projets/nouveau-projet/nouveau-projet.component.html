@@ -7,16 +7,16 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#infoProjet">Infos générales</a>
+        <a class="nav-link active" data-toggle="tab" href="#infoProjet"><span class="tabError" *ngIf="!infoGeneralesValid">*!</span> Infos générales</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#piecesJointes">Pièces jointes</a>
+        <a class="nav-link" data-toggle="tab" href="#piecesJointes"><span class="tabError" *ngIf="!piecesJointesValid">*!</span> Pièces jointes</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#risques">Risques</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#gantt">Gantt</a>
+        <a class="nav-link" data-toggle="tab" href="#planning">Planning des tâches</a>
       </li>
     </ul>
 
@@ -31,7 +31,7 @@
             <div class="picture">
               <img src="" class="picture-src" id="wizardPicturePreview" title="">
               <i class="fa-solid fa-laptop-file"></i>
-              <input type="file" id="wizard-picture" class="">
+              <input (change)="onSelectedFile($event)" type="file" id="wizard-picture" class="">
             </div>
             <h6 style="color: #880e4f" class="">Logo <i class="fa-solid fa-camera"></i></h6>
           </div>
@@ -40,7 +40,7 @@
               <div id="codeGroup" class="form-group input-first-line">
                 <label class="form-label" for="code">Code du projet</label>
                 <input type="text" placeholder="Code du projet" class="form-control" id="code"
-                        formControlName="codeProjet"
+                       formControlName="codeProjet"
                        [ngClass]="{'is-invalid': submitted && projetFormGroup.controls.codeProjet.errors}">
                 <div *ngIf="submitted && projetFormGroup.controls.codeProjet.errors" class=
                   "invalid-feedback">
@@ -77,42 +77,42 @@
 
         <p class="titre-group-inputs"><i class="fa-solid fa-angles-right"></i> Dates et coûts du projet</p>
 
-          <div class="inputs-inline" [ngStyle]="{'height':submitted&&(datePlanifiee.startDate==null||datePrevue.startDate==null)?'80px':'40px'}" style="margin-bottom: 0px">
-            <div class=" input1sur3" style="display: flex;flex-direction: column">
-              <input style="width: 98%"  [(ngModel)]="datePlanifiee" (change)="datesChangePlanifiee()" [ngModelOptions]="{standalone: true}"
-                      type="text" id="DatesPanlifies" ngxDaterangepickerMd
-                      placeholder="Date de début - Date de fin (Planifiées)" class="form-control "
-                      [ngClass]="{'is-invalid': submitted && datePlanifiee.startDate==null}">
-              <div *ngIf="submitted && datePlanifiee.startDate==null" class=
-                "invalid-feedback">
-                <div *ngIf="submitted&&datePlanifiee.startDate==null">Ce champs est obligatoire</div>
-              </div>
+        <div class="inputs-inline" [ngStyle]="{'height':submitted&&(datePlanifiee.startDate==null||datePrevue.startDate==null)?'80px':'40px'}" style="margin-bottom: 0px">
+          <div class=" input1sur3" style="display: flex;flex-direction: column">
+            <input style="width: 98%"  [(ngModel)]="datePlanifiee" (change)="datesChangePlanifiee()" [ngModelOptions]="{standalone: true}"
+                   type="text" id="DatesPanlifies" ngxDaterangepickerMd
+                   placeholder="Date de début - Date de fin (Planifiées)" class="form-control "
+                   [ngClass]="{'is-invalid': submitted && datePlanifiee.startDate==null}">
+            <div *ngIf="submitted && datePlanifiee.startDate==null" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&datePlanifiee.startDate==null">Ce champs est obligatoire</div>
             </div>
-            <div class=" input1sur3" style="display: flex;flex-direction: column">
-              <input style="width: 98%"  [(ngModel)]="datePrevue" (change)="datesChangePrevue()" [ngModelOptions]="{standalone: true}" type="text"
-                     id="DatesPrevues" ngxDaterangepickerMd placeholder="Date de début - Date de fin (Prévues)"
-                     class="form-control "
-                     [ngClass]="{'is-invalid': submitted && datePrevue.startDate==null}">
-              <div *ngIf="submitted && datePrevue.startDate==null" class=
-                "invalid-feedback">
-                <div *ngIf="submitted&&datePrevue.startDate==null">Ce champs est obligatoire</div>
-              </div>
+          </div>
+          <div class=" input1sur3" style="display: flex;flex-direction: column">
+            <input style="width: 98%"  [(ngModel)]="datePrevue" (change)="datesChangePrevue()" [ngModelOptions]="{standalone: true}" type="text"
+                   id="DatesPrevues" ngxDaterangepickerMd placeholder="Date de début - Date de fin (Prévues)"
+                   class="form-control "
+                   [ngClass]="{'is-invalid': submitted && datePrevue.startDate==null}">
+            <div *ngIf="submitted && datePrevue.startDate==null" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&datePrevue.startDate==null">Ce champs est obligatoire</div>
             </div>
-            <input  type="text" id="DatesRelles" (change)="datesChangeRelle()" [ngModelOptions]="{standalone: true}"
-                    [(ngModel)]="dateRelle" ngxDaterangepickerMd placeholder="Date de début - Date de fin (Réelles)"
-                    class="form-control input1sur3">
-          </div >
+          </div>
+          <input  type="text" id="DatesRelles" (change)="datesChangeRelle()" [ngModelOptions]="{standalone: true}"
+                  [(ngModel)]="dateRelle" ngxDaterangepickerMd placeholder="Date de début - Date de fin (Réelles)"
+                  class="form-control input1sur3">
+        </div >
 
 
         <div class="inputs-inline" style="margin-bottom: 10px">
           <div class=" input1sur3" style="display: flex;flex-direction: column">
-              <input style="width: 98%" type="number" min="0" max="100" placeholder="Avancement %" class="form-control" id="avancement" [(ngModel)]="avancement"
-                     [ngModelOptions]="{standalone: true}" (change)="avancementChange()"  name="titre"
-                     [ngClass]="{'is-invalid': submitted && avancement==null}">
-              <div *ngIf="submitted && avancement==null" class=
-                "invalid-feedback">
-                <div *ngIf="submitted&&avancement==null">Ce champs est obligatoire</div>
-              </div>
+            <input style="width: 98%" type="number" min="0" max="100" placeholder="Avancement %" class="form-control" id="avancement" [(ngModel)]="avancement"
+                   [ngModelOptions]="{standalone: true}" (change)="avancementChange()"  name="titre"
+                   [ngClass]="{'is-invalid': submitted && avancement==null}">
+            <div *ngIf="submitted && avancement==null" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&avancement==null">Ce champs est obligatoire</div>
+            </div>
           </div>
           <div class=" input1sur3" style="display: flex;flex-direction: column">
             <input style="width: 98%" type="number" min="0" max="100" placeholder="Coût Initial" class="form-control" id="coutInitial" [(ngModel)]="coutInitial"
@@ -154,7 +154,7 @@
             <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedIntervenants($event)"
                                  [ngModelOptions]="{standalone: true}" [ngModel]="intervenants" [multiple]="true"
                                  [config]="configDropdownIntervenants" [options]="dropdownOptionsIntervenants">
-             </ngx-select-dropdown>
+            </ngx-select-dropdown>
           </div>
           <div class="input1sur3 ">
             <ngx-select-dropdown [instanceId]="'instance1'" [ngModelOptions]="{standalone: true}" [ngModel]="statut"
@@ -213,7 +213,7 @@
           <div id="risquesFaibles"  class="risque1sur3">
 
             <div data-toggle="modal" data-target="#modalRisqueFaible" class="addRisque"  >
-              <div title="Ajouter un risque faible" data-toggle="tooltip"> <i class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
+              <div title="Ajouter un risque faible" data-toggle="tooltip" > <i  class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
             </div>
           </div>
           <div id="risquesMoyens" class="risque1sur3">
@@ -228,15 +228,122 @@
           </div>
         </div>
       </div>
-      <div class="tab-pane container fade" id="gantt">
-        <app-gantt></app-gantt>
+      <div class="tab-pane container fade" id="planning">
+        <span class="table-add float-right mb-3 mr-2"
+        ><a  class="text-success"
+        ><i (click)="addRow()" class="fas fa-plus fa-2x" aria-hidden="true"></i></a
+        ></span>
+        <div id="planningTable" class="table-responsive">
+<!--          {{taches|json}}-->
+<!--          {{nbTaches|json}}-->
+          <table class="table">
+            <thead>
+            <tr>
+<!--              <th scope="col">#</th>-->
+              <th scope="col">Titre</th>
+              <th scope="col">Description</th>
+              <th scope="col">Date début (planifiée)</th>
+              <th scope="col">Date fin (planifiée)</th>
+              <th scope="col">Date début (prévue)</th>
+              <th scope="col">Date fin (prévue)</th>
+              <th scope="col">Date début (réelle)</th>
+              <th scope="col">Date fin (réelle)</th>
+              <th scope="col">Avancement</th>
+              <th scope="col">Coût Initial</th>
+              <th scope="col">Coût Réel</th>
+              <th scope="col">Tâche mère</th>
+              <th scope="col">Dépendances</th>
+              <th scope="col">Interventions</th>
+              <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let n of nbTaches" [id]="'tr'+n">
+            <tr>
+<!--              <th scope="row"></th>-->
+              <td>
+                <input type="text" (change)="titreTacheChange($event,n)" class="form-control">
+              </td>
+              <td>
+                <textarea type="text"  rows="1"(change)="descTacheChange($event,n)"  class="form-control"></textarea>
+              </td>
+              <td>
+                <input type="date" class="form-control" (change)="dateDebutPlanifieeTacheChange($event,n)">
+              </td>
+              <td>
+                <input type="date" class="form-control" (change)="dateFinPlanifieeTacheChange($event,n)">
+              </td>
+              <td>
+                <input type="date" class="form-control" (change)="dateDebutPrevueTacheChange($event,n)">
+              </td>
+              <td>
+                <input type="date" class="form-control" (change)="dateFinPrevueTacheChange($event,n)">
+              </td>
+              <td>
+                <input type="date" class="form-control" (change)="dateDebutRelleTacheChange($event,n)">
+              </td>
+              <td>
+                <input type="date" class="form-control" (change)="dateFinRelleTacheChange($event,n)">
+              </td>
+              <td>
+                <input type="number" (change)="avancementTacheChange($event,n)"  class="form-control">
+              </td>
+              <td>
+                <input type="number" (change)="coutInitialTacheChange($event,n)"  class="form-control">
+              </td>
+              <td>
+                <input type="number" (change)="coutReelTacheChange($event,n)"  class="form-control">
+              </td>
+              <td class="dropdown-table" >
+                <ngx-select-dropdown  [config]="configDropdownTacheMere"
+                                       [options]="dropdownOptionsTacheMere[n]"
+                                        (change)="selectionChangedTacheMere($event,n)">
+              </ngx-select-dropdown>
+              </td>
+              <td class="dropdown-table">
+                <ngx-select-dropdown   [config]="configDropdownTacheDependances"
+                                       [options]="dropdownOptionsTacheDependances[n]"
+                                       (change)="selectionChangedTacheDependances($event,n)"
+                                       [multiple]="true">
+                </ngx-select-dropdown>
+              </td>
+              <td>
+                <button class="btn btn-dark" data-toggle="collapse" [attr.data-target]="'#demo'+n">
+                Modifier <i class="fa-solid fa-bars-progress"></i>
+                </button>
+
+              </td>
+              <td>
+                <button class="btn btn-danger" (click)="removeRow($event,n)">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </td>
+            </tr>
+            <tr >
+              <td colspan="15" [id]="'demo'+n" class="collapse ">
+                <span (click)="addIntervention(n)" class="ajoutIntervention"> +Ajouter une intervention</span>
+                <div *ngFor="let i of nbInterventionParTaches[n]" [id]="'intervention'+n+'-'+i" class="interventions-container">
+
+                      <ngx-select-dropdown class="interventionInput" [config]="configDropdownIntervenantsTache"
+                                            [options]="dropdownOptionsIntervenantsTache"
+                                            (change)="selectionChangedIntervenantTache($event,n,i)">
+                      </ngx-select-dropdown>
+                      <input style="width: 50%!important;" type="number" placeholder="Affectation%" min="0" max="100" (change)="affectationTacheChange($event,n,i)"  class="form-control interventionInput">
+                  <i (click)="removeIntervention($event,n,i)" class="fa-solid suppInter fa-xmark"></i>
+                </div>
+            </tr>
+
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
+
     <div class="form-group" style="margin-bottom: 0">
       <button style="color:white; margin-top:0" (click)="enregistrer()" type="submit" class="btn my-btn form-control">
         Enregistrer
       </button>
     </div>
+
   </form>
 
 </div>
@@ -254,22 +361,33 @@
       <!-- Modal body -->
       <div class="modal-body">
         <div class="form-group input-first-line">
-          <input type="text" [value]="titreRisqueF" placeholder="Titre du risque" class="form-control" id="titreRisqueF"
+          <label class="form-label" for="titreRisqueF"></label>
+          <input type="text"[(ngModel)]="titreRisqueF" placeholder="Titre du risque" class="form-control" id="titreRisqueF"
                  name="titreRisqueF">
         </div>
         <div class="form-group input-first-line">
-          <input type="number" [value]="probaRisqueF" placeholder="Probabilité du risque %" class="form-control" id="probaRisqueF"
+          <label class="form-label" for="probaRisqueF"></label>
+          <input type="number" [(ngModel)]="probaRisqueF" placeholder="Probabilité du risque %" class="form-control" id="probaRisqueF"
                  name="probaRisqueF" min="1" max="100">
+
         </div>
 
         <div class="form-group">
-      <textarea rows="4" [value]="descriptionRisqueF" id="descriptionRisqueF" placeholder="Description du risque" class="form-control"
-                name="descriptionRisqueF"></textarea>
+          <label class="form-label" for="descriptionRisqueF"></label>
+          <textarea rows="4" [(ngModel)]="descriptionRisqueF" id="descriptionRisqueF" placeholder="Description du risque" class="form-control"
+                    name="descriptionRisqueF">
+      </textarea>
+
         </div>
       </div>
 
       <!-- Modal footer -->
-      <div class="modal-footer form-group">
+      <div *ngIf="!(descriptionRisqueF!=''&&titreRisqueF!=''&&probaRisqueF!=null)" data-toggle="tooltip"
+           [title]="'Veuillez remplir tous les champs'" class="modal-footer form-group">
+        <button disabled type="button" class="btn btn-dark form-control" (click)="ajoutRisqueF()" data-dismiss="modal">Enregistrer</button>
+      </div>
+      <div *ngIf="(descriptionRisqueF!=''&&titreRisqueF!=''&&probaRisqueF!=null)" data-toggle="tooltip"
+           [title]="'Veuillez remplir tous les champs'" class="modal-footer form-group">
         <button type="button" class="btn btn-dark form-control" (click)="ajoutRisqueF()" data-dismiss="modal">Enregistrer</button>
       </div>
 
@@ -290,22 +408,32 @@
       <!-- Modal body -->
       <div class="modal-body">
         <div class="form-group input-first-line">
-          <input type="text" [value]="titreRisqueM" placeholder="Titre du risque" class="form-control" id="titreRisqueM"
+          <label class="form-label" for="titreRisqueM"></label>
+          <input type="text" [(ngModel)]="titreRisqueM" placeholder="Titre du risque" class="form-control" id="titreRisqueM"
                  name="titreRisqueM">
         </div>
         <div class="form-group input-first-line">
-          <input type="number" [value]="probaRisqueM" placeholder="Probabilité du risque %" class="form-control" id="probaRisqueM"
+          <label class="form-label" for="probaRisqueM"></label>
+          <input type="number" [(ngModel)]="probaRisqueM" placeholder="Probabilité du risque %" class="form-control" id="probaRisqueM"
                  name="probaRisqueM" min="1" max="100">
         </div>
 
         <div class="form-group">
-      <textarea rows="4" [value]="descriptionRisqueM" id="descriptionRisqueM" placeholder="Description du risque" class="form-control"
-                name="descriptionRisqueM"></textarea>
+          <label class="form-label" for="descriptionRisqueM"></label>
+          <textarea rows="4" [(ngModel)]="descriptionRisqueM" id="descriptionRisqueM" placeholder="Description du risque" class="form-control"
+                    name="descriptionRisqueM">
+      </textarea>
+
         </div>
       </div>
 
       <!-- Modal footer -->
-      <div class="modal-footer form-group">
+      <div *ngIf="!(descriptionRisqueM!=''&&titreRisqueM!=''&&probaRisqueM!=null)" data-toggle="tooltip"
+           [title]="'Veuillez remplir tous les champs'" class="modal-footer form-group">
+        <button disabled type="button" class="btn btn-dark form-control" (click)="ajoutRisqueM()" data-dismiss="modal">Enregistrer</button>
+      </div>
+      <div *ngIf="(descriptionRisqueM!=''&&titreRisqueM!=''&&probaRisqueM!=null)" data-toggle="tooltip"
+           [title]="'Veuillez remplir tous les champs'" class="modal-footer form-group">
         <button type="button" class="btn btn-dark form-control" (click)="ajoutRisqueM()" data-dismiss="modal">Enregistrer</button>
       </div>
 
@@ -326,25 +454,37 @@
       <!-- Modal body -->
       <div class="modal-body">
         <div class="form-group input-first-line">
-          <input type="text" [value]="titreRisqueE" placeholder="Titre du risque" class="form-control" id="titreRisqueE"
+          <label class="form-label" for="titreRisqueE">Titre du risque</label>
+          <input type="text" [(ngModel)]="titreRisqueE" placeholder="Titre du risque" class="form-control" id="titreRisqueE"
                  name="titreRisqueE">
         </div>
         <div class="form-group input-first-line">
-          <input type="number" [value]="probaRisqueE" placeholder="Probabilité du risque %" class="form-control" id="probaRisqueE"
+          <label class="form-label" for="probaRisqueE">Probabilité du risque %</label>
+          <input type="number" [(ngModel)]="probaRisqueE" placeholder="Probabilité du risque %" class="form-control" id="probaRisqueE"
                  name="probaRisqueE" min="1" max="100">
         </div>
 
         <div class="form-group">
-      <textarea rows="4" [value]="descriptionRisqueE" id="descriptionRisqueE" placeholder="Description du risque" class="form-control"
-                name="descriptionRisqueE"></textarea>
+          <label class="form-label" for="descriptionRisqueE">Description du risque</label>
+          <textarea rows="4" [(ngModel)]="descriptionRisqueE" id="descriptionRisqueE" placeholder="Description du risque" class="form-control"
+                    name="descriptionRisqueE">
+      </textarea>
         </div>
       </div>
 
       <!-- Modal footer -->
-      <div class="modal-footer form-group">
-        <button type="button" class="btn btn-dark form-control" (click)="ajoutRisqueE()" data-dismiss="modal">Enregistrer</button>
+      <div *ngIf="!(descriptionRisqueE!=''&&titreRisqueE!=''&&probaRisqueE!=null)" data-toggle="tooltip"
+          title="Veuillez remplir tous les champs"
+           class="modal-footer form-group">
+        <button type="button" class="btn btn-dark form-control"
+                disabled
+                (click)="ajoutRisqueE()" data-dismiss="modal">Enregistrer</button>
       </div>
-
+      <div *ngIf="(descriptionRisqueE!=''&&titreRisqueE!=''&&probaRisqueE!=null)" data-toggle="tooltip"
+           class="modal-footer form-group">
+        <button type="button" class="btn btn-dark form-control"
+                (click)="ajoutRisqueE()" data-dismiss="modal" >Enregistrer</button>
+      </div>
     </div>
   </div>
 </div>

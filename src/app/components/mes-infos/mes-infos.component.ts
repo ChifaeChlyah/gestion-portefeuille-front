@@ -155,7 +155,6 @@ export class MesInfosComponent implements OnInit {
   }
   onSelectedFile(event) {
     this.selectedFiles=event.target.files;
-
   }
 
   onSaveUser() {
@@ -164,20 +163,24 @@ export class MesInfosComponent implements OnInit {
       }
     );
     this.progress = 0;
-    this.currentFileUpload = this.selectedFiles.item(0)
-    this.ressourceService.uploadPhoto(this.currentFileUpload, this.user.codeRessource).subscribe(event => {
-      if (event.type === HttpEventType.UploadProgress) {
-        this.progress = Math.round(100 * event.loaded / event.total);
-      } else if (event instanceof HttpResponse) {
-        //console.log(this.router.url);
-        //this.getProducts(this.currentRequest);
-        //this.refreshUpdatedProduct();
-        this.currentTime=Date.now();
-      }
-    },err=>{
-      alert("Problème de chargement");
-    })
-    this.selectedFiles = undefined
+    if(this.selectedFiles!=undefined)
+    {
+      this.currentFileUpload = this.selectedFiles.item(0)
+      this.ressourceService.uploadPhoto(this.currentFileUpload, this.user.codeRessource).subscribe(event => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progress = Math.round(100 * event.loaded / event.total);
+        } else if (event instanceof HttpResponse) {
+          //console.log(this.router.url);
+          //this.getProducts(this.currentRequest);
+          //this.refreshUpdatedProduct();
+          this.currentTime=Date.now();
+        }
+      },err=>{
+        alert("Problème de chargement");
+      })
+      this.selectedFiles = undefined
+    }
+
   }
   onClickInput(){
      this.mot_de_passe_invalide=false;

@@ -67,5 +67,108 @@
   background: #f6f6f6;
 }
 #table-projets{
+  width: max-content!important;
+}
+:host ::ng-deep #table-projets_wrapper {
+  width: 75vw!important;
+}
+:host ::ng-deep table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting_asc_disabled, table.dataTable thead > tr > th.sorting_desc_disabled, table.dataTable thead > tr > td.sorting, table.dataTable thead > tr > td.sorting_asc, table.dataTable thead > tr > td.sorting_desc, table.dataTable thead > tr > td.sorting_asc_disabled, table.dataTable thead > tr > td.sorting_desc_disabled {
+ width: 160px!important;
+}
+:host ::ng-deep table.dataTable {
+  width: max-content!important;
+}
+
+
+
+
+textarea {
+  resize: none;
+}
+.form-label {
+  font-size: 12px;
+  color: #880e4f;
+  margin: 0;
+  display: block;
+  opacity: 1;
+  -webkit-transition: .333s ease top, .333s ease opacity;
+  transition: .333s ease top, .333s ease opacity;
+}
+.form-control {
+  border-radius: 0;
+  border-color: #880e4f57;
+  border-width: 0 0 2px 0;
+  border-style: none none solid none;
+  box-shadow: none;
+  margin-left: 5px;
+  margin-right: 5px;
+  background: transparent;
+}
+.form-control:focus {
+  box-shadow: none;
+  border-color: #880e4f;
+}
+.js-hide-label {
+  opacity: 0;
+}
+.js-unhighlight-label {
+  color: #999
+}
+.btn-start-order {
+  background: 0 0 #ffffff;
+  border: 1px solid #2f323a;
+  border-radius: 3px;
+  color: #2f323a;
+  font-family: "Raleway", sans-serif;
+  font-size: 16px;
+  line-height: inherit;
+  margin: 30px 0;
+  padding: 10px 50px;
+  text-transform: uppercase;
+  transition: all 0.25s ease 0s;
+  width: 60%;
+}
+.btn-start-order:hover,.btn-start-order:active, .btn-start-order:focus {
+  border-color: #880e4f;
+  color: #880e4f;
+}
+#info-container .row{
+  justify-content: space-evenly;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.inputs-container{
+  width: 80% ;
+}
+.tab-pane{
+  height: 100%;
+  padding-right: 20px;
+}
+td .form-control{
+  margin-left: 0;
+  margin-right: 0;
   width: 100%!important;
+}
+td .form-control:disabled{
+  border-color: #ccc;
+}
+td{
+  padding:0!important;
+}
+img{
+  border: 2px #000000 solid;
+  width: 40px;
+  padding: 2px;
+  border-radius: 10px;
+}
+.fa-file-pen:hover
+{
+  color: #880e4f!important;
+}
+.fa-x{
+  color: darkred!important;
+}
+.fa-check{
+  color:yellowgreen!important;
 }

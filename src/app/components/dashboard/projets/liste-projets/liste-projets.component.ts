@@ -4,6 +4,8 @@ import {ProjetsComponent} from "../projets.component";
 import {Observable, Subject} from "rxjs";
 import {Projet} from "../../../../model/Projet.model";
 import {DataTableDirective} from "angular-datatables";
+import {DatePipe} from "@angular/common";
+import {environment} from "../../../../../environments/environment";
 declare var $ :any;
 @Component({
   selector: 'app-liste-projets',
@@ -12,50 +14,53 @@ declare var $ :any;
 })
 export class ListeProjetsComponent implements OnInit {
   dtOptions: any = {};
-  projets$:Projet[]
-  constructor(private serviceProjets:ProjetsService) { }
+  projets$:Projet[];
+  host=environment.host;
+  edit:boolean[]=new Array();
+  constructor(private serviceProjets:ProjetsService,public datepipe: DatePipe) { }
 
   ngOnInit(): void {
     this.tousLesProjets();
     this.dtOptions = {
-      columns: [{
-        "title": "Code",
-        "data": "codeProjet",
-      }, {
-        "title": "Titre",
-        "data": "titre",
-      }, {
-        "title": "Description",
-        "data": "Description  ",
-      }, {
-        "title": "Date début prévue",
-        "data": "dateDebutPrevue",
-      }, {
-        "title": "Date fin prévue",
-        "data": "dateFinPrevue",
-      }, {
-        "title": "Priorité",
-        "data": "priorite",
-      },{
-        "title": "% Avancement",
-        "data": "avancement",
-      }, {
-        "title": "Statut",
-        "data": "statut",
-      }, {
-        "title": "Coût Initial",
-        "data": "coutInitial",
-      }, {
-        "title": "Coût réel",
-        "data": "coutReel",
-      }, {}],
-      columnDefs: [
-        { "visible": false, "targets": 6 },
-        { "visible": false, "targets": 2 },
-        { "visible": false, "targets": 3 },
-        { "visible": false, "targets": 4 },
-        { "visible": false, "targets": 8 },
-      ],
+      scrollX: true,
+      // columns: [{
+      //   "title": "Code",
+      //   "data": "codeProjet",
+      // }, {
+      //   "title": "Titre",
+      //   "data": "titre",
+      // }, {
+      //   "title": "Description",
+      //   "data": "Description  ",
+      // }, {
+      //   "title": "Date début prévue",
+      //   "data": "dateDebutPrevue",
+      // }, {
+      //   "title": "Date fin prévue",
+      //   "data": "dateFinPrevue",
+      // }, {
+      //   "title": "Priorité",
+      //   "data": "priorite",
+      // },{
+      //   "title": "% Avancement",
+      //   "data": "avancement",
+      // }, {
+      //   "title": "Statut",
+      //   "data": "statut",
+      // }, {
+      //   "title": "Coût Initial",
+      //   "data": "coutInitial",
+      // }, {
+      //   "title": "Coût réel",
+      //   "data": "coutReel",
+      // }, {}],
+      // columnDefs: [
+      //   { "visible": false, "targets": 6 },
+      //   { "visible": false, "targets": 2 },
+      //   { "visible": false, "targets": 3 },
+      //   { "visible": false, "targets": 4 },
+      //   { "visible": false, "targets": 8 },
+      // ],
       // Declare the use of the extension in the dom parameter
       dom: 'Bfrtip',
       // Configure the buttons
@@ -93,11 +98,80 @@ export class ListeProjetsComponent implements OnInit {
         },
       pagingType:'full_numbers'
     };
+    this.javaScriptForm();
   }
+  javaScriptForm()
+  {
+    $(document).ready(function() {
+      // Test for placeholder support
+      $.support.placeholder = (function(){
+        var i = document.createElement('input');
+        return 'placeholder' in i;
+      })();
 
+      // Hide labels by default if placeholders are supported
+      if($.support.placeholder) {
+        $('.form-label').each(function(){
+          $(this).addClass('js-hide-label');
+        });
+
+        // Code for adding/removing classes here
+        $('.form-group').find('input, textarea').on('keyup blur focus', function(e){
+
+          // Cache our selectors
+          var $this = $(this),
+            $label = $this.parent().find("label");
+
+          switch(e.type) {
+            case 'keyup': {
+              $label.toggleClass('js-hide-label', $this.val() == '');
+            } break;
+            case 'blur': {
+              if( $this.val() == '' ) {
+                $label.addClass('js-hide-label');
+              } else {
+                $label.removeClass('js-hide-label').addClass('js-unhighlight-label');
+              }
+            } break;
+            case 'focus': {
+              if( $this.val() !== '' ) {
+                $label.removeClass('js-unhighlight-label');
+              }
+            } break;
+            default: break;
+          }
+          // previous implementation with ifs
+          /*if (e.type == 'keyup') {
+              if( $this.val() == '' ) {
+                  $parent.addClass('js-hide-label');
+              } else {
+                  $parent.removeClass('js-hide-label');
+              }
+          }
+          else if (e.type == 'blur') {
+              if( $this.val() == '' ) {
+                  $parent.addClass('js-hide-label');
+              }
+              else {
+                  $parent.removeClass('js-hide-label').addClass('js-unhighlight-label');
+              }
+          }
+          else if (e.type == 'focus') {
+              if( $this.val() !== '' ) {
+                  $parent.removeClass('js-unhighlight-label');
+              }
+          }*/
+        });
+      }
+    });
+  }
   tousLesProjets() {
    this.serviceProjets.tousLesProjets().subscribe((ret:Projet[])=>{
      this.projets$=ret;
+     for(let i=0;i<ret.length;i++)
+     {
+       this.edit[i]=false;
+     }
     })
     }
 

@@ -53,6 +53,9 @@ import { MesProjetsGeresComponent } from './components/mes-projets-geres/mes-pro
 import { MesProjetsAffecteComponent } from './components/mes-projets-affecte/mes-projets-affecte.component';
 import { ReportsBugsComponent } from './components/reports-bugs/reports-bugs.component';
 import {AuthImagePipe} from "./pipes/AuthImagePipe";
+import {NgxSmartModalModule} from "ngx-smart-modal";
+import {DatePipe} from "@angular/common";
+import { DetailsProjetComponent } from './components/dashboard/projets/details-projet/details-projet.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +96,8 @@ import {AuthImagePipe} from "./pipes/AuthImagePipe";
     MesProjetsGeresComponent,
     MesProjetsAffecteComponent,
     ReportsBugsComponent,
-    AuthImagePipe
+    AuthImagePipe,
+    DetailsProjetComponent,
   ],
   imports: [
     BrowserModule,
@@ -109,8 +113,11 @@ import {AuthImagePipe} from "./pipes/AuthImagePipe";
     SelectDropDownModule,
     DayPilotModule,
     NgGanttEditorModule,
+    NgxSmartModalModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    DatePipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
