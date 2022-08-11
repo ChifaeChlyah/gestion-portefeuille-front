@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Tache} from "../../../../model/Tache.model";
 import {Risque} from "../../../../model/Risque.model";
 import {Ressource} from "../../../../model/Ressource.model";
@@ -15,6 +15,9 @@ import {ActivatedRoute} from "@angular/router";
 import {environment} from "../../../../../environments/environment";
 import {DatePipe} from "@angular/common";
 import {PieceJointe} from "../../../../model/PieceJointe.model";
+import {MatDialog} from "@angular/material/dialog";
+import {DialogGanttComponent} from "./dialog-gantt/dialog-gantt.component";
+
 declare var $:any;
 @Component({
   selector: 'app-details-projet',
@@ -22,6 +25,7 @@ declare var $:any;
   styleUrls: ['./details-projet.component.css']
 })
 export class DetailsProjetComponent implements OnInit {
+  @ViewChild('popup') popupElement: ElementRef;
   ditionnaireIdTaches=new Map<number,number>();
   codeProjet:string;
   description:string;
@@ -76,10 +80,17 @@ export class DetailsProjetComponent implements OnInit {
               public authService:AuthentificationService,
               private projetService:ProjetsService,
               private route: ActivatedRoute,
-              public datepipe: DatePipe) {
+              public datepipe: DatePipe,
+              public dialog: MatDialog) {
 
   }
-
+  openDialog() {
+    this.dialog.open(DialogGanttComponent, {
+      data: {
+        taches: this.taches,
+      },
+    });
+  }
   //dropdown priorité-----------------------------------
   configDropdownPriorite={
     placeholder:'Priorité',
@@ -526,8 +537,8 @@ export class DetailsProjetComponent implements OnInit {
     if(tache.idTache==null){
       this.taches[this.nbTaches.length-1].interventions=new Array();
     }
-    this.ditionnaireIdTaches.set(tache.idTache,this.nbTaches.length-1);
-    this.taches[this.nbTaches.length-1].idTache=this.nbTaches.length-1;
+    this.ditionnaireIdTaches.set(tache.idTache,this.nbTaches.length);
+    this.taches[this.nbTaches.length-1].idTache=this.nbTaches.length;
     if(tache.interventions.length>0)
     {
       for(let i=0;i<tache.interventions.length;i++)
@@ -1021,7 +1032,6 @@ export class DetailsProjetComponent implements OnInit {
     }
   }
   saveEditPlanning(){
-      this.editModePlanning=false;
       this.projetService.deleteAllTaches(this.codeProjet).subscribe(data=>{
         let taches:Tache[]=new Array();
         this.taches.forEach(t=>
@@ -1040,6 +1050,7 @@ export class DetailsProjetComponent implements OnInit {
                 "             <strong>Succès !</strong> Vos modifications ont bien été entregistées.\n" +
                 "           </div>");
               $("#alerts-container").append(alert);
+              this.editModePlanning=false;
             })
           }
         );

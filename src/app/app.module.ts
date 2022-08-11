@@ -56,6 +56,9 @@ import {AuthImagePipe} from "./pipes/AuthImagePipe";
 import {NgxSmartModalModule} from "ngx-smart-modal";
 import {DatePipe} from "@angular/common";
 import { DetailsProjetComponent } from './components/dashboard/projets/details-projet/details-projet.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDialog, MatDialogModule} from "@angular/material/dialog";
+import { DialogGanttComponent } from './components/dashboard/projets/details-projet/dialog-gantt/dialog-gantt.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +101,7 @@ import { DetailsProjetComponent } from './components/dashboard/projets/details-p
     ReportsBugsComponent,
     AuthImagePipe,
     DetailsProjetComponent,
+    DialogGanttComponent,
   ],
   imports: [
     BrowserModule,
@@ -114,6 +118,8 @@ import { DetailsProjetComponent } from './components/dashboard/projets/details-p
     DayPilotModule,
     NgGanttEditorModule,
     NgxSmartModalModule.forRoot(),
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [
     DatePipe
