@@ -600,15 +600,15 @@ export class NouveauProjetComponent implements OnInit {
   }
   dateFinPrevueTacheChange(event,number)
   {
-    this.taches[number].dateFinReelle=event.target.value;
+    this.taches[number].dateFinPrevue=event.target.value;
   }
   dateDebutRelleTacheChange(event,number)
   {
-    this.taches[number].dateDebutReelle=event.target.value;
+    this.taches[number].dateDebutRelle=event.target.value;
   }
   dateFinRelleTacheChange(event,number)
   {
-    this.taches[number].dateFinReelle=event.target.value;
+    this.taches[number].dateFinRelle=event.target.value;
   }
 
   selectionChangedTacheMere($event,number) {
@@ -667,11 +667,11 @@ export class NouveauProjetComponent implements OnInit {
       titreProjet: ["", Validators.required],
       description: ["", Validators.required],
       dateDebutPlanifiee: [""],
-      dateDebutReelle: [""],
+      dateDebutRelle: [""],
       dateDebutPrevue: [""],
       dateFinPlanifiee: [""],
       dateFinPrevue: [""],
-      dateFinReelle: [""],
+      dateFinRelle: [""],
       priorite: [""],
       avancement: [""],
       coutInitial: [""],
@@ -744,12 +744,12 @@ export class NouveauProjetComponent implements OnInit {
     else{
       this.projetFormGroup.controls.dateDebutPlanifiee.setValue(this.datePlanifiee.startDate.toDate());
       if(this.dateRelle.startDate!=null)
-        this.projetFormGroup.controls.dateDebutReelle.setValue(this.dateRelle.startDate.toDate());
+        this.projetFormGroup.controls.dateDebutRelle.setValue(this.dateRelle.startDate.toDate());
       this.projetFormGroup.controls.dateDebutPrevue.setValue(this.datePrevue.startDate.toDate());
       this.projetFormGroup.controls.dateFinPlanifiee.setValue(this.datePlanifiee.endDate.toDate());
       this.projetFormGroup.controls.dateFinPrevue.setValue(this.datePrevue.endDate.toDate());
       if(this.dateRelle.endDate!=null)
-        this.projetFormGroup.controls.dateFinReelle.setValue(this.dateRelle.endDate.toDate());
+        this.projetFormGroup.controls.dateFinRelle.setValue(this.dateRelle.endDate.toDate());
       this.projetFormGroup.controls.avancement.setValue(this.avancement);
       this.projetFormGroup.controls.coutInitial.setValue(this.coutInitial);
       this.projetFormGroup.controls.coutReel.setValue(this.coutReel);
@@ -835,11 +835,13 @@ export class NouveauProjetComponent implements OnInit {
           })
           //taches--------------------------------------------------------------------------------
           let taches:Tache[]=new Array();
+          console.log(this.taches)
           this.taches.forEach(t=>
           {
             if(t!=null)
               taches.push(t);
           })
+          console.log(taches)
           this.projetsService.ajouterTaches(this.projetFormGroup.controls.codeProjet.value,taches).subscribe();
         }
       );

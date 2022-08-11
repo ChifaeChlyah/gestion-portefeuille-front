@@ -33,6 +33,7 @@ import {NotFoundComponent} from "./components/not-found/not-found.component";
 import {MesProjetsGeresComponent} from "./components/mes-projets-geres/mes-projets-geres.component";
 import {MesProjetsAffecteComponent} from "./components/mes-projets-affecte/mes-projets-affecte.component";
 import {ReportsBugsComponent} from "./components/reports-bugs/reports-bugs.component";
+import {DetailsProjetComponent} from "./components/dashboard/projets/details-projet/details-projet.component";
 
 const routes: Routes = [
   // {path:"tousLesProjets",component:ProjetsComponent},
@@ -160,6 +161,17 @@ const routes: Routes = [
           {
             path: 'nouveau-projet',
             component:NouveauProjetComponent,
+            canActivate:[AuthGuard,RoleGuard],
+            data:{
+              RolesPermis:[environment.ADMIN_ROLE,
+                environment.GESTIONNAIRE_PORTEFEUILLES_ROLE,
+                environment.CHEF_PROJET_ROLE
+              ]
+            },
+          },
+          {
+            path: 'details-projet/:codeProjet',
+            component:DetailsProjetComponent,
             canActivate:[AuthGuard,RoleGuard],
             data:{
               RolesPermis:[environment.ADMIN_ROLE,

@@ -1,1 +1,768 @@
-<p>details-projet works!</p>
+<div id="form-projet-container">
+
+  <form id="form-projet" [formGroup]="projetFormGroup" *ngIf="projetFormGroup">
+
+    <h4 style=" font-weight: 300; color: white;">Détails du projet </h4>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#infoProjet"><span class="tabError" *ngIf="!infoGeneralesValid">*!</span> Infos générales</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#intervenants">Intervenants</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#predecesseurs">Prédecesseurs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#piecesJointes"><span class="tabError" *ngIf="!piecesJointesValid">*!</span> Pièces jointes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#risques">Risques</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#planning">Planning des tâches</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane container active" id="infoProjet">
+        <div id="alerts-container2"></div>
+        <div style="float:right;font-size: x-large">
+           <span title="Modifier" (click)="editMode=true;">
+            <i *ngIf="!editMode" data-toggle="tooltip" title="Modifier" class="fa-solid fa-file-pen"></i>
+            </span>
+          <i (click)="saveEdit()"*ngIf="editMode" data-toggle="tooltip" title="Enregistrer" class="fa-solid fa-check"></i>
+          <i (click)="annulerEdit()" *ngIf="editMode" data-toggle="tooltip" title="Annuler" class="fa-solid fa-x"></i>
+        </div>
+        <br>
+
+        <p class="titre-group-inputs"><i class="fa-solid fa-angles-right"></i> Présentation du projet</p>
+        <div class="inputs-inline" style="  justify-content: space-around;  height: 60%; ">
+          <div [ngClass]="(editMode)?'picture-container':'picture-container-disabled'">
+            <div [ngClass]="(editMode)?'picture':'picture-disabled'">
+              <img [src]="host+'/logoProjet/'+projet.codeProjet| authImage | async"  class="picture-src" id="wizardPicturePreview" title="">
+              <i class="fa-solid fa-laptop-file"></i>
+              <input [disabled]="!editMode" (change)="onSelectedFile($event)" type="file" id="wizard-picture" class="">
+            </div>
+            <h6 *ngIf="editMode" style="color: #880e4f" class="">Logo <i class="fa-solid fa-camera"></i></h6>
+          </div>
+          <div style="width: 80%;">
+            <div class="inputs-inline" >
+              <div id="codeGroup" class="form-group input-first-line">
+                <label class="form-label" for="code">Code du projet</label>
+                <input [disabled]="true" type="text" placeholder="Code du projet" class="form-control" id="code"
+                       [(ngModel)]="codeProjet" [ngModelOptions]="{standalone: true}"
+                       [ngClass]="{'is-invalid': submitted && codeProjet==null}">
+                <div *ngIf="submitted && codeProjet==null" class=
+                  "invalid-feedback">
+                  <div *ngIf="submitted && codeProjet==null">Ce champs est obligatoire</div>
+                </div>
+              </div>
+              <div id="titreGroup" class="form-group input-first-line">
+                <label class="form-label" for="titre">Titre du projet</label>
+                <input [disabled]="!editMode"   type="text" placeholder="Titre du projet" class="form-control" id="titre"
+                       [(ngModel)]="titreProjet" [ngModelOptions]="{standalone: true}"
+                       [ngClass]="{'is-invalid': submitted && (titreProjet==null||titreProjet=='')}">
+                <div *ngIf="submitted && (titreProjet==null||titreProjet=='')" class=
+                  "invalid-feedback">
+                  <div *ngIf="submitted && (titreProjet==null||titreProjet=='')">Ce champs est obligatoire</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="form-group" style="margin-top: 30px">
+                <label class="form-label" for="description">Description du projet</label>
+                <textarea  [disabled]="!editMode"  rows="2" id="description" placeholder="Description du projet" class="form-control"
+                           [(ngModel)]="description" [ngModelOptions]="{standalone: true}"
+                          [ngClass]="{'is-invalid': submitted && (description==null||description=='')}">
+                </textarea>
+                <div *ngIf="submitted && (description==null||description=='')" class=
+                  "invalid-feedback">
+                  <div *ngIf="submitted && (description==null||description=='')">Ce champs est obligatoire</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <p class="titre-group-inputs"><i class="fa-solid fa-angles-right"></i> Dates du projet</p>
+        <div class="inputs-inline" style="margin-bottom: 0px" [ngStyle]="{'height':submitted?'70px':'40px'}">
+          <div class=" input1sur6" style="display: flex;flex-direction: column">
+            <label class="form-label" for="dateDebutPlanifiee">Date début planifiée</label>
+            <input [disabled]="!editMode"   class="form-control" type="Date" placeholder="Date début planifiée"
+                   [(ngModel)]="dateDebutPlanifiee" [ngModelOptions]="{standalone: true}"
+                    id="dateDebutPlanifiee" [ngClass]="{'is-invalid': submitted && (dateDebutPlanifiee==null||dateDebutPlanifiee=='')}">
+            <div *ngIf="submitted && (dateDebutPlanifiee==null||dateDebutPlanifiee=='')" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&(dateDebutPlanifiee==null||dateDebutPlanifiee=='')">Ce champs est obligatoire</div>
+            </div>
+          </div>
+          <div class=" input1sur6" style="display: flex;flex-direction: column">
+            <label class="form-label" for="dateFinPlanifiee">Date fin planifiée</label>
+            <input [disabled]="!editMode"   class="form-control" type="Date" placeholder="Date fin planifiée"
+                   [(ngModel)]="dateFinPlanifiee" [ngModelOptions]="{standalone: true}"
+                   id="dateFinPlanifiee" [ngClass]="{'is-invalid': submitted && (dateFinPlanifiee==null||dateFinPlanifiee=='')}">
+            <div *ngIf="submitted && (dateFinPlanifiee==null||dateFinPlanifiee=='')" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&(dateFinPlanifiee==null||dateFinPlanifiee=='')">Ce champs est obligatoire</div>
+            </div>
+          </div>
+          <div class=" input1sur6" style="display: flex;flex-direction: column">
+            <label class="form-label" for="dateDebutPrevue">Date début prévue</label>
+            <input [disabled]="!editMode"   class="form-control" type="Date" placeholder="Date début prévue"
+                   [(ngModel)]="dateDebutPrevue" [ngModelOptions]="{standalone: true}"
+                   id="dateDebutPrevue" [ngClass]="{'is-invalid': submitted && (dateDebutPrevue==null||dateDebutPrevue=='')}">
+            <div *ngIf="submitted && (dateDebutPrevue==null||dateDebutPrevue=='')" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&(dateDebutPrevue==null||dateDebutPrevue=='')">Ce champs est obligatoire</div>
+            </div>
+          </div>
+          <div class=" input1sur6" style="display: flex;flex-direction: column">
+            <label class="form-label" for="dateFinPrevue">Date fin prévue</label>
+            <input [disabled]="!editMode"    class="form-control" type="Date" placeholder="Date fin prévue"
+                   [(ngModel)]="dateFinPrevue" [ngModelOptions]="{standalone: true}"
+                   id="dateFinPrevue" [ngClass]="{'is-invalid': submitted && (dateFinPrevue==null||dateFinPrevue=='')}">
+            <div *ngIf="submitted && (dateFinPrevue==null||dateFinPrevue=='')" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&(dateFinPrevue==null||dateFinPrevue=='')">Ce champs est obligatoire</div>
+            </div>
+          </div>
+          <div class=" input1sur6" style="display: flex;flex-direction: column">
+            <label class="form-label" for="dateDebutRelle">Date début Réelle</label>
+            <input [disabled]="!editMode" class="form-control" type="Date" placeholder="Date début Réelle"
+                   [(ngModel)]="dateDebutRelle" [ngModelOptions]="{standalone: true}"
+                   id="dateDebutRelle" >
+          </div>
+          <div class=" input1sur6" style="display: flex;flex-direction: column">
+            <label class="form-label" for="dateFinRelle">Date fin Réelle</label>
+            <input [disabled]="!editMode"  class="form-control" type="Date" placeholder="Date fin Réelle"
+                   [(ngModel)]="dateFinRelle" [ngModelOptions]="{standalone: true}"
+                   id="dateFinRelle">
+            <div *ngIf="submitted && avancement==null" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&avancement==null">Ce champs est obligatoire</div>
+            </div>
+          </div>
+
+        </div >
+
+        <p style="margin-top: 10px" class="titre-group-inputs"><i class="fa-solid fa-angles-right"></i> Avancement et coûts du projet</p>
+        <div class="inputs-inline" style="margin-bottom: 10px" [ngStyle]="{'height':submitted?'70px':'40px'}">
+          <div class=" input1sur3" style="display: flex;flex-direction: column">
+            <label for="avancement" class="form-label">Avancement %</label>
+            <input [disabled]="!editMode"  style="width: 98%" type="number" min="0" max="100" placeholder="Avancement %" class="form-control" id="avancement" [(ngModel)]="avancement"
+                   [ngModelOptions]="{standalone: true}" (change)="avancementChange()"  name="titre"
+                   [ngClass]="{'is-invalid': submitted && avancement==null}">
+            <div *ngIf="submitted && avancement==null" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&avancement==null">Ce champs est obligatoire</div>
+            </div>
+          </div>
+          <div class=" input1sur3" style="display: flex;flex-direction: column">
+            <label for="coutInitial" class="form-label">Coût Initial</label>
+            <input [disabled]="!editMode"  style="width: 98%" type="number" min="0" max="100" placeholder="Coût Initial" class="form-control" id="coutInitial" [(ngModel)]="coutInitial"
+                   [ngModelOptions]="{standalone: true}"   name="titre"
+                   [ngClass]="{'is-invalid': submitted && coutInitial==null}">
+            <div *ngIf="submitted && coutInitial==null" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&coutInitial==null">Ce champs est obligatoire</div>
+            </div>
+          </div>
+          <div class=" input1sur3" style="display: flex;flex-direction: column">
+            <label for="coutReel" class="form-label">Coût Réel</label>
+            <input [disabled]="!editMode"  style="width: 98%" type="number" min="0" max="100" placeholder="Coût Réel" class="form-control" id="coutReel" [(ngModel)]="coutReel"
+                   [ngModelOptions]="{standalone: true}" >
+          </div>
+        </div>
+
+
+
+
+        <p class="titre-group-inputs"><i class="fa-solid fa-angles-right"></i> Gestion du projet</p>
+
+        <div class="inputs-inline" [ngStyle]="{'height':submitted&&(chef==null||intervenants==null||statut==null)?'60px':'40px'}">
+          <div class="dropdown input1sur5 form-group" >
+            <label *ngIf="authService.estChefDeProjet()" for="chefProjet1" class="form-label">Chef de Projet</label>
+            <label for="chefProjet" class="form-label">Chef de Projet</label>
+            <ngx-select-dropdown id="chefProjet1" *ngIf="authService.estChefDeProjet()" [disabled]="true" [ngModelOptions]="{standalone: true}"
+                                 [(ngModel)]="chef" [instanceId]="'instance1'" (change)="selectionChangedChefProjet($event)"
+                                 [config]="configDropdownChefProjet" [options]="dropdownOptionsChefProjet"></ngx-select-dropdown>
+            <ngx-select-dropdown id="chefProjet" *ngIf="!authService.estChefDeProjet()" [instanceId]="'instance1'" [ngModelOptions]="{standalone: true}"
+                                 [ngModel]="chef" (change)="selectionChangedChefProjet($event)" [config]="configDropdownChefProjet"
+                                 [options]="dropdownOptionsChefProjet"
+                                 [disabled]="!editMode"
+                                 [ngClass]="{'is-invalid': submitted && chef==null}">
+            </ngx-select-dropdown>
+            <div *ngIf="submitted && chef==null" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&chef==null">Ce champs est obligatoire</div>
+            </div>
+          </div>
+
+          <div class="input1sur5 ">
+            <label for="statut" class="form-label">Statut</label>
+            <ngx-select-dropdown id="statut" [instanceId]="'instance1'" [ngModelOptions]="{standalone: true}" [ngModel]="statut"
+                                 (change)="selectionChangedStatut($event)" [config]="configDropdownStatut"
+                                 [options]="dropdownOptionsStatut" [disabled]="!editMode"
+                                 [ngClass]="{'is-invalid': submitted && statut==null}">
+            </ngx-select-dropdown>
+            <div *ngIf="submitted && statut==null" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&statut==null">Ce champs est obligatoire</div>
+            </div>
+          </div>
+
+
+          <div class="dropdown input1sur5 form-group">
+            <label for="priorite" class="form-label">Priorité</label>
+            <ngx-select-dropdown id="priorite" [instanceId]="'instance1'" (change)="selectionChangedPriorite($event)"
+                                 [ngModelOptions]="{standalone: true}" [ngModel]="priorite"
+                                 [config]="configDropdownPriorite" [options]="dropdownOptionsPriorite"
+                                 [ngClass]="{'is-invalid': submitted && priorite==null}"
+                                 [disabled]="!editMode">
+            </ngx-select-dropdown>
+            <div *ngIf="submitted && priorite==null" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&priorite==null">Ce champs est obligatoire</div>
+            </div>
+          </div>
+          <div class="input2sur5 ">
+            <label for="portefeuille" class="form-label">Portefeuille</label>
+            <ngx-select-dropdown id="portefeuille" [instanceId]="'instance1'" (change)="selectionChangedPortefeuille($event)"
+                                 [ngModelOptions]="{standalone: true}" [ngModel]="portefeuille"
+                                 [config]="configDropdownPortefeuille" [options]="dropdownOptionsPortefeuille"
+                                 [ngClass]="{'is-invalid': submitted && portefeuille==null}"
+                                 [disabled]="!editMode">
+            </ngx-select-dropdown>
+            <div *ngIf="submitted && portefeuille==null" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&portefeuille==null">Ce champs est obligatoire</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="tab-pane container fade" id="intervenants" style="padding-top: 10px">
+        <div id="alerts-container-intervenants"></div>
+        <div style="display: flex;width: 100%;justify-content: space-between">
+        <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedIntervenants($event)"
+                             [ngModelOptions]="{standalone: true}" [ngModel]="intervenants" [multiple]="true"
+                             [config]="configDropdownIntervenants" [options]="dropdownOptionsIntervenants"
+                             *ngIf="editModeIntervenants"
+                               style="width: 30%">
+        </ngx-select-dropdown>
+          <div></div>
+        <div style="float:right;font-size: x-large">
+           <span title="Modifier" (click)="editModeIntervenants=true;">
+            <i *ngIf="!editModeIntervenants" data-toggle="tooltip" title="Modifier" class="fa-solid fa-file-pen"></i>
+            </span>
+          <i (click)="saveEditIntervenants()"*ngIf="editModeIntervenants" data-toggle="tooltip" title="Enregistrer" class="fa-solid fa-check"></i>
+          <i (click)="annulerEditIntervenants()" *ngIf="editModeIntervenants" data-toggle="tooltip" title="Annuler" class="fa-solid fa-x"></i>
+        </div>
+        </div>
+        <table class="table align-middle mb-0 bg-white">
+          <thead class="bg-light">
+          <tr>
+            <th>Nom</th>
+            <th>Code</th>
+            <th>Numéro de telephone</th>
+            <th>Emploi</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let intervenant of intervenants">
+            <td>
+              <div class="d-flex align-items-center">
+                <img
+                  [src]="host+'/photo-user/'+intervenant.codeRessource | authImage | async"
+                  alt=""
+                  style="width: 45px; height: 45px;border: 1px solid gainsboro;"
+                  class="rounded-circle"
+                />
+                <div class="ms-3">
+                  <p class="fw-bold mb-1">{{intervenant.nom}} {{intervenant.prenom}}</p>
+                  <p class="text-muted mb-0">{{intervenant.email}}</p>
+                </div>
+              </div>
+            </td>
+            <td>
+              <p class="fw-normal mb-1">{{intervenant.codeRessource}}</p>
+            </td>
+            <td>
+              <p class="fw-normal mb-1">{{intervenant.tel}}</p>
+            </td>
+            <td>
+              <p class="fw-normal mb-1">{{intervenant.emploi}}</p>
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane container fade" id="predecesseurs" style="padding-top: 10px">
+        <div id="alerts-container-predecesseurs"></div>
+        <div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 10px">
+          <ngx-select-dropdown  (change)="selectionChangedPredecesseurs($event)"
+                               [ngModelOptions]="{standalone: true}" [ngModel]="predecesseurs" [multiple]="true"
+                               [config]="configDropdownPredecesseurs" [options]="dropdownOptionsPredecesseurs"
+                               *ngIf="editModePredecesseurs"
+                               style="width: 30%">
+          </ngx-select-dropdown>
+          <div></div>
+          <div style="float:right;font-size: x-large">
+           <span title="Modifier" (click)="editModePredecesseurs=true;">
+            <i *ngIf="!editModePredecesseurs" data-toggle="tooltip" title="Modifier" class="fa-solid fa-file-pen"></i>
+            </span>
+            <i (click)="saveEditPredecesseurs()"*ngIf="editModePredecesseurs" data-toggle="tooltip" title="Enregistrer" class="fa-solid fa-check"></i>
+            <i (click)="annulerEditPredecesseurs()" *ngIf="editModePredecesseurs" data-toggle="tooltip" title="Annuler" class="fa-solid fa-x"></i>
+          </div>
+        </div>
+        <table class="table align-middle mb-0 bg-white">
+          <thead class="bg-light">
+          <tr>
+            <th>Projet</th>
+            <th>Description</th>
+            <th>Avancement</th>
+            <th>Statut</th>
+            <th>Priorité</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let predecesseur of predecesseurs">
+            <td>
+              <div class="d-flex align-items-center">
+                <img
+                  [src]="host+'/logoProjet/'+predecesseur.codeProjet | authImage | async"
+                  alt=""
+                  style="width: 45px; height: 45px;border: 1px solid gainsboro;"
+                  class="rounded-circle"
+                />
+                <div class="ms-3">
+                  <p class="fw-bold mb-1">{{predecesseur.codeProjet}}</p>
+                  <p class="text-muted mb-0">{{predecesseur.titreProjet}}</p>
+                </div>
+              </div>
+            </td>
+            <td>
+              <p class="fw-normal mb-1">{{predecesseur.description}}</p>
+            </td>
+            <td>
+              <p class="fw-normal mb-1">{{predecesseur.avancement}}</p>
+            </td>
+            <td>
+              <p class="fw-normal mb-1">{{predecesseur.statut}}</p>
+            </td>
+            <td>
+              <p class="fw-normal mb-1">{{predecesseur.priorite}}</p>
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane container fade" id="piecesJointes">
+        <div class="piecejointes-container2">
+          <div *ngFor="let p of projet.pieceJointes" class="card-pieceJointe">
+            <div class="card ">
+              <div class="card-header">
+                <a class="card-link" title="Télécharger" [href]="host+'/pieceJointe/'+p.idPieceJointe">
+                  <i class="fa-solid fa-file-arrow-down"></i> {{p.nom}}
+                </a>
+                <div>
+                  <a class="collapsed card-link" data-toggle="collapse" [href]="'#collapseThree'+p.idPieceJointe">
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </a>
+                <button title="Supprimer" mat-menu-item class="btn" (click)="deletePieceJointe(p)">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+                  </div>
+              </div>
+              </div>
+
+              <div [id]="'collapseThree'+p.idPieceJointe" class="collapse" >
+                <div class="card-body">
+                  {{p.description}}
+                </div>
+              </div>
+            </div>
+
+          <i class="fa-solid fa-file-circle-plus" (click)="addPieceJointe()" data-toggle="tooltip" title="Ajouter une pièce jointe"></i>
+          <div class="piecesJointes-container">
+
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 0;display: flex;justify-content: flex-end;">
+          <button (click)="enregistrerPiecesJointes()" type="submit" class="btn btn-light">
+            Enregistrer
+          </button>
+        </div>
+
+      </div>
+      <div class="tab-pane container fade" id="risques">
+        <div id="risquesContainer">
+
+
+          <div id="risquesFaibles"  class="risque1sur3">
+
+            <div data-toggle="modal" data-target="#modalRisqueFaible" class="addRisque"  >
+              <div title="Ajouter un risque faible" data-toggle="tooltip" > <i  class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
+            </div>
+            <div *ngFor="let rf of projet.risques;let i=index">
+              <div *ngIf="rf.severite=='Faible'">
+                <div [id]="'risqueFaible-'+i" class="ligne-risque-container">
+                  <i class="fa-solid fa-x" (click)="deleteRisque(rf.idRisque)"></i>
+                  <div  class="ligne-risque-btn" type="button" data-toggle="collapse" [attr.data-target]="'#collapseRisqueFaible'+i" aria-expanded="false">
+                    <button  data-toggle="Tooltip" titre="Détails"class="ligne-risque btn form-control">
+                      <span class="titre-risque-btn">{{rf.titre}}</span><span class="proba-risque-btn">
+                                  {{rf.probabilite}} % <i class="fa-solid fa-angle-down"></i></span>
+                    </button>
+                  </div>
+                </div>
+                <div class="collapse" [id]="'collapseRisqueFaible'+i" >
+                  <div class="card card-body">
+                    {{rf.description}}
+                  </div>
+                </div>
+              </div>
+          </div>
+          </div>
+          <div id="risquesMoyens" class="risque1sur3">
+            <div data-toggle="modal" data-target="#modalRisqueMoyen" class="addRisque"  >
+              <div title="Ajouter un risque Moyen" data-toggle="tooltip">
+                <i class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
+            </div>
+            <div *ngFor="let rf of projet.risques;let i=index">
+              <div *ngIf="rf.severite=='Moyen'">
+                <div [id]="'risqueMoyen-'+i" class="ligne-risque-container">
+                  <i class="fa-solid fa-x" (click)="deleteRisque(rf.idRisque)"></i>
+                  <div  class="ligne-risque-btn ligne-risqueM-btn" type="button" data-toggle="collapse" [attr.data-target]="'#collapseRisqueMoyen'+i" aria-expanded="false">
+                    <button  data-toggle="Tooltip" titre="Détails"class="ligne-risqueM btn form-control">
+                      <span class="titre-risqueM-btn">{{rf.titre}}</span><span class="proba-risque-btn">
+                                  {{rf.probabilite}} % <i class="fa-solid fa-angle-down"></i></span>
+                    </button>
+                  </div>
+                </div>
+                <div class="collapse" [id]="'collapseRisqueMoyen'+i" >
+                  <div class="card card-body">
+                    {{rf.description}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="risquesEleves" class="risque1sur3">
+            <div data-toggle="modal" data-target="#modalRisqueEleve" class="addRisque"  >
+              <div title="Ajouter un risque élevé" data-toggle="tooltip"> <i class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
+            </div>
+            <div *ngFor="let rf of projet.risques;let i=index">
+              <div *ngIf="rf.severite=='Elevé'">
+                <div [id]="'risqueEleve-'+i" class="ligne-risque-container">
+                  <i class="fa-solid fa-x" (click)="deleteRisque(rf.idRisque)"></i>
+                  <div  class="ligne-risque-btn ligne-risqueE-btn" type="button" data-toggle="collapse" [attr.data-target]="'#collapseRisqueEleve'+i" aria-expanded="false">
+                    <button  data-toggle="Tooltip" titre="Détails"class="ligne-risqueE btn form-control">
+                      <span class="titre-risqueM-btn">{{rf.titre}}</span><span class="proba-risque-btn">
+                                  {{rf.probabilite}} % <i class="fa-solid fa-angle-down"></i></span>
+                    </button>
+                  </div>
+                </div>
+                <div class="collapse" [id]="'collapseRisqueEleve'+i" >
+                  <div class="card card-body">
+                    {{rf.description}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane container fade" id="planning" style="padding-top:10px ">
+        <div>
+         <div id="alerts-container">
+<!--           <div class="alert alert-success alert-dismissible">-->
+<!--             <button type="button" class="close" data-dismiss="alert">&times;</button>-->
+<!--             <strong>Succès !</strong> Vos modifications ont bien été entregistées.-->
+<!--           </div>-->
+<!--           <div class="alert alert-danger alert-dismissible">-->
+<!--             <button type="button" class="close" data-dismiss="alert">&times;</button>-->
+<!--             <strong>Suppression impossible !</strong> Veuillez d'abord supprimer les dépendances liées à la taches .-->
+<!--           </div>-->
+         </div>
+        <span *ngIf="editModePlanning" class="table-add float-right mb-3 mr-2"
+        ><a  class="text-success"
+        ><i (click)="addRow()" class="fas fa-plus fa-2x" aria-hidden="true"></i></a
+        ></span>
+        <div style="float:right;font-size: x-large">
+           <span title="Modifier" (click)="editModePlanning=true;">
+            <i *ngIf="!editModePlanning" data-toggle="tooltip" title="Modifier" class="fa-solid fa-file-pen"></i>
+            </span>
+          <i (click)="saveEditPlanning()"*ngIf="editModePlanning" data-toggle="tooltip" title="Enregistrer" class="fa-solid fa-check"></i>
+          <i (click)="annulerEditPlanning()" *ngIf="editModePlanning" data-toggle="tooltip" title="Annuler" class="fa-solid fa-x"></i>
+        </div>
+        </div>
+        <div id="planningTable" class="table-responsive">
+          <!--          {{taches|json}}-->
+          <!--          {{nbTaches|json}}-->
+          <table class="table">
+            <thead>
+            <tr>
+              <!--              <th scope="col">#</th>-->
+              <th scope="col">Titre</th>
+              <th scope="col">Description</th>
+              <th scope="col">Date début (planifiée)</th>
+              <th scope="col">Date fin (planifiée)</th>
+              <th scope="col">Date début (prévue)</th>
+              <th scope="col">Date fin (prévue)</th>
+              <th scope="col">Date début (réelle)</th>
+              <th scope="col">Date fin (réelle)</th>
+              <th scope="col">Avancement</th>
+              <th scope="col">Coût Initial</th>
+              <th scope="col">Coût Réel</th>
+              <th scope="col">Tâche mère</th>
+              <th scope="col">Dépendances</th>
+              <th scope="col">Interventions</th>
+              <th scope="col" *ngIf="editModePlanning"></th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let n of nbTaches" [id]="'tr'+n">
+            <tr *ngIf="taches[n]">
+              <!--              <th scope="row"></th>-->
+              <td>
+                <input type="text" [disabled]="!editModePlanning" [value]="(taches[n].titre)?taches[n].titre:''" (change)="titreTacheChange($event,n)" class="form-control">
+              </td>
+              <td>
+                <textarea type="text" [disabled]="!editModePlanning" [value]="(taches[n].description)?taches[n].description:''"  rows="1"(change)="descTacheChange($event,n)"  class="form-control"></textarea>
+              </td>
+              <td>
+                <input type="date" class="form-control"[disabled]="!editModePlanning"  [value]="taches[n].dateDebutPlanifiee"  (change)="dateDebutPlanifieeTacheChange($event,n)">
+              </td>
+              <td>
+                <input type="date" class="form-control" [disabled]="!editModePlanning" [value]="taches[n].dateFinPlanifiee"  (change)="dateFinPlanifieeTacheChange($event,n)">
+              </td>
+              <td>
+                <input type="date" class="form-control" [disabled]="!editModePlanning" [value]="taches[n].dateDebutPrevue" (change)="dateDebutPrevueTacheChange($event,n)">
+              </td>
+              <td>
+                <input type="date" class="form-control" [disabled]="!editModePlanning" [value]="taches[n].dateFinPrevue" (change)="dateFinPrevueTacheChange($event,n)">
+              </td>
+              <td>
+                <input type="date" class="form-control" [disabled]="!editModePlanning" [value]="taches[n].dateDebutRelle"  (change)="dateDebutRelleTacheChange($event,n)">
+              </td>
+              <td>
+                <input type="date" class="form-control" [disabled]="!editModePlanning" [value]="taches[n].dateFinRelle" (change)="dateFinRelleTacheChange($event,n)">
+              </td>
+              <td>
+                <input type="number" [disabled]="!editModePlanning" [value]="taches[n].avancement"  (change)="avancementTacheChange($event,n)"  class="form-control">
+              </td>
+              <td>
+                <input type="number" [disabled]="!editModePlanning" [value]="taches[n].coutInitial"  (change)="coutInitialTacheChange($event,n)"  class="form-control">
+              </td>
+              <td>
+                <input type="number" [disabled]="!editModePlanning" [value]="taches[n].coutReel"  (change)="coutReelTacheChange($event,n)"  class="form-control">
+              </td>
+              <td class="dropdown-table" >
+                <ngx-select-dropdown  [config]="configDropdownTacheMere"
+                                      [options]="dropdownOptionsTacheMere[n]"
+                                      (change)="selectionChangedTacheMere($event,n)"
+                                      [_value]="taches[n].tacheMere"
+                                      [disabled]="!editModePlanning">
+                </ngx-select-dropdown>
+              </td>
+              <td class="dropdown-table">
+                <ngx-select-dropdown   [config]="configDropdownTacheDependances"
+                                       [options]="dropdownOptionsTacheDependances[n]"
+                                       (change)="selectionChangedTacheDependances($event,n)"
+                                       [multiple]="true"  [_value]="taches[n].dependances"
+                                       [disabled]="!editModePlanning">
+                </ngx-select-dropdown>
+              </td>
+              <td>
+                <button class="btn btn-dark" data-toggle="collapse" [attr.data-target]="'#demo'+n">
+                  Details <i class="fa-solid fa-bars-progress"></i>
+                </button>
+
+              </td>
+              <td *ngIf="editModePlanning">
+                <button class="btn btn-danger" (click)="removeRow($event,n)">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </td>
+            </tr>
+            <tr >
+              <td colspan="15" [id]="'demo'+n" class="collapse ">
+                <span *ngIf="editModePlanning"  (click)="addIntervention(n)" class="ajoutIntervention"> +Ajouter une intervention</span>
+                <div *ngFor="let i of nbInterventionParTaches[n]" [id]="'intervention'+n+'-'+i">
+                  <div *ngIf="taches[n].interventions[i]"  class="interventions-container">
+                  <div class="interventionInput">
+                  <label [for]="'intervenantTache'+i" class="form-label">Intervenant</label>
+                  <ngx-select-dropdown [id]="'intervenantTache'+i" class="" [config]="configDropdownIntervenantsTache"
+                                       [options]="dropdownOptionsIntervenantsTache"
+                                       (change)="selectionChangedIntervenantTache($event,n,i)"
+                                       [_value]="taches[n].interventions[i].intervenant"
+                                       [disabled]="!editModePlanning">
+                  </ngx-select-dropdown>
+                  </div>
+                  <div class="interventionInput">
+                  <label [for]="'affectationTache'+i" class="form-label">Affectation %</label>
+                  <input [id]="'affectationTache'+i"  type="number" [disabled]="!editModePlanning" [value]="taches[n].interventions[i].affectation" placeholder="Affectation%" min="0" max="100" (change)="affectationTacheChange($event,n,i)"  class="form-control">
+                  </div>
+                    <i (click)="removeIntervention($event,n,i)" *ngIf="editModePlanning"  class="fa-solid suppInter fa-xmark"></i>
+                </div>
+                </div>
+            </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
+  </form>
+
+</div>
+<!--Modal risque faible -->
+<div data-backdrop="false" class="modal" id="modalRisqueFaible">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Ajouter risque faible <i class="fa-solid fa-circle-exclamation"></i></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="form-group input-first-line">
+          <label class="form-label" for="titreRisqueF"></label>
+          <input type="text"[(ngModel)]="titreRisqueF" placeholder="Titre du risque" class="form-control" id="titreRisqueF"
+                 name="titreRisqueF">
+        </div>
+        <div class="form-group input-first-line">
+          <label class="form-label" for="probaRisqueF"></label>
+          <input type="number" [(ngModel)]="probaRisqueF" placeholder="Probabilité du risque %" class="form-control" id="probaRisqueF"
+                 name="probaRisqueF" min="1" max="100">
+
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="descriptionRisqueF"></label>
+          <textarea rows="4" [(ngModel)]="descriptionRisqueF" id="descriptionRisqueF" placeholder="Description du risque" class="form-control"
+                    name="descriptionRisqueF">
+      </textarea>
+
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div *ngIf="!(descriptionRisqueF!=''&&titreRisqueF!=''&&probaRisqueF!=null)" data-toggle="tooltip"
+           [title]="'Veuillez remplir tous les champs'" class="modal-footer form-group">
+        <button disabled type="button" class="btn btn-dark form-control" (click)="ajoutRisqueF()" data-dismiss="modal">Enregistrer</button>
+      </div>
+      <div *ngIf="(descriptionRisqueF!=''&&titreRisqueF!=''&&probaRisqueF!=null)" data-toggle="tooltip"
+           [title]="'Veuillez remplir tous les champs'" class="modal-footer form-group">
+        <button type="button" class="btn btn-dark form-control" (click)="ajoutRisqueF()" data-dismiss="modal">Enregistrer</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--Modal risque Moyen -->
+<div data-backdrop="false" class="modal" id="modalRisqueMoyen">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Ajouter risque moyen <i class="fa-solid fa-circle-exclamation"></i></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="form-group input-first-line">
+          <label class="form-label" for="titreRisqueM"></label>
+          <input type="text" [(ngModel)]="titreRisqueM" placeholder="Titre du risque" class="form-control" id="titreRisqueM"
+                 name="titreRisqueM">
+        </div>
+        <div class="form-group input-first-line">
+          <label class="form-label" for="probaRisqueM"></label>
+          <input type="number" [(ngModel)]="probaRisqueM" placeholder="Probabilité du risque %" class="form-control" id="probaRisqueM"
+                 name="probaRisqueM" min="1" max="100">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="descriptionRisqueM"></label>
+          <textarea rows="4" [(ngModel)]="descriptionRisqueM" id="descriptionRisqueM" placeholder="Description du risque" class="form-control"
+                    name="descriptionRisqueM">
+      </textarea>
+
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div *ngIf="!(descriptionRisqueM!=''&&titreRisqueM!=''&&probaRisqueM!=null)" data-toggle="tooltip"
+           [title]="'Veuillez remplir tous les champs'" class="modal-footer form-group">
+        <button disabled type="button" class="btn btn-dark form-control" (click)="ajoutRisqueM()" data-dismiss="modal">Enregistrer</button>
+      </div>
+      <div *ngIf="(descriptionRisqueM!=''&&titreRisqueM!=''&&probaRisqueM!=null)" data-toggle="tooltip"
+           [title]="'Veuillez remplir tous les champs'" class="modal-footer form-group">
+        <button type="button" class="btn btn-dark form-control" (click)="ajoutRisqueM()" data-dismiss="modal">Enregistrer</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--Modal risque Eleve -->
+<div data-backdrop="false" class="modal" id="modalRisqueEleve">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Ajouter risque élevé <i class="fa-solid fa-circle-exclamation"></i></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="form-group input-first-line">
+          <label class="form-label" for="titreRisqueE">Titre du risque</label>
+          <input type="text" [(ngModel)]="titreRisqueE" placeholder="Titre du risque" class="form-control" id="titreRisqueE"
+                 name="titreRisqueE">
+        </div>
+        <div class="form-group input-first-line">
+          <label class="form-label" for="probaRisqueE">Probabilité du risque %</label>
+          <input type="number" [(ngModel)]="probaRisqueE" placeholder="Probabilité du risque %" class="form-control" id="probaRisqueE"
+                 name="probaRisqueE" min="1" max="100">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="descriptionRisqueE">Description du risque</label>
+          <textarea rows="4" [(ngModel)]="descriptionRisqueE" id="descriptionRisqueE" placeholder="Description du risque" class="form-control"
+                    name="descriptionRisqueE">
+      </textarea>
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div *ngIf="!(descriptionRisqueE!=''&&titreRisqueE!=''&&probaRisqueE!=null)" data-toggle="tooltip"
+           title="Veuillez remplir tous les champs"
+           class="modal-footer form-group">
+        <button type="button" class="btn btn-dark form-control"
+                disabled
+                (click)="ajoutRisqueE()" data-dismiss="modal">Enregistrer</button>
+      </div>
+      <div *ngIf="(descriptionRisqueE!=''&&titreRisqueE!=''&&probaRisqueE!=null)" data-toggle="tooltip"
+           class="modal-footer form-group">
+        <button type="button" class="btn btn-dark form-control"
+                (click)="ajoutRisqueE()" data-dismiss="modal" >Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+

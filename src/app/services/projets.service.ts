@@ -7,6 +7,7 @@ import {AuthentificationService} from "./authentification.service";
 import {FamilleProjet} from "../model/FamilleProjet.model";
 import {Risque} from "../model/Risque.model";
 import {Tache} from "../model/Tache.model";
+import {PieceJointe} from "../model/PieceJointe.model";
 
 @Injectable({
   providedIn: 'root'
@@ -21,10 +22,33 @@ export class ProjetsService {
     return this.http.get<Projet[]>(this.host+"/tousLesProjets",
       {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
   }
+  getProjetByCode(codeProjet):Observable<Projet>{
+    let p=this.http.get<Projet>(this.host+"/projet-by-code/" +codeProjet,
+      {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
+    return p;
+  }
+
+  deletePiceJointe(idPieceJointe):Observable<PieceJointe>{
+     return this.http.delete<PieceJointe>(this.host+"/delete-piece-jointe/" +idPieceJointe,
+      {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
+  }
+  deleteRisque(idRisque):Observable<Risque>{
+     return this.http.delete<Risque>(this.host+"/delete-risque/" +idRisque,
+      {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
+  }
+  deleteAllTaches(idProjet):Observable<Projet>{
+     return this.http.delete<Projet>(this.host+"/delete-all-taches/" +idProjet,
+      {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
+  }
   save(projet:Projet):Observable<Projet> {
-    alert("here")
     let host = environment.host;
     let proj=this.http.post<Projet>(host + "/add-projet", projet,
+      {headers: new HttpHeaders({'Authorization': this.authService.getToken()})});
+    return proj;
+  }
+  update(projet:Projet):Observable<Projet> {
+    let host = environment.host;
+    let proj=this.http.post<Projet>(host + "/update-projet", projet,
       {headers: new HttpHeaders({'Authorization': this.authService.getToken()})});
     return proj;
   }

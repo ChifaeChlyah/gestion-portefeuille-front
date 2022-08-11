@@ -2,6 +2,7 @@ import {FamilleProjet} from "./FamilleProjet.model";
 import {Risque} from "./Risque.model";
 import {Tache} from "./Tache.model";
 import {Ressource} from "./Ressource.model";
+import {PieceJointe} from "./PieceJointe.model";
 
 export class Projet {
   codeProjet:string;
@@ -18,13 +19,14 @@ export class Projet {
   coutInitial:number;
   coutReel:number;
   logo:string;
-  statut:Statut;
+  statut:string;
   chefProjet:Ressource;
   intervenants:Ressource[];
-  famillesProjets:FamilleProjet[];
+  familleProjet:FamilleProjet;
   predecesseurs:Projet[];
   risques:Risque[];
   taches:Tache[]
+  pieceJointes:PieceJointe[];
 }
 export enum Statut {
   Attente,
