@@ -13,6 +13,7 @@ import {Risque} from "../../../../model/Risque.model";
 import {NgxSmartModalService} from "ngx-smart-modal";
 import {Tache} from "../../../../model/Tache.model";
 import {Intervention} from "../../../../model/Intervention.model";
+import {Router} from "@angular/router";
 declare var $:any
 @Component({
   selector: 'app-nouveau-projet',
@@ -56,7 +57,8 @@ export class NouveauProjetComponent implements OnInit {
   constructor(public fb: FormBuilder,private ressourceService:RessourcesService
     ,private portefeuilleService:PortefeuilleService,private projetsService:ProjetsService,
               public authService:AuthentificationService,
-              private projetService:ProjetsService) {
+              private projetService:ProjetsService,
+              private router:Router) {
 
   }
 
@@ -843,6 +845,7 @@ export class NouveauProjetComponent implements OnInit {
           })
           console.log(taches)
           this.projetsService.ajouterTaches(this.projetFormGroup.controls.codeProjet.value,taches).subscribe();
+          this.router.navigateByUrl("/projets/liste-projets")
         }
       );
 

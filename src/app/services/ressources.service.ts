@@ -6,6 +6,8 @@ import {Observable} from "rxjs";
 import {FamilleProjet} from "../model/FamilleProjet.model";
 import {Ressource} from "../model/Ressource.model";
 import {Role} from "../model/Role.model";
+import {Projet} from "../model/Projet.model";
+import {Tache} from "../model/Tache.model";
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +22,18 @@ export class RessourcesService {
 
   tous():Observable<Ressource[]>{
     return this.http.get<Ressource[]>(this.host+"/toutesLesRessources",
+      {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
+  }
+  projetsGeres(codeRessource):Observable<Projet[]>{
+    return this.http.get<Projet[]>(this.host+"/projets-geres/"+codeRessource,
+      {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
+  }
+  projetsAffectes(codeRessource):Observable<Projet[]>{
+    return this.http.get<Projet[]>(this.host+"/projets-affectes/"+codeRessource,
+      {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
+  }
+  tachesAffectes(codeRessource):Observable<Tache[]>{
+    return this.http.get<Tache[]>(this.host+"/taches-affectes/"+codeRessource,
       {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
   }
   getRoles(nomsRoles:string[]):Role[]{

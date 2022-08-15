@@ -1,2 +1,90 @@
 <app-nav-bar-top></app-nav-bar-top>
-<p>mes-projets-affecte works!</p>
+<h2 class="bienvenu">Bienvenu {{user.prenom}}</h2>
+<div id="table-projets-container" >
+  <table *ngIf="projetsGeres" id="table-projets"  datatable [dtOptions]="dtOptions" class="row-border table-bordered hover">
+    <thead>
+    <tr>
+      <th>Logo</th>
+      <th>Code</th>
+      <th>Titre</th>
+      <th>Description</th>
+      <th>Date début planifiées</th>
+      <th>Date fin planifiées</th>
+      <th>Date début prévue</th>
+      <th>Date fin prévue</th>
+      <th>Date début Réelle</th>
+      <th>Date fin Réelle</th>
+      <th>Priorité</th>
+      <th>% Avancement</th>
+      <th>Statut</th>
+      <th>Coût Initial</th>
+      <th>Coût Réel</th>
+      <th>Chef de projet</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr *ngFor="let p of projetsGeres;let i=index; ">
+      <td style="text-align: center">
+        <img [src]="host+'/logoProjet/'+p.codeProjet | authImage | async" class="picture-src" id="wizardPicturePreview" title="">
+      </td>
+      <td style="padding-left: 10px!important;">
+        <span >{{p.codeProjet}}</span>
+      </td>
+      <td>
+        {{p.titreProjet}}
+      </td>
+      <td>
+        {{p.description}}
+      </td>
+      <td>
+        {{datepipe.transform(p.dateDebutPlanifiee, 'yyyy-MM-dd')}}
+      </td>
+      <td>
+        {{datepipe.transform(p.dateFinPlanifiee, 'yyyy-MM-dd')}}
+      </td>
+      <td>
+        {{datepipe.transform(p.dateDebutPrevue, 'yyyy-MM-dd')}}
+      </td>
+      <td>
+        {{datepipe.transform(p.dateDebutPrevue, 'yyyy-MM-dd')}}
+      </td>
+      <td>
+        {{datepipe.transform(p.dateDebutReelle, 'yyyy-MM-dd')}}
+      </td>
+      <td>
+        {{datepipe.transform(p.dateFinReelle, 'yyyy-MM-dd')}}
+      </td>
+      <td>
+        {{p.priorite}}
+      </td>
+      <td>
+        {{p.avancement}}
+      </td>
+      <td>
+        {{p.statut}}
+      </td>
+      <td>
+        {{p.coutInitial}}
+      </td>
+      <td>
+        {{p.coutReel}}
+      </td>
+            <td>
+              <span *ngIf="p.chefProjet">{{p.chefProjet.nom+' '+p.chefProjet.prenom}}</span>
+            </td>
+      <td>
+        <span mat-raised-button matTooltip="Détails"  [routerLink]="'/projets/details-projet/'+p.codeProjet" ><i class="fa-solid fa-circle-info"></i>
+        </span>
+        <span mat-raised-button data-tooltip="Message d'invalidation"  ><i class="fa-solid fa-list-check"></i>
+        </span>
+      </td>
+    </tr>
+
+
+    </tbody>
+  </table>
+</div>
+
+

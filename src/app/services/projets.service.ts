@@ -32,6 +32,11 @@ export class ProjetsService {
      return this.http.delete<PieceJointe>(this.host+"/delete-piece-jointe/" +idPieceJointe,
       {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
   }
+
+  deleteProjet(codeProjet):Observable<Projet>{
+     return this.http.delete<Projet>(this.host+"/delete-projet/" +codeProjet,
+      {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
+  }
   deleteRisque(idRisque):Observable<Risque>{
      return this.http.delete<Risque>(this.host+"/delete-risque/" +idRisque,
       {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});

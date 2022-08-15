@@ -1,14 +1,16 @@
-<app-navbar-top-projets></app-navbar-top-projets>
+<app-navbar-top-projets *ngIf="authService.estGestionnairePortefeuille()||authService.estAdmin()"></app-navbar-top-projets>
 
 <div >
   <!--barre de filtres-->
-  <div id="filtre-sidebar" [ngStyle]="{'z-index': (FilterHidden===true)?'2':'20'}" class="container-fluid d-flex flex-column h-100">
+  <div id="filtre-sidebar" *ngIf="getUrl()=='/projets/liste-projets'||getUrl()=='/projets/liste-portefeuilles'||getUrl()=='/projets/statistiques'||getUrl()=='/projets/gantt'"
+       [ngStyle]="{'z-index': (FilterHidden===true)?'2':'20'}" class="container-fluid d-flex flex-column h-100">
     <div id="content" class="d-flex flex-row sidebar-hidden">
       <div id="main" class="d-flex flex-column">
 
         <div id="middle" class="d-flex flex-row justify-content-end align-items-center">
 
-          <div id="sidebar-control" data-toggle="tooltip" title="Filtrer" (click)="clickFiltre()">
+          <div id="sidebar-control" mat-raised-button
+               matTooltip="Filtrer" (click)="clickFiltre()">
             <i class="fas fa-2x"></i><span class="fa-solid fa-magnifying-glass-chart"></span>
           </div>
         </div>

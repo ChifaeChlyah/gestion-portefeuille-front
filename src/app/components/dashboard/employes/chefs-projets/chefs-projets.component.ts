@@ -3,6 +3,7 @@ import {environment} from "../../../../../environments/environment";
 import {Ressource} from "../../../../model/Ressource.model";
 import {RessourcesService} from "../../../../services/ressources.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Projet} from "../../../../model/Projet.model";
 declare var $:any;
 @Component({
   selector: 'app-chefs-projets',
@@ -13,8 +14,11 @@ export class ChefsProjetsComponent implements OnInit {
 // Must be declared as "any", not as "DataTables.Settings"
   dtOptions: any = {};
   chefsProjets:Ressource[];
-
-  constructor(private ressourceService:RessourcesService,private fb:FormBuilder) { }
+  modalChef:Ressource=new Ressource();
+  host=environment.host;
+  modalProjets:Projet[];
+  constructor(private ressourceService:RessourcesService,
+              private fb:FormBuilder, ) { }
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -131,6 +135,15 @@ export class ChefsProjetsComponent implements OnInit {
     this.ressourceService.delete(this.codeRessource).subscribe(
       data=>{
         this.tousLesChefs()
+      }
+    )
+  }
+
+  loadModalChef(chef:Ressource) {
+    this.modalChef=chef;
+    this.ressourceService.projetsGeres(chef.codeRessource).subscribe(
+      projets=>{
+        this.modalProjets=projets;
       }
     )
   }

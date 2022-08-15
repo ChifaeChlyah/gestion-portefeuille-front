@@ -3,6 +3,7 @@
   <table *ngIf="chefsProjets" id="table-employes" datatable [dtOptions]="dtOptions" class="row-border hover">
     <thead>
     <tr>
+      <th>Photo</th>
       <th>Code</th>
       <th>Nom</th>
       <th>Prénom</th>
@@ -14,6 +15,9 @@
     </thead>
     <tbody>
     <tr *ngFor="let r of chefsProjets">
+      <td style="text-align: center" class="photo">
+        <img [src]="host+'/photo-user/'+r.codeRessource | authImage | async" class="picture-src" id="wizardPicturePreview" title="">
+      </td>
       <td>{{r.codeRessource}}</td>
       <td>{{r.nom}}</td>
       <td>{{r.prenom}}</td>
@@ -22,9 +26,12 @@
       <td>{{r.emploi}}</td>
       <td>
 
-        <span  data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
-        <span data-toggle="modal" data-target="#modalProjets"  >
-          <span  data-toggle="tooltip" title="Projets"><i class="fa-solid fa-laptop-file"></i></span>
+        <span  mat-raised-button
+               matTooltip="Détails" routerLink="/ressources/details-ressource" ><i class="fa-solid fa-circle-info"></i></span>
+        <span data-toggle="modal"  data-target="#modalProjets"  >
+          <span  mat-raised-button
+                 matTooltip="Projets">
+            <i (click)="loadModalChef(r)" class="fa-solid fa-laptop-file"></i></span>
         </span>
 
       </td>
@@ -37,21 +44,30 @@
 
 
 <!--Modal Delete RessourceModel -->
-<div data-backdrop="false" class="modal" id="modalProjets">
+<div data-backdrop="false" class="modal" id="modalProjets" *ngIf="modalChef">
   <div class="modal-dialog">
     <div class="modal-content">
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">NOM Prénom est chef des projets :</h4>
+        <h4 class="modal-title">{{modalChef.nom}} {{modalChef.prenom}} est chef des projets :</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body">
-        <p>projet1</p>
-        <p>projet1</p>
-        <p>projet1</p>
+        <div *ngFor="let p of modalProjets" class="projetModalContainer" >
+          <div class="projetModal">
+          <span><img [src]="host+'/logoProjet/'+p.codeProjet | authImage | async" class="picture-src" title=""></span>
+          <span style="margin-left: 10px">{{p.titreProjet}}</span>
+          </div>
+          <div>
+            <span mat-raised-button matTooltip="Détails"  [routerLink]="'/projets/details-projet/'+p.codeProjet" ><i class="fa-solid fa-circle-info"></i></span>
+          </div>
+        </div>
+        <div *ngIf="!modalProjets">
+          --Aucun projet disponible--
+        </div>
       </div>
       <!-- Modal footer -->
       <div class="modal-footer form-group">

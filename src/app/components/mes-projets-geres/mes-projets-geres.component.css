@@ -1,0 +1,238 @@
+
+.bienvenu{
+  font-weight: 370;
+  margin: 20px 20px 0px;
+  font-size: 250%;
+  background: #c487a745;
+  padding: 20px;
+  border-radius: 10px;
+}
+#table-projets-container{
+  width: 100%;
+  margin-top: 35px;
+  display: flex;
+  justify-content: center;
+}
+#table-projets-container
+.fa-solid, .fas {
+  font-weight: 900;
+  font-size: large;
+  margin-left: 4px;
+  margin-right: 4px;
+  cursor: pointer;
+  color: #343a40;
+}
+#table-projets-container
+.fa-solid:hover, .fas :hover{
+  opacity: 0.75;
+}
+
+:host ::ng-deep div.dataTables_wrapper {
+  padding: 20px;
+  border: #8080802e 1px solid;
+  border-radius: 10px;
+  box-shadow: 1px 0px 2px 0px #888888;
+  width: 100%!important;
+}
+:host ::ng-deep #table-projets-container .btn:not(:disabled):not(.disabled),
+:host ::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current
+{
+  cursor: pointer;
+  background: #f8f8f8de!important;
+  border-color: #8080803b!important;
+}
+:host ::ng-deep #table-projets-container .btn:not(:disabled):not(.disabled):hover{
+  background: #e1e1e1de!important;
+
+}
+:host ::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+:host ::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current :hover{
+  background: #e1e1e1de;
+}
+:host ::ng-deep .dataTables_wrapper .dataTables_filter input
+{
+  border: 1px solid #aaaaaa73;
+  border-radius: 3px;
+  padding: 5px;
+  background-color: transparent;
+  margin-left: 3px;
+}
+:host ::ng-deep table.dataTable thead th, table.dataTable tfoot th {
+  font-weight: 500;
+  background: #e2e2e263;
+  color: black;
+}
+
+
+.modal-title{
+  text-align: center;
+  width: 100%;
+}
+.modal-content .form-group{
+  margin-top: 5px;
+}
+.modal-body{
+  background: #f6f6f6;
+}
+#table-projets{
+  width: max-content!important;
+}
+:host ::ng-deep #table-projets_wrapper {
+  width: 95vw!important;
+}
+:host ::ng-deep table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting_asc_disabled, table.dataTable thead > tr > th.sorting_desc_disabled, table.dataTable thead > tr > td.sorting, table.dataTable thead > tr > td.sorting_asc, table.dataTable thead > tr > td.sorting_desc, table.dataTable thead > tr > td.sorting_asc_disabled, table.dataTable thead > tr > td.sorting_desc_disabled {
+  width: 160px!important;
+}
+:host ::ng-deep table.dataTable {
+  width: max-content!important;
+}
+
+
+
+
+textarea {
+  resize: none;
+}
+.form-label {
+  font-size: 12px;
+  color: #880e4f;
+  margin: 0;
+  display: block;
+  opacity: 1;
+  -webkit-transition: .333s ease top, .333s ease opacity;
+  transition: .333s ease top, .333s ease opacity;
+}
+.form-control {
+  border-radius: 0;
+  border-color: #880e4f57;
+  border-width: 0 0 2px 0;
+  border-style: none none solid none;
+  box-shadow: none;
+  margin-left: 5px;
+  margin-right: 5px;
+  background: transparent;
+}
+.form-control:focus {
+  box-shadow: none;
+  border-color: #880e4f;
+}
+.js-hide-label {
+  opacity: 0;
+}
+.js-unhighlight-label {
+  color: #999
+}
+.btn-start-order {
+  background: 0 0 #ffffff;
+  border: 1px solid #2f323a;
+  border-radius: 3px;
+  color: #2f323a;
+  font-family: "Raleway", sans-serif;
+  font-size: 16px;
+  line-height: inherit;
+  margin: 30px 0;
+  padding: 10px 50px;
+  text-transform: uppercase;
+  transition: all 0.25s ease 0s;
+  width: 60%;
+}
+.btn-start-order:hover,.btn-start-order:active, .btn-start-order:focus {
+  border-color: #880e4f;
+  color: #880e4f;
+}
+#info-container .row{
+  justify-content: space-evenly;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.inputs-container{
+  width: 80% ;
+}
+.tab-pane{
+  height: 100%;
+  padding-right: 20px;
+}
+td .form-control{
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%!important;
+}
+td .form-control:disabled{
+  border-color: #ccc;
+}
+td{
+  padding:0!important;
+}
+img{
+  border: 2px #000000 solid;
+  width: 40px;
+  padding: 2px;
+  border-radius: 10px;
+}
+.fa-file-pen:hover
+{
+  color: #880e4f!important;
+}
+.fa-x{
+  color: darkred!important;
+}
+.fa-check{
+  color:yellowgreen!important;
+}
+:host ::ng-deep td button {
+  border: 1px solid transparent!important;
+  border-bottom: 2px solid #880e4f57!important;
+  border-radius: 0!important;
+  width: 100%;
+  line-height: 1.42857143;
+}
+:host ::ng-deep td button:disabled {
+  border: 1px solid transparent!important;
+  border-bottom: 2px solid #ccc!important;
+  border-radius: 0!important;
+  width: 100%;
+  line-height: 1.42857143;
+}
+/*ngx-select-dropdown style*/
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button .display-text {
+  color: #6c757d;
+}
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-list-container ul li:hover {
+  background: #ced4da69;
+}
+
+:host ::ng-deep.ngx-dropdown-container button {
+  border-bottom: 2px solid #880e4f57;
+  border-color: #880e4f57;
+}
+:host ::ng-deep .ngx-dropdown-container .ngx-disabled
+{
+  background: transparent!important;
+}
+:host ::ng-deep .ngx-dropdown-container button:disabled .nsdicon-angle-down
+{
+  color:transparent!important;
+}
+
+
+
+:host ::ng-deep
+.form-control.is-invalid, .was-validated .form-control:invalid {
+  border-color: #dc3545!important;
+  padding-right: calc(1.5em + .75rem)!important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e")!important;
+  background-repeat: no-repeat!important;
+  background-position: right calc(.375em + .1875rem) center!important;
+  background-size: calc(.75em + .375rem) calc(.75em + .375rem)!important;
+}
+:host ::ng-deep ngx-select-dropdown.is-invalid button{
+  border-bottom-color: #dc3545!important;
+  padding-right: calc(1.5em + .75rem)!important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e")!important;
+  background-repeat: no-repeat!important;
+  background-position: right calc(.375em + .1875rem) center!important;
+  background-size: calc(.75em + .375rem) calc(.75em + .375rem)!important;
+}
+

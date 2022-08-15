@@ -42,3 +42,29 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
    font-weight: 400!important;
    line-height: 1.5!important;
 }
+.h4, h4 {
+  font-size: 1.5rem!important;
+}
+.h5, h5 {
+  font-size: 1.25rem!important;
+}
+
+.titre-group-inputs{
+  border-bottom: 1px solid #880e4f;
+  font-weight: 350;
+  color: #880e4f;
+  margin-bottom: 15px;
+}
+
+
+
+a:hover {
+  text-decoration: none;
+}
+
+header,
+.demo,
+.demo p {
+  margin: 4em 0;
+  text-align: center;
+}

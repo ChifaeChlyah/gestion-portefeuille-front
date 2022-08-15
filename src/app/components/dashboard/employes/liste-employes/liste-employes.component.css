@@ -69,3 +69,10 @@
 .delete-label{
   font-weight: bold;
 }
+
+.photo img{
+  border: 2px #000000 solid;
+  width: 40px;
+  padding: 2px;
+  border-radius: 10px;
+}

@@ -1,2 +1,186 @@
 <app-nav-bar-top></app-nav-bar-top>
-<p>mes-projets-geres works!</p>
+<h2 class="bienvenu">Bienvenu {{user.prenom}}</h2>
+<div id="table-projets-container" >
+  <table *ngIf="projetsGeres" id="table-projets"  datatable [dtOptions]="dtOptions" class="row-border table-bordered hover">
+    <thead>
+    <tr>
+      <th>Logo</th>
+      <th>Code</th>
+      <th>Titre</th>
+      <th>Description</th>
+      <th>Date début planifiées</th>
+      <th>Date fin planifiées</th>
+      <th>Date début prévue</th>
+      <th>Date fin prévue</th>
+      <th>Date début Réelle</th>
+      <th>Date fin Réelle</th>
+      <th>Priorité</th>
+      <th>% Avancement</th>
+      <th>Statut</th>
+      <th>Coût Initial</th>
+      <th>Coût Réel</th>
+<!--      <th>Chef de projet</th>-->
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr *ngFor="let p of projetsGeres;let i=index; ">
+      <td style="text-align: center">
+        <img [src]="host+'/logoProjet/'+p.codeProjet | authImage | async" class="picture-src" id="wizardPicturePreview" title="">
+        <!--        <div [ngClass]="(edit[i])?'picture-container':'picture-container-disabled'">-->
+        <!--          <div [ngClass]="(edit[i])?'picture':'picture-disabled'">-->
+        <!--            <img [src]="host+'/logoProjet/'+p.codeProjet| authImage | async"  class="picture-src" id="wizardPicturePreview" title="">-->
+        <!--            <i class="fa-solid fa-laptop-file"></i>-->
+        <!--            <input [disabled]="!edit[i]" (change)="onSelectedFile($event)" type="file" id="wizard-picture" class="">-->
+        <!--          </div>-->
+        <!--          <h6 *ngIf="edit[i]" style="color: #880e4f" class="">Logo <i class="fa-solid fa-camera"></i></h6>-->
+        <!--        </div>-->
+      </td>
+      <td style="padding-left: 10px!important;">
+        <!--        <input [disabled]="true" type="text" [attr.value]="p.codeProjet" class="form-control">-->
+        <span >{{p.codeProjet}}</span>
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="text" [attr.value]="p.titreProjet" class="form-control"
+               (change)="titreChanged($event,i)"
+               [class.is-invalid]="submitted[i] && p.titreProjet==''">
+        <span hidden>{{p.titreProjet}}</span>
+      </td>
+      <td>
+        <textarea [disabled]="!edit[i]"  type="text" rows="1" class="form-control" [attr.value]="p.description"
+                  (change)="DescriptionChanged($event,i)"
+                  [class.is-invalid]="submitted[i] && p.description==''"
+        >{{p.description}}</textarea>
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateDebutPlanifiee, 'yyyy-MM-dd')"
+               (change)="DateDebutPlanifieeChanged($event,i)" class="form-control"
+               [class.is-invalid]="submitted[i] && (p.dateDebutPlanifiee==null|| p.dateDebutPlanifiee=='')">
+        <span hidden>{{p.dateDebutPlanifiee}}</span>
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinPlanifiee, 'yyyy-MM-dd')"
+               (change)="DateFinPlanifieeChanged($event,i)" class="form-control"
+               [class.is-invalid]="submitted[i] && (p.dateFinPlanifiee==null|| p.dateFinPlanifiee=='')">
+        <span hidden>{{p.dateFinPlanifiee}}</span>
+      </td>
+      <td>
+        <input [disabled]="!edit[i]" type="Date" [attr.value]="datepipe.transform(p.dateDebutPrevue, 'yyyy-MM-dd')"
+               (change)="DateDebutPrevueChanged($event,i)" class="form-control"
+               [class.is-invalid]="submitted[i] && (p.dateDebutPrevue==null|| p.dateDebutPrevue=='')">
+        <span hidden>{{p.dateDebutPrevue}}</span>
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinPrevue, 'yyyy-MM-dd')"
+               (change)="DateFinPrevueChanged($event,i)" class="form-control"
+               [class.is-invalid]="submitted[i] &&(p.dateFinPrevue==null|| p.dateFinPrevue=='')">
+        <span hidden>{{p.dateFinPrevue}}</span>
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateDebutReelle, 'yyyy-MM-dd')"
+               (change)="DateDebutReelleChanged($event,i)" class="form-control">
+        <span hidden>{{p.dateDebutReelle}}</span>
+
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinReelle, 'yyyy-MM-dd')"
+               (change)="DateFinReelleChanged($event,i)" class="form-control">
+        <span hidden>{{p.dateFinReelle}}</span>
+      </td>
+      <td>
+        <ngx-select-dropdown (change)="selectionChangedPriorite($event,i)"
+                             [_value]="priorite[i]"
+                             [config]="configDropdownPriorite" [options]="dropdownOptionsPriorite"
+                             [disabled]="!edit[i]"
+                             [class.is-invalid]="submitted[i] && priorite[i]==null">
+        </ngx-select-dropdown>
+        <span hidden>{{p.priorite}}</span>
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="number" [attr.value]="p.avancement" class="form-control"
+               (change)="avancementChanged($event,i)">
+        <span hidden>{{p.avancement}}</span>
+      </td>
+      <td>
+        <ngx-select-dropdown (change)="selectionChangedStatut($event,i)"
+                             [_value]="statut[i]"
+                             [config]="configDropdownStatut" [options]="dropdownOptionsStatut"
+                             [disabled]="!edit[i]"
+                             [class.is-invalid]="submitted[i]&&statut[i]==null ">
+        </ngx-select-dropdown>
+        <span hidden>{{p.statut}}</span>
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="text" [attr.value]="p.coutInitial" class="form-control"
+               (change)="coutInitialChanged($event,i)">
+        <span hidden>{{p.coutInitial}}</span>
+      </td>
+      <td>
+        <input [disabled]="!edit[i]"  type="text" [attr.value]="p.coutReel" class="form-control"
+               (change)="coutReelChanged($event,i)">
+        <span hidden>{{p.coutReel}}</span>
+      </td>
+<!--      <td>-->
+<!--        <ngx-select-dropdown (change)="selectionChangedChefProjet($event,i)"-->
+<!--                             [_value]="p.chefProjet"-->
+<!--                             [config]="configDropdownChefProjet" [options]="dropdownOptionsChefProjet"-->
+<!--                             [disabled]="!edit[i]"-->
+<!--                             [class.is-invalid]="submitted[i] && p.chefProjet==null">-->
+<!--        </ngx-select-dropdown>-->
+<!--        <span hidden *ngIf="p.chefProjet">{{p.chefProjet.nom+' '+p.chefProjet.prenom}}</span>-->
+<!--      </td>-->
+      <td>
+          <span mat-raised-button
+                matTooltip="Modifier"  (click)="edit[i]=true;">
+            <i *ngIf="!edit[i]"  class="fa-solid fa-file-pen"></i>
+            </span>
+        <i *ngIf="edit[i]" (click)="updateProjet(i)" mat-raised-button
+           matTooltip="Enregister"  class="fa-solid fa-check"></i>
+        <i *ngIf="edit[i]" mat-raised-button
+           matTooltip="Annuler"  (click)="annulerUpdate(i)" class="fa-solid fa-x"></i>
+
+        <span mat-raised-button matTooltip="Détails"  [routerLink]="'/projets/details-projet/'+p.codeProjet" ><i class="fa-solid fa-circle-info"></i></span>
+        <span data-toggle="modal" data-target="#modalDelete"  >
+          <span mat-raised-button
+                matTooltip="Supprimer"  (click)="projetASupprimer=p;" ><i class="fa-solid fa-file-circle-xmark"></i></span>
+        </span>
+      </td>
+    </tr>
+
+
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+<!--Modal Delete projet -->
+<div data-backdrop="false" class="modal" id="modalDelete" *ngIf="projetASupprimer">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Etes-vous sûr de vouloir supprimer le projet :</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <img style="margin-bottom: 15px;" [src]="host+'/logoProjet/'+projetASupprimer.codeProjet | authImage | async" class="picture-src" title="">
+        <p>Code : {{projetASupprimer.codeProjet}}</p>
+        <p>Titre : {{projetASupprimer.titreProjet}}</p>
+        <p>Description : {{projetASupprimer.description}}</p>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer form-group">
+        <button type="button" class="btn btn-dark " data-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-dark " (click)="supprimerProjet()" data-dismiss="modal">Oui</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+

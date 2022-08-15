@@ -16,11 +16,14 @@
       <td>{{p.description}}</td>
       <td>
         <span *ngIf="authService.estAdmin()" data-toggle="modal" data-target="#modalEdit1"  >
-          <span  data-toggle="tooltip" (click)="editPortefeuille(p)" title="Modifier"><i class="fa-solid fa-pen-to-square"></i></span>
+          <span  (click)="editPortefeuille(p)" mat-raised-button
+                 matTooltip="Modifier" ><i class="fa-solid fa-pen-to-square"></i></span>
         </span>
-        <span t data-toggle="tooltip" routerLink="/ressources/details-ressource" title="Détails"><i class="fa-solid fa-circle-info"></i></span>
+        <span  routerLink="/ressources/details-ressource" mat-raised-button
+              matTooltip="Détails" ><i class="fa-solid fa-circle-info"></i></span>
         <span data-toggle="modal" data-target="#modalDelete"  >
-          <span (click)="confirmDeletePortefeuille(p)" data-toggle="tooltip" title="Supprmier"><i class="fa-solid fa-circle-xmark"></i></span>
+          <span (click)="confirmDeletePortefeuille(p)" mat-raised-button
+                matTooltip="Supprimer" ><i class="fa-solid fa-circle-xmark"></i></span>
         </span>
       </td>
     </tr>

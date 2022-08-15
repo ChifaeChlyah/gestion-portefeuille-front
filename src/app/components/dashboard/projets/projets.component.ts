@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {IDropdownSettings} from "ng-multiselect-dropdown";
 import {Options} from "@angular-slider/ngx-slider";
-import * as moment from 'moment';
 import {Router} from "@angular/router";
 import {AuthentificationService} from "../../../services/authentification.service";
 declare var $: any;
@@ -144,12 +143,13 @@ JqueryCode(){
       allowSearchFilter: true,
 
     };
-    this.JqueryCode();
+    // this.JqueryCode();
   }
   async delay(ms: number) {
     await new Promise<void>(resolve => setTimeout(()=>resolve(), ms)).then(()=>console.log("fired"));
   }
   async clickFiltre() {
+    $('#content').toggleClass('sidebar-hidden');
     if(this.FilterHidden==true)
       this.FilterHidden = !this.FilterHidden;
     else {

@@ -172,3 +172,65 @@ img{
 .fa-check{
   color:yellowgreen!important;
 }
+:host ::ng-deep td button {
+  border: 1px solid transparent!important;
+  border-bottom: 2px solid #880e4f57!important;
+  border-radius: 0!important;
+  width: 100%;
+  line-height: 1.42857143;
+}
+:host ::ng-deep td button:disabled {
+  border: 1px solid transparent!important;
+  border-bottom: 2px solid #ccc!important;
+  border-radius: 0!important;
+  width: 100%;
+  line-height: 1.42857143;
+}
+/*ngx-select-dropdown style*/
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button .display-text {
+  color: #6c757d;
+}
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-list-container ul li:hover {
+  background: #ced4da69;
+}
+
+:host ::ng-deep.ngx-dropdown-container button {
+  border-bottom: 2px solid #880e4f57;
+  border-color: #880e4f57;
+}
+:host ::ng-deep .ngx-dropdown-container .ngx-disabled
+{
+  background: transparent!important;
+}
+:host ::ng-deep .ngx-dropdown-container button:disabled .nsdicon-angle-down
+{
+  color:transparent!important;
+}
+
+
+
+:host ::ng-deep
+.form-control.is-invalid, .was-validated .form-control:invalid {
+  border-color: #dc3545!important;
+  padding-right: calc(1.5em + .75rem)!important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e")!important;
+  background-repeat: no-repeat!important;
+  background-position: right calc(.375em + .1875rem) center!important;
+  background-size: calc(.75em + .375rem) calc(.75em + .375rem)!important;
+}
+:host ::ng-deep ngx-select-dropdown.is-invalid button{
+  border-bottom-color: #dc3545!important;
+  padding-right: calc(1.5em + .75rem)!important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e")!important;
+  background-repeat: no-repeat!important;
+  background-position: right calc(.375em + .1875rem) center!important;
+  background-size: calc(.75em + .375rem) calc(.75em + .375rem)!important;
+}
+
+
+
+/*:host ::ng-deep div.dt-buttons {*/
+/*  margin-bottom: 10px;*/
+/*  width: 100%;*/
+/*}*/
+

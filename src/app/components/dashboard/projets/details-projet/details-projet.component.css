@@ -95,11 +95,13 @@
   border: 1px solid #370821;
 }
 
-.titre-group-inputs{
-  border-bottom: 1px solid #880e4f;
-  font-weight: 350;
-  color: #880e4f;
-  margin-bottom: 15px;
+.bienvenu{
+  font-weight: 370;
+  margin: 20px 20px 0px;
+  font-size: 250%;
+  background: #c487a745;
+  padding: 20px;
+  border-radius: 10px;
 }
 .tab-content{
   background: white;

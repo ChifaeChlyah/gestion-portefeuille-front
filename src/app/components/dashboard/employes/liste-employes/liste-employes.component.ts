@@ -16,6 +16,7 @@ export class ListeEmployesComponent implements OnInit {
   ressources:Ressource[];
   //form invalid si aucun role n'est selectionné
   rolesSelected: string[]=[];
+  host=environment.host;
   noRoleSelected:boolean;
   //form invalid si aucun role n'est selectionné
   //dropdown Roles-----------------------------------

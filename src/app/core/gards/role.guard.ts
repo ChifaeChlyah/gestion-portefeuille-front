@@ -2,20 +2,21 @@ import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import { Observable } from 'rxjs';
 import {AuthentificationService} from "../../services/authentification.service";
+import {RessourcesService} from "../../services/ressources.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoleGuard implements CanActivate {
-  constructor(private authService:AuthentificationService,private router:Router) {
+  constructor(private authService:AuthentificationService,private router:Router,private ressourcesService:RessourcesService) {
   }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log(this.isAuthorised(route))
-    return this.isAuthorised(route);
+    console.log(state)
+    return this.isAuthorised(route,state);
   }
-  private isAuthorised(route:ActivatedRouteSnapshot):boolean
+  private isAuthorised(route:ActivatedRouteSnapshot,state):boolean
   {
     let accept=false;
     const RolesPermis=route.data['RolesPermis'];
@@ -34,17 +35,19 @@ export class RoleGuard implements CanActivate {
             accept=false;
         });
       });
-    // if(accept==false)
-    // {
-    //   if(this.router.url=="/accueil") {
-    //     if (this.authService.estChefDeProjet())
-    //       this.router.navigateByUrl("/mes-projets-geres")
-    //     else
-    //       this.router.navigateByUrl("/mes-projets-affectes")
-    //   }
-    //   else
-    //     this.router.navigateByUrl("/forbidden")
-    // }
+    // this.codeProjet = this.route.snapshot.paramMap.get('codeProjet')
+    if(accept==false)
+    {
+      if(state.url=="/") {
+        if (this.authService.estChefDeProjet())
+          this.router.navigateByUrl("/mes-projets-geres")
+        else
+          this.router.navigateByUrl("/mes-projets-affectes")
+      }
+      else
+        this.router.navigateByUrl("/forbidden")
+    }
+
     return accept;
   }
 }

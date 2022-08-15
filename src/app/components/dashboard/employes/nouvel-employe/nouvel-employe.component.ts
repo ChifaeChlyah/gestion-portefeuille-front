@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {environment} from "../../../../../environments/environment";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RessourcesService} from "../../../../services/ressources.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-nouvel-employe',
@@ -29,7 +30,8 @@ export class NouvelEmployeComponent implements OnInit {
     this.noRoleSelected=(this.rolesSelected.length==0);
   }
   //dropdown Roles-----------------------------------
-  constructor(private ressourceService:RessourcesService,private fb:FormBuilder) { }
+  constructor(private ressourceService:RessourcesService,private fb:FormBuilder
+  ,private router:Router) { }
 
   ngOnInit(): void {
     this.ressourceFormGroup=this.fb.group({
@@ -55,7 +57,7 @@ export class NouvelEmployeComponent implements OnInit {
     }
     this.ressourceFormGroup.value.roles=this.ressourceService.getRoles(this.rolesSelected);
     this.ressourceService.save(this.ressourceFormGroup.value).subscribe(data=> {
-      alert("success");
+      this.router.navigateByUrl("/ressources/liste-ressources")
     });
   }
 }

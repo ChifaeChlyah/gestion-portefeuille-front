@@ -62,7 +62,11 @@
         <!--              <div *ngIf="ressourceFormGroup.controls.roles.errors.required">Ce champs est obligatoire</div>-->
         <!--            </div>-->
       </div>
-      <div class="form-group">
+      <div class="form-group" mat-raised-button
+           matTooltip="Veuillez remplir tous les champs !" *ngIf="ressourceFormGroup?.invalid">
+        <button type="button" [disabled]="ressourceFormGroup?.invalid||noRoleSelected" class="btn bg-dark form-control" (click)="onSaveRessource()" data-dismiss="modal">Enregistrer</button>
+      </div>
+      <div class="form-group"  *ngIf="!ressourceFormGroup?.invalid">
         <button type="button" [disabled]="ressourceFormGroup?.invalid||noRoleSelected" class="btn bg-dark form-control" (click)="onSaveRessource()" data-dismiss="modal">Enregistrer</button>
       </div>
     </form>

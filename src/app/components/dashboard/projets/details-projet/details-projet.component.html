@@ -26,14 +26,15 @@
 
     <!-- Tab panes -->
     <div class="tab-content">
-      <div class="tab-pane container active" id="infoProjet">
+      <div class="tab-pane container active" id="infoProjet"style="padding-top:10px;max-width: 95%; ">
         <div id="alerts-container2"></div>
         <div style="float:right;font-size: x-large">
-           <span title="Modifier" (click)="editMode=true;">
-            <i *ngIf="!editMode" data-toggle="tooltip" title="Modifier" class="fa-solid fa-file-pen"></i>
+           <span title="Modifier"  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
+                 (click)="editMode=true;">
+            <i *ngIf="!editMode" mat-raised-button matTooltip="Modifier"  class="fa-solid fa-file-pen"></i>
             </span>
-          <i (click)="saveEdit()"*ngIf="editMode" data-toggle="tooltip" title="Enregistrer" class="fa-solid fa-check"></i>
-          <i (click)="annulerEdit()" *ngIf="editMode" data-toggle="tooltip" title="Annuler" class="fa-solid fa-x"></i>
+          <i (click)="saveEdit()"*ngIf="editMode" mat-raised-button matTooltip="Enregistrer"  class="fa-solid fa-check"></i>
+          <i (click)="annulerEdit()" *ngIf="editMode" mat-raised-button matTooltip="Annuler"  class="fa-solid fa-x"></i>
         </div>
         <br>
 
@@ -185,7 +186,7 @@
         <div class="inputs-inline" [ngStyle]="{'height':submitted&&(chef==null||intervenants==null||statut==null)?'60px':'40px'}">
           <div class="dropdown input1sur5 form-group" >
             <label *ngIf="authService.estChefDeProjet()" for="chefProjet1" class="form-label">Chef de Projet</label>
-            <label for="chefProjet" class="form-label">Chef de Projet</label>
+            <label  *ngIf="!authService.estChefDeProjet()"for="chefProjet" class="form-label">Chef de Projet</label>
             <ngx-select-dropdown id="chefProjet1" *ngIf="authService.estChefDeProjet()" [disabled]="true" [ngModelOptions]="{standalone: true}"
                                  [(ngModel)]="chef" [instanceId]="'instance1'" (change)="selectionChangedChefProjet($event)"
                                  [config]="configDropdownChefProjet" [options]="dropdownOptionsChefProjet"></ngx-select-dropdown>
@@ -244,7 +245,7 @@
 
         </div>
       </div>
-      <div class="tab-pane container fade" id="intervenants" style="padding-top: 10px">
+      <div class="tab-pane container fade" id="intervenants" style="padding-top:10px;max-width: 95%; ">
         <div id="alerts-container-intervenants"></div>
         <div style="display: flex;width: 100%;justify-content: space-between">
         <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedIntervenants($event)"
@@ -255,11 +256,12 @@
         </ngx-select-dropdown>
           <div></div>
         <div style="float:right;font-size: x-large">
-           <span title="Modifier" (click)="editModeIntervenants=true;">
-            <i *ngIf="!editModeIntervenants" data-toggle="tooltip" title="Modifier" class="fa-solid fa-file-pen"></i>
+           <span title="Modifier"  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
+                 (click)="editModeIntervenants=true;">
+            <i *ngIf="!editModeIntervenants" mat-raised-button matTooltip="Modifier"  class="fa-solid fa-file-pen"></i>
             </span>
-          <i (click)="saveEditIntervenants()"*ngIf="editModeIntervenants" data-toggle="tooltip" title="Enregistrer" class="fa-solid fa-check"></i>
-          <i (click)="annulerEditIntervenants()" *ngIf="editModeIntervenants" data-toggle="tooltip" title="Annuler" class="fa-solid fa-x"></i>
+          <i (click)="saveEditIntervenants()"*ngIf="editModeIntervenants" mat-raised-button matTooltip="Enregistrer"  class="fa-solid fa-check"></i>
+          <i (click)="annulerEditIntervenants()" *ngIf="editModeIntervenants" mat-raised-button matTooltip="Annuler"  class="fa-solid fa-x"></i>
         </div>
         </div>
         <table class="table align-middle mb-0 bg-white">
@@ -301,7 +303,7 @@
           </tbody>
         </table>
       </div>
-      <div class="tab-pane container fade" id="predecesseurs" style="padding-top: 10px">
+      <div class="tab-pane container fade" id="predecesseurs" style="padding-top:10px;max-width: 95%; ">
         <div id="alerts-container-predecesseurs"></div>
         <div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 10px">
           <ngx-select-dropdown  (change)="selectionChangedPredecesseurs($event)"
@@ -312,11 +314,12 @@
           </ngx-select-dropdown>
           <div></div>
           <div style="float:right;font-size: x-large">
-           <span title="Modifier" (click)="editModePredecesseurs=true;">
-            <i *ngIf="!editModePredecesseurs" data-toggle="tooltip" title="Modifier" class="fa-solid fa-file-pen"></i>
+           <span title="Modifier"  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
+                 (click)="editModePredecesseurs=true;">
+            <i *ngIf="!editModePredecesseurs" mat-raised-button matTooltip="Modifier"  class="fa-solid fa-file-pen"></i>
             </span>
-            <i (click)="saveEditPredecesseurs()"*ngIf="editModePredecesseurs" data-toggle="tooltip" title="Enregistrer" class="fa-solid fa-check"></i>
-            <i (click)="annulerEditPredecesseurs()" *ngIf="editModePredecesseurs" data-toggle="tooltip" title="Annuler" class="fa-solid fa-x"></i>
+            <i (click)="saveEditPredecesseurs()"*ngIf="editModePredecesseurs" mat-raised-button matTooltip="Enregistrer"  class="fa-solid fa-check"></i>
+            <i (click)="annulerEditPredecesseurs()" *ngIf="editModePredecesseurs" mat-raised-button matTooltip="Annuler"  class="fa-solid fa-x"></i>
           </div>
         </div>
         <table class="table align-middle mb-0 bg-white">
@@ -362,19 +365,20 @@
           </tbody>
         </table>
       </div>
-      <div class="tab-pane container fade" id="piecesJointes">
+      <div class="tab-pane container fade" style="max-width: 95%; " id="piecesJointes">
         <div class="piecejointes-container2">
           <div *ngFor="let p of projet.pieceJointes" class="card-pieceJointe">
             <div class="card ">
               <div class="card-header">
-                <a class="card-link" title="Télécharger" [href]="host+'/pieceJointe/'+p.idPieceJointe">
+                <a class="card-link" mat-raised-button matTooltip="Télécharger" [href]="host+'/pieceJointe/'+p.idPieceJointe">
                   <i class="fa-solid fa-file-arrow-down"></i> {{p.nom}}
                 </a>
                 <div>
                   <a class="collapsed card-link" data-toggle="collapse" [href]="'#collapseThree'+p.idPieceJointe">
-                    <i class="fa-solid fa-chevron-down"></i>
+                    <i mat-raised-button matTooltip="Description"  class="fa-solid fa-chevron-down"></i>
                   </a>
-                <button title="Supprimer" mat-menu-item class="btn" (click)="deletePieceJointe(p)">
+                <button  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
+                         mat-raised-button matTooltip="Supprimer" class="btn" (click)="deletePieceJointe(p)">
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
                   </div>
@@ -388,33 +392,37 @@
               </div>
             </div>
 
-          <i class="fa-solid fa-file-circle-plus" (click)="addPieceJointe()" data-toggle="tooltip" title="Ajouter une pièce jointe"></i>
+          <i class="fa-solid fa-file-circle-plus"  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
+             (click)="addPieceJointe()" mat-raised-button matTooltip="Ajouter un pièce jointe" ></i>
           <div class="piecesJointes-container">
 
           </div>
         </div>
-        <div class="form-group" style="margin-bottom: 0;display: flex;justify-content: flex-end;">
+        <div  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
+               class="form-group" style="margin-bottom: 0;display: flex;justify-content: flex-end;">
           <button (click)="enregistrerPiecesJointes()" type="submit" class="btn btn-light">
             Enregistrer
           </button>
         </div>
 
       </div>
-      <div class="tab-pane container fade" id="risques">
+      <div class="tab-pane container fade" id="risques" style="padding-top:10px;max-width: 95%; ">
         <div id="risquesContainer">
 
 
           <div id="risquesFaibles"  class="risque1sur3">
 
-            <div data-toggle="modal" data-target="#modalRisqueFaible" class="addRisque"  >
-              <div title="Ajouter un risque faible" data-toggle="tooltip" > <i  class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
+            <div  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
+                  data-toggle="modal" data-target="#modalRisqueFaible" class="addRisque"  >
+              <div mat-raised-button matTooltip="Ajouter un risque faible"  > <i  class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
             </div>
             <div *ngFor="let rf of projet.risques;let i=index">
               <div *ngIf="rf.severite=='Faible'">
                 <div [id]="'risqueFaible-'+i" class="ligne-risque-container">
-                  <i class="fa-solid fa-x" (click)="deleteRisque(rf.idRisque)"></i>
+                  <i  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
+                      class="fa-solid fa-x" mat-raised-button matTooltip="Supprimer"  (click)="deleteRisque(rf.idRisque)"></i>
                   <div  class="ligne-risque-btn" type="button" data-toggle="collapse" [attr.data-target]="'#collapseRisqueFaible'+i" aria-expanded="false">
-                    <button  data-toggle="Tooltip" titre="Détails"class="ligne-risque btn form-control">
+                    <button mat-raised-button matTooltip="Détails" class="ligne-risque btn form-control">
                       <span class="titre-risque-btn">{{rf.titre}}</span><span class="proba-risque-btn">
                                   {{rf.probabilite}} % <i class="fa-solid fa-angle-down"></i></span>
                     </button>
@@ -430,15 +438,17 @@
           </div>
           <div id="risquesMoyens" class="risque1sur3">
             <div data-toggle="modal" data-target="#modalRisqueMoyen" class="addRisque"  >
-              <div title="Ajouter un risque Moyen" data-toggle="tooltip">
+              <div  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
+                   mat-raised-button matTooltip="Ajouter un risque Moyen" >
                 <i class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
             </div>
             <div *ngFor="let rf of projet.risques;let i=index">
               <div *ngIf="rf.severite=='Moyen'">
                 <div [id]="'risqueMoyen-'+i" class="ligne-risque-container">
-                  <i class="fa-solid fa-x" (click)="deleteRisque(rf.idRisque)"></i>
+                  <i  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
+                      mat-raised-button matTooltip="Supprimer" class="fa-solid fa-x" (click)="deleteRisque(rf.idRisque)"></i>
                   <div  class="ligne-risque-btn ligne-risqueM-btn" type="button" data-toggle="collapse" [attr.data-target]="'#collapseRisqueMoyen'+i" aria-expanded="false">
-                    <button  data-toggle="Tooltip" titre="Détails"class="ligne-risqueM btn form-control">
+                    <button  mat-raised-button matTooltip="Détails" class="ligne-risqueM btn form-control">
                       <span class="titre-risqueM-btn">{{rf.titre}}</span><span class="proba-risque-btn">
                                   {{rf.probabilite}} % <i class="fa-solid fa-angle-down"></i></span>
                     </button>
@@ -454,14 +464,16 @@
           </div>
           <div id="risquesEleves" class="risque1sur3">
             <div data-toggle="modal" data-target="#modalRisqueEleve" class="addRisque"  >
-              <div title="Ajouter un risque élevé" data-toggle="tooltip"> <i class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
+              <div mat-raised-button matTooltip="Ajouter un risque élevé"  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
+              > <i class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
             </div>
             <div *ngFor="let rf of projet.risques;let i=index">
               <div *ngIf="rf.severite=='Elevé'">
                 <div [id]="'risqueEleve-'+i" class="ligne-risque-container">
-                  <i class="fa-solid fa-x" (click)="deleteRisque(rf.idRisque)"></i>
+                  <i mat-raised-button matTooltip="Supprimer"  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
+                      class="fa-solid fa-x" (click)="deleteRisque(rf.idRisque)"></i>
                   <div  class="ligne-risque-btn ligne-risqueE-btn" type="button" data-toggle="collapse" [attr.data-target]="'#collapseRisqueEleve'+i" aria-expanded="false">
-                    <button  data-toggle="Tooltip" titre="Détails"class="ligne-risqueE btn form-control">
+                    <button  mat-raised-button matTooltip="Détails" class="ligne-risqueE btn form-control">
                       <span class="titre-risqueM-btn">{{rf.titre}}</span><span class="proba-risque-btn">
                                   {{rf.probabilite}} % <i class="fa-solid fa-angle-down"></i></span>
                     </button>
@@ -477,7 +489,7 @@
           </div>
         </div>
       </div>
-      <div class="tab-pane container fade" id="planning" style="padding-top:10px ">
+      <div class="tab-pane container fade" id="planning" style="padding-top:10px; ">
 
         <div>
          <div id="alerts-container">
@@ -491,18 +503,19 @@
 <!--           </div>-->
          </div>
 
-        <span *ngIf="editModePlanning" class="table-add float-right mb-3 mr-2"
+        <span *ngIf="editModePlanning" class="table-add float-right mb-3 mr-2" mat-raised-button matTooltip="Ajouter une Tâche"
         ><a  class="text-success"
         ><i (click)="addRow()" class="fas fa-plus fa-2x" aria-hidden="true"></i></a
         ></span>
         <div style="float:right;font-size: x-large">
           <span *ngIf="!editModePlanning" (click)="openDialog()" style="margin-right: 10px">
-            <i class="fa-solid fa-chart-gantt" title="Digramme de Gantt"></i></span>
-           <span title="Modifier" (click)="editModePlanning=true;">
-            <i *ngIf="!editModePlanning" data-toggle="tooltip" title="Modifier" class="fa-solid fa-file-pen"></i>
+            <i class="fa-solid fa-chart-gantt" mat-raised-button matTooltip="Digramme de Gantt"></i></span>
+           <span  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
+                 (click)="editModePlanning=true;">
+            <i *ngIf="!editModePlanning" mat-raised-button matTooltip="Modifier"  class="fa-solid fa-file-pen"></i>
             </span>
-          <i (click)="saveEditPlanning()"*ngIf="editModePlanning" data-toggle="tooltip" title="Enregistrer" class="fa-solid fa-check"></i>
-          <i (click)="annulerEditPlanning()" *ngIf="editModePlanning" data-toggle="tooltip" title="Annuler" class="fa-solid fa-x"></i>
+          <i (click)="saveEditPlanning()"*ngIf="editModePlanning" mat-raised-button matTooltip="Enregistrer"  class="fa-solid fa-check"></i>
+          <i (click)="annulerEditPlanning()" *ngIf="editModePlanning" mat-raised-button matTooltip="Annuler" class="fa-solid fa-x"></i>
         </div>
         </div>
         <div id="planningTable" class="table-responsive">
@@ -588,7 +601,7 @@
 
               </td>
               <td *ngIf="editModePlanning">
-                <button class="btn btn-danger" (click)="removeRow($event,n)">
+                <button class="btn btn-danger" mat-raised-button matTooltip="Supprimer"  (click)="removeRow($event,n)">
                   <i class="fa-solid fa-xmark"></i>
                 </button>
               </td>

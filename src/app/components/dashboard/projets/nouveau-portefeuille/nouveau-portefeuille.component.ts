@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ProjetsService} from "../../../../services/projets.service";
 import {PortefeuilleService} from "../../../../services/portefeuille.service";
+import {Router} from "@angular/router";
 declare var $:any;
 @Component({
   selector: 'app-nouveau-portefeuille',
@@ -11,7 +12,8 @@ declare var $:any;
 export class NouveauPortefeuilleComponent implements OnInit {
   portefeuilleFormGroup!:FormGroup;
   submitted: boolean;
-  constructor(private fb:FormBuilder,private portefeuilleService:PortefeuilleService) { }
+  constructor(private fb:FormBuilder,private portefeuilleService:PortefeuilleService,
+              private router:Router) { }
 
   ngOnInit(): void {
     this.portefeuilleFormGroup=this.fb.group({
@@ -90,6 +92,10 @@ export class NouveauPortefeuilleComponent implements OnInit {
   onSavePortefeuille() {
     this.submitted=true;
     if(this.portefeuilleFormGroup?.invalid) return;
-    this.portefeuilleService.save(this.portefeuilleFormGroup.value).subscribe();
+    this.portefeuilleService.save(this.portefeuilleFormGroup.value).subscribe(
+      data=>{
+        this.router.navigateByUrl("/projets/liste-portefeuilles");
+      }
+    );
   }
 }

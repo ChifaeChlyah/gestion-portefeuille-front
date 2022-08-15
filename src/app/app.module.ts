@@ -59,6 +59,9 @@ import { DetailsProjetComponent } from './components/dashboard/projets/details-p
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import { DialogGanttComponent } from './components/dashboard/projets/details-projet/dialog-gantt/dialog-gantt.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {NgxPaginationModule} from "ngx-pagination";
 
 @NgModule({
   declarations: [
@@ -119,7 +122,10 @@ import { DialogGanttComponent } from './components/dashboard/projets/details-pro
     NgGanttEditorModule,
     NgxSmartModalModule.forRoot(),
     BrowserAnimationsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTooltipModule,
+    // MatExpansionModule,
+    // NgxPaginationModule,
   ],
   providers: [
     DatePipe
