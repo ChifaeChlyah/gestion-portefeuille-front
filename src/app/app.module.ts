@@ -32,7 +32,7 @@ import { IntervenantsComponent } from './components/dashboard/projets/intervenan
 import { NouveauProjetComponent } from './components/dashboard/projets/nouveau-projet/nouveau-projet.component';
 import { NouveauPortefeuilleComponent } from './components/dashboard/projets/nouveau-portefeuille/nouveau-portefeuille.component';
 import { MesTachesComponent } from './components/mes-taches/mes-taches.component';
-import { MonEmploiComponent } from './components/mon-emploi/mon-emploi.component';
+import { MonEmploiComponent } from './components/feuille-de-temps/mon-emploi.component';
 import { MesInfosComponent } from './components/mes-infos/mes-infos.component';
 import { ConnexionComponent } from './components/connexion/connexion.component';
 import { NavbarTopProjetsComponent } from './components/dashboard/projets/navbar-top-projets/navbar-top-projets.component';
@@ -62,6 +62,16 @@ import { DialogGanttComponent } from './components/dashboard/projets/details-pro
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {NgxPaginationModule} from "ngx-pagination";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {TableModule} from "primeng/table";
+import {ButtonModule} from "primeng/button";
+import {InputTextModule} from "primeng/inputtext";
+import {RippleModule} from "primeng/ripple";
+import {TooltipModule} from "primeng/tooltip";
 
 @NgModule({
   declarations: [
@@ -124,11 +134,22 @@ import {NgxPaginationModule} from "ngx-pagination";
     BrowserAnimationsModule,
     MatDialogModule,
     MatTooltipModule,
-    // MatExpansionModule,
-    // NgxPaginationModule,
+    MatExpansionModule,
+    NgxPaginationModule,
+    NgbModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    TableModule,
+    ButtonModule,
+    InputTextModule,
+    RippleModule,
+    TooltipModule
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
   ],
   bootstrap: [AppComponent]
 })

@@ -105,3 +105,11 @@
   padding: 2px;
   border-radius: 10px;
 }
+
+:host ::ng-deep .p-datatable{
+  width: 75vw;
+}
+:host ::ng-deep .p-datatable.p-datatable-sm .p-datatable-header {
+  display:flex;
+  justify-content: space-between;
+}

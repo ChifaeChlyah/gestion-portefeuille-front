@@ -1,38 +1,55 @@
-<div id="table-portefeuilles-container" >
-  <table *ngIf="portefeuilles$" id="table-portefeuilles"  datatable [dtOptions]="dtOptions" class="row-border hover">
-    <thead>
-    <tr>
-      <th>Code</th>
-      <th>Titre</th>
-      <th>Description</th>
-      <th style="min-width: 70px;">Actions</th>
-    </tr>
-    </thead>
-    <tbody>
 
-    <tr *ngFor="let p of portefeuilles$">
-      <td>{{p.codeFamille}}</td>
-      <td>{{p.titreFamille}}</td>
-      <td>{{p.description}}</td>
+<div id="table-portefeuilles-container" >
+<p-table #dt1 [value]="portefeuilles$" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+         [globalFilterFields]="['codeFamille','titreFamille','description']" [resizableColumns]="true" columnResizeMode="expand"
+         currentPageReportTemplate=" {first} sur {last} de {totalRecords} portefeuilles" [rowsPerPageOptions]="[5,10,15,20]"
+         [exportHeader]="'customExportHeader'"
+         styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" responsiveLayout="scroll">
+  <ng-template pTemplate="caption" style="display:flex;justify-content:space-between">
+    <div class="flex" style="width: fit-content">
+      <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"></button>
+      <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
+    </div>
+    <div class="flex" style="width: fit-content">
+                <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt1.filterGlobal($any($event).target.value, 'contains')" placeholder="Search keyword" />
+                </span>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th pResizableColumn pSortableColumn="codeFamille">Code <p-sortIcon field="codeFamille"></p-sortIcon>
+        <p-columnFilter type="text" field="codeFamille" display="menu"></p-columnFilter></th>
+      <th pResizableColumn pSortableColumn="titreFamille">Titre <p-sortIcon field="titreFamille"></p-sortIcon>
+        <p-columnFilter type="text" field="titreFamille" display="menu"></p-columnFilter></th>
+      <th pResizableColumn pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon>
+        <p-columnFilter type="text" field="description" display="menu"></p-columnFilter></th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-portfeuille>
+    <tr>
+      <td>{{portfeuille.codeFamille}}</td>
+      <td>{{portfeuille.titreFamille}}</td>
+      <td>{{portfeuille.description}}</td>
       <td>
         <span *ngIf="authService.estAdmin()" data-toggle="modal" data-target="#modalEdit1"  >
-          <span  (click)="editPortefeuille(p)" mat-raised-button
+          <span  (click)="editPortefeuille(portfeuille)" mat-raised-button
                  matTooltip="Modifier" ><i class="fa-solid fa-pen-to-square"></i></span>
         </span>
         <span  routerLink="/ressources/details-ressource" mat-raised-button
-              matTooltip="Détails" ><i class="fa-solid fa-circle-info"></i></span>
+               matTooltip="Détails" ><i class="fa-solid fa-circle-info"></i></span>
         <span data-toggle="modal" data-target="#modalDelete"  >
-          <span (click)="confirmDeletePortefeuille(p)" mat-raised-button
+          <span (click)="confirmDeletePortefeuille(portfeuille)" mat-raised-button
                 matTooltip="Supprimer" ><i class="fa-solid fa-circle-xmark"></i></span>
         </span>
       </td>
     </tr>
-
-
-    </tbody>
-  </table>
+  </ng-template>
+</p-table>
 </div>
-
 
 <!--Modal Edit RessourceModel -->
 <div data-backdrop="false" class="modal" id="modalEdit1">

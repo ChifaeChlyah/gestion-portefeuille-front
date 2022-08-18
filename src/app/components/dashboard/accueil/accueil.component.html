@@ -12,56 +12,35 @@
           <li class="nav-item">
             <a class="nav-link disabled" data-toggle="tab" href="#home"><h5 style="color: #333333;">Portefeuilles</h5></a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link active" *ngIf="active=='PSIN'" (click)="clickFamille('PSIN')" data-toggle="tab" href="#home">PSIN</a>
-            <a class="nav-link " *ngIf="active!='PSIN'"  (click)="clickFamille('PSIN')" data-toggle="tab" href="#home">PSIN</a>
+          <li class="nav-item" *ngFor="let portefeuille of portefeuilles">
+            <a class="nav-link active" *ngIf="active==portefeuille.codeFamille" (click)="clickFamille(portefeuille.codeFamille)" data-toggle="tab" href="#home">{{portefeuille.codeFamille}}</a>
+            <a class="nav-link " *ngIf="active!=portefeuille.codeFamille"  (click)="clickFamille(portefeuille.codeFamille)" data-toggle="tab" href="#home">{{portefeuille.codeFamille}}</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link active" *ngIf="active=='PSIG'" (click)="clickFamille('PSIG')" data-toggle="tab" href="#menu1">PSIG</a>
-            <a class="nav-link " *ngIf="active!='PSIG'"  (click)="clickFamille('PSIG')" data-toggle="tab" href="#menu1">PSIG</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#menu2">INFR</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#menu2">PCLN</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#menu2">MAINT</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#menu2">CONS</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#menu2">ATPR</a>
-          </li>
+
         </ul>
 
         <!-- Tab panes -->
         <div class="tab-content">
-          <div *ngIf="active=='PSIN'" id="home" class="container tab-pane <!--active-->"><br>
-            <h6>PROJETS SYSTEMES D'INFORMATION</h6>
-            <p>Cette famille comprend tout projet ayant comme objectif la refonte des composants du SI  de l'ONEP, ainsi que les AMO accompagnant l'exécution de ces projets font parti également de cette famille </p>
+          <div *ngFor="let portefeuille of portefeuilles">
+          <div *ngIf="active==portefeuille.codeFamille" id="home" class="container tab-pane <!--active-->"><br>
+            <h6>{{portefeuille.titreFamille}}</h6>
+            <p>{{portefeuille.description}}</p>
           </div>
-          <div *ngIf="active=='PSIG'" id="menu1" class="container tab-pane fade"><br>
-            <h6>PROJETS SIG</h6>
-            <p>Famille regrouppant tous les projets SIG.</p>
           </div>
-
         </div>
       </div>
 
       <div class="my-charts-container">
         <div class="card chart-card">
-          <div class="my-card-header"><h5>Risques par projets</h5></div>
+          <div class="my-card-header"><h5>Distribution des projets par niveau de risques</h5></div>
           <div class="card-body">
-            <app-risques-par-projets-bar-chart></app-risques-par-projets-bar-chart>
+            <app-risques-par-projets-bar-chart *ngIf="projets&&portefeuilles" [projets]="projets" [portefeuilles]="portefeuilles"></app-risques-par-projets-bar-chart>
           </div>
         </div>
         <div class="card chart-card">
           <div class="my-card-header"><h5>Etat global sur les statuts projets par portfolio</h5></div>
           <div class="card-body">
-            <app-statuts-projets-radar-chart></app-statuts-projets-radar-chart>
+            <app-statuts-projets-radar-chart *ngIf="statutParProtefeuilles" [statutParProtefeuilles]="statutParProtefeuilles"></app-statuts-projets-radar-chart>
           </div>
         </div>
       </div>
@@ -72,15 +51,15 @@
         <div class="my-card-header"><i class="icon fa-solid fa-laptop-file"></i>
           <div class="card-header-text">
             <span class="name">Projets</span>
-            <span class="value">26</span>
+            <span class="value">{{projets.length}}</span>
           </div>
         </div>
       </div>
       <div class="card small-card">
         <div class="my-card-header"><i class="icon fa-solid fa-users-line"></i>
           <div class="card-header-text">
-            <span class="name">Employés</span>
-            <span class="value">120</span>
+            <span class="name">Ressources</span>
+            <span class="value">{{nbRessources}}</span>
           </div>
         </div>
       </div>
@@ -88,23 +67,23 @@
         <div class="my-card-header"><i class="icon fa-solid fa-circle-exclamation"></i>
           <div class="card-header-text">
             <span class="name">Risques</span>
-            <span class="value">15</span>
+            <span class="value">{{nbRiques}}</span>
           </div>
         </div>
       </div>
       <div class="card small-card">
         <div class="my-card-header"><i class="icon fa-solid fa-calendar-xmark"></i>
           <div class="card-header-text">
-            <span class="name">Retard</span>
-            <span class="value">5</span>
+            <span class="name">Retards</span>
+            <span class="value">{{nbRetard}}</span>
           </div>
         </div>
       </div>
       <div class="card small-card">
         <div class="my-card-header"><i class="icon fa-solid fa-clipboard-check"></i>
           <div class="card-header-text">
-            <span class="name">Complet</span>
-            <span class="value">7</span>
+            <span class="name">Complets</span>
+            <span class="value">{{nbComplets}}</span>
           </div>
         </div>
       </div>

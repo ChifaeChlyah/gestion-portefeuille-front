@@ -8,13 +8,18 @@ import {DatePipe} from "@angular/common";
 import {environment} from "../../../../../environments/environment";
 import {RessourcesService} from "../../../../services/ressources.service";
 declare var $ :any;
+import * as FileSaver from 'file-saver';
+
 @Component({
   selector: 'app-liste-projets',
   templateUrl: './liste-projets.component.html',
   styleUrls: ['./liste-projets.component.css']
 })
 export class ListeProjetsComponent implements OnInit {
-  dtOptions: any = {};
+  exportColumns: any[];
+  rows = 10;
+  private cols: ({ field: string; header: string; customExportHeader: string } | { field: string; header: string } | { field: string; header: string })[];
+
   projets$:Projet[];
   host=environment.host;
   edit:boolean[]=new Array();
@@ -25,72 +30,41 @@ export class ListeProjetsComponent implements OnInit {
   constructor(private serviceProjets:ProjetsService,public datepipe: DatePipe,
               private ressourceService:RessourcesService) { }
 
+  exportPdf() {
+    import("jspdf").then(jsPDF => {
+      import("jspdf-autotable").then(x => {
+        const doc = new jsPDF.default();
+
+        (doc as any).autoTable(this.exportColumns, this.projets$);
+        doc.save('projets.pdf');
+      })
+    })
+  }
+
+  exportExcel() {
+    import("xlsx").then(xlsx => {
+      const worksheet = xlsx.utils.json_to_sheet(this.projets$);
+      const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer, "projets");
+    });
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    let EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE
+    });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
   ngOnInit(): void {
     this.tousLesProjets();
-    this.dtOptions = {
-      scrollX: true,
-      // Declare the use of the extension in the dom parameter
-      dom: 'Bfrtip',
-      // Configure the buttons
-      buttons: [
-        // 'columnsToggle',
-        { "extend": 'excel', "text":'Excel  <i style="margin-left:5px" class="fa-solid fa-file-excel"></i>',"className": 'btn btn-default btn-xs' },
-        { "extend": 'colvis', "text":'Filtrer <i class="fa-solid fa-filter"></i>',"className": 'btn btn-default btn-xs' },
-        { "extend": 'copy', "text":'Copier <i class="fa-solid fa-copy"></i>',"className": 'btn btn-default btn-xs' },
-        // 'print',
-      ],
-      language:
-        {
-          "decimal":        "",
-          "emptyTable":     "Aucun Projet disponible",
-          "info":           "Total des projets : _TOTAL_",
-          "infoEmpty":      "Total des projets : 0 ",
-          "infoFiltered":   "(filtered from _MAX_ total entries)",
-          "infoPostFix":    "",
-          "thousands":      ",",
-          "lengthMenu":     "Show _MENU_ entries",
-          "loadingRecords": "Chargement...",
-          "processing":     "",
-          "search":         "Rechercher:",
-          "zeroRecords":    "Aucun projet retrouvé",
-          "paginate": {
-            "first":      "Premier",
-            "last":       "Dernier",
-            "next":       "Suivant",
-            "previous":   "Précédant"
-          },
-          "aria": {
-            "sortAscending":  ": activate to sort column ascending",
-            "sortDescending": ": activate to sort column descending"
-          }
-        },
-      pagingType:'full_numbers'
-    };
     this.javaScriptForm();
-    this.imageJavaScript();
     this.ressourceService.tousLesChef().subscribe(chefs=>
     {
       this.dropdownOptionsChefProjet=chefs
     })
-  }
-  imageJavaScript()
-  {
-    $(document).ready(function(){
-// Prepare the preview for profile picture
-      $("#wizard-picture").change(function(){
-        readURL(this);
-      });
-    });
-    function readURL(input) {
-      if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-          $('#wizardPicturePreview').attr('src', e.target.result).fadeIn('slow');
-        }
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
   }
   javaScriptForm()
   {
@@ -160,6 +134,24 @@ export class ListeProjetsComponent implements OnInit {
   tousLesProjets() {
    this.serviceProjets.tousLesProjets().subscribe((ret:Projet[])=>{
      this.projets$=ret;
+     this.cols = [
+       { field: 'codeProjet', header: 'Code'},
+       { field: 'titreProjet', header: 'Titre' },
+       { field: 'description', header: 'description' },
+       { field: 'dateDebutPlanifiee', header: 'Date de début Planifiée'},
+       { field: 'dateFinPlanifiee', header: 'Date de fin Planifiée' },
+       { field: 'dateDebutPrevue', header: 'Date de début Prévue' },
+       { field: 'dateDebutReelle', header: 'Date de début Réelle'},
+       { field: 'dateFinReelle', header: 'Date de fin Réelle' },
+       { field: 'priorite', header: 'Priorité' },
+       { field: 'avancement', header: 'Avancement' },
+       { field: 'statut', header: 'Statut'},
+       { field: 'coutInitial', header: 'Coût Initial' },
+       { field: 'coutReel', header: 'Coût Réel' },
+       { field: 'chefProjet', header: 'Chef de projet' },
+     ];
+     this.exportColumns = this.cols.map(col => ({title: col.header, dataKey: col.field}));
+
      for(let i=0;i<ret.length;i++)
      {
        this.edit[i]=false;

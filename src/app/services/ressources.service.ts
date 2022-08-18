@@ -8,6 +8,8 @@ import {Ressource} from "../model/Ressource.model";
 import {Role} from "../model/Role.model";
 import {Projet} from "../model/Projet.model";
 import {Tache} from "../model/Tache.model";
+import {Activite} from "../model/Activite.model";
+import {PieceJointe} from "../model/PieceJointe.model";
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +21,18 @@ export class RessourcesService {
     this.host=environment.host;
     this.getAllRoles();
   }
+  deleteAllActivites(idRessource):Observable<Activite>{
+    return this.http.delete<Activite>(this.host+"/delete-activites/" +idRessource,
+      {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
+  }
 
   tous():Observable<Ressource[]>{
     return this.http.get<Ressource[]>(this.host+"/toutesLesRessources",
       {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
+  }
+  AllActivitesByUser(id:bigint):Observable<Activite[]>{
+    return this.http.get<Activite[]>(this.host+"/activitesByUser/"+id,
+      {headers:new HttpHeaders({'Authorization': this.authService.getToken()})});
   }
   projetsGeres(codeRessource):Observable<Projet[]>{
     return this.http.get<Projet[]>(this.host+"/projets-geres/"+codeRessource,
@@ -34,6 +44,10 @@ export class RessourcesService {
   }
   tachesAffectes(codeRessource):Observable<Tache[]>{
     return this.http.get<Tache[]>(this.host+"/taches-affectes/"+codeRessource,
+      {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
+  }
+  projetParTache(idTache):Observable<Projet>{
+    return this.http.get<Projet>(this.host+"/projet-par-tache/"+idTache,
       {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
   }
   getRoles(nomsRoles:string[]):Role[]{
@@ -75,7 +89,7 @@ export class RessourcesService {
   }
   get(code?:string):Observable<Ressource>{
     let host=environment.host;
-    return this.http.get<Ressource>(host+"/ressources/"+code,
+    return this.http.get<Ressource>(host+"/ressource-par-code/"+code,
       {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
   }
 
@@ -125,5 +139,11 @@ export class RessourcesService {
       headers:new HttpHeaders({'Authorization':this.authService.getToken()})
     });
     return this.http.request(req);
+  }
+
+  ajouterActivites(codeProjet,activites:Activite[]):Observable<Ressource> {
+    let host = environment.host;
+    return this.http.post<Ressource>(host + "/add-activites/"+codeProjet, activites,
+      {headers: new HttpHeaders({'Authorization': this.authService.getToken()})});
   }
 }

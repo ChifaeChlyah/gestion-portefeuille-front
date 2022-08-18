@@ -5,62 +5,54 @@ import {RessourcesService} from "../../../../services/ressources.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Projet} from "../../../../model/Projet.model";
 declare var $:any;
+import * as FileSaver from 'file-saver';
 @Component({
   selector: 'app-chefs-projets',
   templateUrl: './chefs-projets.component.html',
   styleUrls: ['./chefs-projets.component.css']
 })
 export class ChefsProjetsComponent implements OnInit {
-// Must be declared as "any", not as "DataTables.Settings"
-  dtOptions: any = {};
+  exportColumns: any[];
+  rows = 10;
+  private cols: ({ field: string; header: string; customExportHeader: string } | { field: string; header: string } | { field: string; header: string })[];
+
   chefsProjets:Ressource[];
   modalChef:Ressource=new Ressource();
   host=environment.host;
   modalProjets:Projet[];
   constructor(private ressourceService:RessourcesService,
               private fb:FormBuilder, ) { }
+  exportPdf() {
+    import("jspdf").then(jsPDF => {
+      import("jspdf-autotable").then(x => {
+        const doc = new jsPDF.default();
 
+        (doc as any).autoTable(this.exportColumns, this.chefsProjets);
+        doc.save('chefs_de_projets.pdf');
+      })
+    })
+  }
+
+  exportExcel() {
+    import("xlsx").then(xlsx => {
+      const worksheet = xlsx.utils.json_to_sheet(this.chefsProjets);
+      const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer, "chefs_de_projets");
+    });
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    let EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE
+    });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
   ngOnInit(): void {
-    this.dtOptions = {
 
 
-      // Declare the use of the extension in the dom parameter
-      dom: 'Bfrtip',
-      // Configure the buttons
-      buttons: [
-        // 'columnsToggle',
-        { "extend": 'excel', "text":'Excel  <i style="margin-left:5px" class="fa-solid fa-file-excel"></i>',"className": 'btn btn-default btn-xs' },
-        { "extend": 'colvis', "text":'Filtrer <i class="fa-solid fa-filter"></i>',"className": 'btn btn-default btn-xs' },
-        { "extend": 'copy', "text":'Copier <i class="fa-solid fa-copy"></i>',"className": 'btn btn-default btn-xs' },
-        // 'print',
-      ],
-      language:
-        {
-          "decimal":        "",
-          "emptyTable":     "Aucun chef de projet disponible",
-          "info":           "Total des chefs de projet : _TOTAL_",
-          "infoEmpty":      "Total des chefs de projet : 0 ",
-          "infoFiltered":   "(filtered from _MAX_ total entries)",
-          "infoPostFix":    "",
-          "thousands":      ",",
-          "lengthMenu":     "Show _MENU_ entries",
-          "loadingRecords": "Chargement...",
-          "processing":     "",
-          "search":         "Rechercher:",
-          "zeroRecords":    "Aucun chef de projet retrouvé",
-          "paginate": {
-            "first":      "Premier",
-            "last":       "Dernier",
-            "next":       "Suivant",
-            "previous":   "Précédant"
-          },
-          "aria": {
-            "sortAscending":  ": activate to sort column ascending",
-            "sortDescending": ": activate to sort column descending"
-          }
-        },
-      pagingType:'full_numbers'
-    };
     this.tousLesChefs();
     $(document).ready(function () {
       $('[data-toggle="tooltip"]').tooltip();
@@ -70,6 +62,16 @@ export class ChefsProjetsComponent implements OnInit {
   tousLesChefs() {
     this.ressourceService.tousLesChef().subscribe((ret:Ressource[])=>{
       this.chefsProjets=ret;
+      this.cols = [
+        { field: 'codeRessource', header: 'Code'},
+        { field: 'nom', header: 'Nom' },
+        { field: 'prenom', header: 'Prénom' },
+        { field: 'email', header: 'Email' },
+        { field: 'tel', header: 'Téléphone' },
+        { field: 'emploi', header: 'Emploi' },
+      ];
+      this.exportColumns = this.cols.map(col => ({title: col.header, dataKey: col.field}));
+
       console.log(ret)
     },error => {
       console.log(error)

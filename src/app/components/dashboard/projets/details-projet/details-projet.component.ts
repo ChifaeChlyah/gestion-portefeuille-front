@@ -88,6 +88,7 @@ export class DetailsProjetComponent implements OnInit {
     this.dialog.open(DialogGanttComponent, {
       data: {
         taches: this.taches,
+        isDiagrammeDeTache:true
       },
     });
   }
@@ -697,7 +698,29 @@ export class DetailsProjetComponent implements OnInit {
         this.dateFinPrevue=this.datepipe.transform(this.projet.dateFinPrevue, 'yyyy-MM-dd')
         this.intervenants=p.intervenants;
         this.dropdownOptionsIntervenantsTache=this.intervenants;
-        this.predecesseurs=p.predecesseurs;
+        this.projetsService.tousLesProjets().subscribe(projets=>
+        {
+          this.dropdownOptionsPredecesseurs=new Array();
+          projets.forEach(p=>{
+            let flag=true;
+            if(p.codeProjet==this.codeProjet)
+              flag=false;
+            p.predecesseurs.forEach(pred=>{
+              if(pred.codeProjet==this.codeProjet)
+                flag=false;
+            })
+            if(flag)
+              this.dropdownOptionsPredecesseurs.push(p);
+
+          })
+          this.predecesseurs=new Array()
+          this.dropdownOptionsPredecesseurs.forEach(pd=>{
+            this.projet.predecesseurs.forEach(p=>{
+              if(p.codeProjet==pd.codeProjet)
+                this.predecesseurs.push(pd);
+            })
+          })
+        })
         this.initTaches();
         console.log(this.taches)
       }
@@ -715,14 +738,7 @@ export class DetailsProjetComponent implements OnInit {
     {
       this.dropdownOptionsPortefeuille=portefeuilles;
     })
-    this.projetsService.tousLesProjets().subscribe(projets=>
-    {
-      this.dropdownOptionsPredecesseurs=new Array();
-      projets.forEach(p=>{
-        if(p.codeProjet!=this.codeProjet)
-          this.dropdownOptionsPredecesseurs.push(p);
-      })
-    })
+
     this.authService.getUserbyEmail(this.authService.getEmail()).subscribe(user=>
     {
       this.user=user;
@@ -1184,6 +1200,7 @@ export class DetailsProjetComponent implements OnInit {
         "             <strong>Annulé !</strong> Vos modifications ont été annulées.\n" +
         "           </div>");
       $("#alerts-container-intervenants").append(alert);
+      this.editModeIntervenants=false;
     })
   }
 

@@ -17,7 +17,8 @@
            class="nav-link" routerLink="/accueil"><span class="fa fa-dashboard fa-fw "></span></a>
       </li>
       <li class="nav-item " *ngIf="authService.estChefDeProjet()"
-          [ngClass]="((getUrl()=='/mes-projets-geres'||getUrl().startsWith('/projets/details-projet')?'active':''))"
+          [ngClass]="((getUrl()=='/mes-projets-geres'||(getUrl().startsWith('/projets/details-projet')
+          &&!(authService.estAdmin()||authService.estGestionnairePortefeuille()))?'active':''))"
           [class.icon-top]="(authService.estAdmin()||authService.estGestionnairePortefeuille())">
         <a class="nav-link " routerLink="/mes-projets-geres"
            mat-raised-button
@@ -40,8 +41,8 @@
         ><i class="fa-solid fa-list-check"></i></a>
       </li>
       <li class="nav-item icon-top " *ngIf="authService.estDeveloppeur()"
-          [ngClass]="(getUrl()=='/mon-emploi')?'active':''">
-        <a class="nav-link " routerLink="/mon-emploi"
+          [ngClass]="(getUrl()=='/ma-feuille-de-temps')?'active':''">
+        <a class="nav-link " routerLink="/ma-feuille-de-temps"
            mat-raised-button
            matTooltip="Feuille de temps"
         ><i class="fa-solid fa-calendar"></i></a>

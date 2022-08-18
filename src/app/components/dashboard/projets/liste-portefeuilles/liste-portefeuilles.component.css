@@ -1,8 +1,8 @@
 #table-portefeuilles-container{
   width: 100%;
-  margin-top: 50px;
   display: flex;
   justify-content: center;
+  margin-top: 50px;
 }
 #table-portefeuilles-container
 .fa-solid, .fas {
@@ -16,43 +16,6 @@
 #table-portefeuilles-container
 .fa-solid:hover, .fas :hover{
   opacity: 0.75;
-}
-
-:host ::ng-deep div.dataTables_wrapper {
-  padding: 20px;
-  border: #8080802e 1px solid;
-  border-radius: 10px;
-  box-shadow: 1px 0px 2px 0px #888888;
-  width: 100%;
-}
-:host ::ng-deep #table-portefeuilles-container .btn:not(:disabled):not(.disabled),
-:host ::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-.dataTables_wrapper .dataTables_paginate .paginate_button.current
-{
-  cursor: pointer;
-  background: #f8f8f8de!important;
-  border-color: #8080803b!important;
-}
-:host ::ng-deep #table-portefeuilles-container .btn:not(:disabled):not(.disabled):hover{
-  background: #e1e1e1de!important;
-
-}
-:host ::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
-:host ::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current :hover{
-  background: #e1e1e1de;
-}
-:host ::ng-deep .dataTables_wrapper .dataTables_filter input
-{
-  border: 1px solid #aaaaaa73;
-  border-radius: 3px;
-  padding: 5px;
-  background-color: transparent;
-  margin-left: 3px;
-}
-:host ::ng-deep table.dataTable thead th, table.dataTable tfoot th {
-  font-weight: 500;
-  background: #e2e2e263;
-  color: black;
 }
 
 
@@ -78,4 +41,11 @@
 }
 .delete-label{
   font-weight: bold;
+}
+:host ::ng-deep .p-datatable{
+  width: 75vw;
+}
+:host ::ng-deep .p-datatable.p-datatable-sm .p-datatable-header {
+  display:flex;
+  justify-content: space-between;
 }

@@ -7,12 +7,17 @@ import {Ressource} from "../../model/Ressource.model";
 import {Priorite, PrioriteMapping, Projet, Statut, StatutMapping} from "../../model/Projet.model";
 import {environment} from "../../../environments/environment";
 declare var $:any;
+import * as FileSaver from 'file-saver';
+
 @Component({
   selector: 'app-mes-projets-affecte',
   templateUrl: './mes-projets-affecte.component.html',
   styleUrls: ['./mes-projets-affecte.component.css']
 })
 export class MesProjetsAffecteComponent implements OnInit {
+  exportColumns: any[];
+  rows = 10;
+  private cols: ({ field: string; header: string; customExportHeader: string } | { field: string; header: string } | { field: string; header: string })[];
 
 
   constructor(private authService:AuthentificationService,private ressourcesService:RessourcesService,
@@ -20,136 +25,39 @@ export class MesProjetsAffecteComponent implements OnInit {
               private ressourceService:RessourcesService) { }
   user:Ressource;
   projetsGeres:Projet[];
-  dtOptions: any = {};
   host=environment.host;
   ngOnInit(): void {
     this.tousLesProjets();
-    this.dtOptions = {
-      scrollX: true,
-      // Declare the use of the extension in the dom parameter
-      dom: 'Bfrtip',
-      // Configure the buttons
-      buttons: [
-        // 'columnsToggle',
-        { "extend": 'excel', "text":'Excel  <i style="margin-left:5px" class="fa-solid fa-file-excel"></i>',"className": 'btn btn-default btn-xs' },
-        { "extend": 'colvis', "text":'Filtrer <i class="fa-solid fa-filter"></i>',"className": 'btn btn-default btn-xs' },
-        { "extend": 'copy', "text":'Copier <i class="fa-solid fa-copy"></i>',"className": 'btn btn-default btn-xs' },
-        // 'print',
-      ],
-      language:
-        {
-          "decimal":        "",
-          "emptyTable":     "Aucun Projet disponible",
-          "info":           "Total des projets : _TOTAL_",
-          "infoEmpty":      "Total des projets : 0 ",
-          "infoFiltered":   "(filtered from _MAX_ total entries)",
-          "infoPostFix":    "",
-          "thousands":      ",",
-          "lengthMenu":     "Show _MENU_ entries",
-          "loadingRecords": "Chargement...",
-          "processing":     "",
-          "search":         "Rechercher:",
-          "zeroRecords":    "Aucun projet retrouvé",
-          "paginate": {
-            "first":      "Premier",
-            "last":       "Dernier",
-            "next":       "Suivant",
-            "previous":   "Précédant"
-          },
-          "aria": {
-            "sortAscending":  ": activate to sort column ascending",
-            "sortDescending": ": activate to sort column descending"
-          }
-        },
-      pagingType:'full_numbers'
-    };
-    this.javaScriptForm();
-    this.imageJavaScript();
+
   }
 
-  imageJavaScript()
-  {
-    $(document).ready(function(){
-// Prepare the preview for profile picture
-      $("#wizard-picture").change(function(){
-        readURL(this);
-      });
-    });
-    function readURL(input) {
-      if (input.files && input.files[0]) {
-        var reader = new FileReader();
+  exportPdf() {
+    import("jspdf").then(jsPDF => {
+      import("jspdf-autotable").then(x => {
+        const doc = new jsPDF.default();
 
-        reader.onload = function (e) {
-          $('#wizardPicturePreview').attr('src', e.target.result).fadeIn('slow');
-        }
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
+        (doc as any).autoTable(this.exportColumns, this.projetsGeres);
+        doc.save('Projets affectés.pdf');
+      })
+    })
   }
-  javaScriptForm()
-  {
-    $(document).ready(function() {
-      // Test for placeholder support
-      $.support.placeholder = (function(){
-        var i = document.createElement('input');
-        return 'placeholder' in i;
-      })();
 
-      // Hide labels by default if placeholders are supported
-      if($.support.placeholder) {
-        $('.form-label').each(function(){
-          $(this).addClass('js-hide-label');
-        });
-
-        // Code for adding/removing classes here
-        $('.form-group').find('input, textarea').on('keyup blur focus', function(e){
-
-          // Cache our selectors
-          var $this = $(this),
-            $label = $this.parent().find("label");
-
-          switch(e.type) {
-            case 'keyup': {
-              $label.toggleClass('js-hide-label', $this.val() == '');
-            } break;
-            case 'blur': {
-              if( $this.val() == '' ) {
-                $label.addClass('js-hide-label');
-              } else {
-                $label.removeClass('js-hide-label').addClass('js-unhighlight-label');
-              }
-            } break;
-            case 'focus': {
-              if( $this.val() !== '' ) {
-                $label.removeClass('js-unhighlight-label');
-              }
-            } break;
-            default: break;
-          }
-          // previous implementation with ifs
-          /*if (e.type == 'keyup') {
-              if( $this.val() == '' ) {
-                  $parent.addClass('js-hide-label');
-              } else {
-                  $parent.removeClass('js-hide-label');
-              }
-          }
-          else if (e.type == 'blur') {
-              if( $this.val() == '' ) {
-                  $parent.addClass('js-hide-label');
-              }
-              else {
-                  $parent.removeClass('js-hide-label').addClass('js-unhighlight-label');
-              }
-          }
-          else if (e.type == 'focus') {
-              if( $this.val() !== '' ) {
-                  $parent.removeClass('js-unhighlight-label');
-              }
-          }*/
-        });
-      }
+  exportExcel() {
+    import("xlsx").then(xlsx => {
+      const worksheet = xlsx.utils.json_to_sheet(this.projetsGeres);
+      const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer, "Projets affectés");
     });
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    let EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE
+    });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
   }
   tousLesProjets() {
     this.authService.getUserbyEmail(this.authService.getEmail()).subscribe(
@@ -157,7 +65,23 @@ export class MesProjetsAffecteComponent implements OnInit {
         this.user = user;
         this.ressourcesService.projetsAffectes(user.codeRessource).subscribe(projets=>{
           this.projetsGeres=projets;
-
+          this.cols = [
+            { field: 'codeProjet', header: 'Code'},
+            { field: 'titreProjet', header: 'Titre' },
+            { field: 'description', header: 'description' },
+            { field: 'dateDebutPlanifiee', header: 'Date de début Planifiée'},
+            { field: 'dateFinPlanifiee', header: 'Date de fin Planifiée' },
+            { field: 'dateDebutPrevue', header: 'Date de début Prévue' },
+            { field: 'dateDebutReelle', header: 'Date de début Réelle'},
+            { field: 'dateFinReelle', header: 'Date de fin Réelle' },
+            { field: 'priorite', header: 'Priorité' },
+            { field: 'avancement', header: 'Avancement' },
+            { field: 'statut', header: 'Statut'},
+            { field: 'coutInitial', header: 'Coût Initial' },
+            { field: 'coutReel', header: 'Coût Réel' },
+            { field: 'chefProjet', header: 'Chef de projet' },
+          ];
+          this.exportColumns = this.cols.map(col => ({title: col.header, dataKey: col.field}));
         })
       }
     );

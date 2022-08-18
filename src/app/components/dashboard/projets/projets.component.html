@@ -22,49 +22,75 @@
 
           <div>
             <h4 class="title-slider">Date de début - Date de fin</h4>
-            <div class="dateRangeContainer"style=";width: 90%; margin-left: 0; margin-bottom: 10px;margin-top:5px">
-              <input type="text" placeholder="Date de début - Date de fin (Planifiée)" ngxDaterangepickerMd  class="form-control"/>
+            <div class="my-dropdown-container dropdown-type" style="margin-bottom: 10px;">
+              <ng-multiselect-dropdown
+                [settings]="dropdownSettingsTypeDureeDate"
+                [data]="dropdownListTypeDureeDate"
+                [placeholder]="'Type de date'">
+              </ng-multiselect-dropdown>
             </div>
             <div class="dateRangeContainer"style=";width: 90%; margin-left: 0; margin-bottom: 10px;margin-top:5px">
-              <input type="text" placeholder="Date de début - Date de fin (Prévue)" ngxDaterangepickerMd  class="form-control"/>
+<!--              <input type="text" placeholder="Date de début - Date de fin (Planifiée)" ngxDaterangepickerMd  class="form-control"/>-->
+              <mat-form-field appearance="fill" >
+                <mat-label>Date de début </mat-label>
+                <mat-date-range-input [formGroup]="rangeDateDebut" [rangePicker]="pickerDebut">
+                  <input matStartDate formControlName="start" placeholder="Min date">
+                  <input matEndDate formControlName="end" placeholder="Max date">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="pickerDebut"></mat-datepicker-toggle>
+                <mat-date-range-picker #pickerDebut></mat-date-range-picker>
+
+                <mat-error *ngIf="rangeDateDebut.controls.start.hasError('matStartDateInvalid')">Date min invalide</mat-error>
+                <mat-error *ngIf="rangeDateDebut.controls.end.hasError('matEndDateInvalid')">Date max invalide</mat-error>
+              </mat-form-field>
             </div>
             <div class="dateRangeContainer"style=";width: 90%; margin-left: 0; margin-bottom: 30px;margin-top:5px">
-              <input type="text" placeholder="Date de début - Date de fin (Réelle)" ngxDaterangepickerMd  class="form-control"/>
+<!--              <input type="text" placeholder="Date de début - Date de fin (Prévue)" ngxDaterangepickerMd  class="form-control"/>-->
+              <mat-form-field appearance="fill" >
+                <mat-label>Date de fin</mat-label>
+                <mat-date-range-input [formGroup]="rangeDateFin" [rangePicker]="pickerFin">
+                  <input matStartDate formControlName="start" placeholder="Min date">
+                  <input matEndDate formControlName="end" placeholder="Max date">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+                <mat-date-range-picker #pickerFin></mat-date-range-picker>
+
+                <mat-error *ngIf="rangeDateFin.controls.start.hasError('matStartDateInvalid')">Date min invalide</mat-error>
+                <mat-error *ngIf="rangeDateFin.controls.end.hasError('matEndDateInvalid')">Date max invalide</mat-error>
+              </mat-form-field>
             </div>
+
             <div class="my-dropdown-container">
               <ng-multiselect-dropdown
-                [settings]="dropdownSettings"
-                [data]="dropdownList"
+                [settings]="dropdownSettingsPortefeuilles"
+                [data]="dropdownListPortefeuilles"
                 [placeholder]="'Portefeuilles'" >
               </ng-multiselect-dropdown>
             </div>
             <div class="my-dropdown-container">
               <ng-multiselect-dropdown
-                [settings]="dropdownSettings"
-                [data]="dropdownList"
-                [placeholder]="'Intervenants'">
-              </ng-multiselect-dropdown>
-            </div>
-            <div class="my-dropdown-container">
-              <ng-multiselect-dropdown
-                [settings]="dropdownSettings"
-                [data]="dropdownList"
+                [settings]="dropdownSettingsChefs"
+                [data]="dropdownListChefs"
                 [placeholder]="'Chefs de projet'">
               </ng-multiselect-dropdown>
             </div>
             <div class="my-dropdown-container">
               <ng-multiselect-dropdown
-                [settings]="dropdownSettings"
-                [data]="dropdownList"
+                [settings]="dropdownSettingsStatut"
+                [data]="dropdownListStatut"
                 [placeholder]="'Statuts'">
               </ng-multiselect-dropdown>
             </div>
             <div class="my-dropdown-container">
               <ng-multiselect-dropdown
-                [settings]="dropdownSettings"
-                [data]="dropdownList"
+                [settings]="dropdownSettingsRisque"
+                [data]="dropdownListRisque"
                 [placeholder]="'Risque'">
               </ng-multiselect-dropdown>
+              <label style="margin-top: 10px" for="nbRisques"> Nombre de risques: </label>
+              <input type="number" id="nbRisques" style="width: 25%;margin-left: 10px;margin-right: 20px" placeholder="Min">
+              -
+              <input type="number" id="nbRisques2" style="width: 25%;margin-left: 20px" placeholder="Max">
             </div>
             <div style="margin-top:30px!important;" class="my-slider-left"><h4 class="title-slider">Priorité</h4>
               <div class="slider-container">
@@ -72,12 +98,12 @@
               </div>
             </div>
             <form>
-              <div class="my-slider-left" >
+              <div class="my-slider-left" style="margin-bottom: 0px">
                 <div class="custom-control custom-checkbox slider-container" >
-                  <input class="checkbox custom-checkbox"  id="retard" data-width="50" data-size="xs" type="checkbox" checked data-toggle="toggle" data-on=" " data-off=" " data-onstyle="secondary" data-offstyle="primary">
-                  <label class="custom-control-label" style="font-size: 1.1em ;margin-left:0px" for="retard">En retard</label>
+                  <mat-checkbox class="example-margin">Complet</mat-checkbox>
                 </div>
               </div>
+
             </form>
 <!--            <div class="my-slider-left"><h4 class="title-slider">Risque</h4>-->
 <!--              <div class="slider-container">-->
@@ -87,34 +113,42 @@
           </div>
         </div>
         <div>
-          <div class="my-slider form-group"><h4 class="title-slider">Budget</h4>
+          <div class="my-slider form-group"><h4 class="title-slider">Coût initial</h4>
             <div class="slider-container" >
               <div class="slider-container2">
-                <span style="margin-bottom: 8px">Min:</span><input  class="form-control small-input" type="number" [(ngModel)]="minBudget">
+                <span style="margin-bottom: 8px">Min:</span><input  class="form-control small-input" type="number" [(ngModel)]="minCoutInitial">
               </div>
               <div class="slider-container2">
-                <span >Max:</span><input  class="form-control small-input" type="number" [(ngModel)]="maxBudget">
+                <span >Max:</span><input  class="form-control small-input" type="number"  [(ngModel)]="maxCoutInitial">
               </div>
-              <ngx-slider [(value)]="minBudget" [(highValue)]="maxBudget" [options]="options"></ngx-slider>
+              <ngx-slider [(value)]="minCoutInitial" [(highValue)]="maxCoutInitial" [options]="optionsCoutInitial"></ngx-slider>
             </div>
           </div>
 
-          <div class="my-slider form-group"><h4 class="title-slider">Coût</h4>
+          <div class="my-slider form-group"><h4 class="title-slider">Coût réel</h4>
             <div class="slider-container">
-              <div class="slider-container2">
-                <span style="margin-bottom: 8px">Min: </span><input  class="form-control small-input" type="number" [(ngModel)]="minCout">
+              <div *ngIf="optionsCoutReel" class="slider-container2">
+                <span style="margin-bottom: 8px">Min: </span><input  class="form-control small-input" type="number" [(ngModel)]="minCoutReel">
               </div>
               <div class="slider-container2">
-                <span >Max: </span><input  class="form-control small-input" type="number" [(ngModel)]="maxCout">
+                <span >Max: </span><input  class="form-control small-input" type="number" [(ngModel)]="maxCoutReel">
               </div>
-              <ngx-slider [(value)]="minCout" [(highValue)]="maxCout" [options]="options"></ngx-slider>
+              <ngx-slider [(value)]="minCoutReel" [(highValue)]="maxCoutReel" [options]="optionsCoutReel"></ngx-slider>
             </div>
           </div>
           <div class="my-slider form-group"><h4 class="title-slider">Durée</h4>
-            <div class="slider-container" >
-              <ngx-select-dropdown [instanceId]="'instance1'" (change)="selectionChangedTypeDuree($event)" [config]="configDropdownTypeDuree" [options]="dropdownOptionsTypeDuree"></ngx-select-dropdown>
-              <ngx-duration-picker [(value)]="duree" [options]="{ showWeeks: false, showHours: false,
+            <div class="slider-container">
+              <div class="my-dropdown-container dropdown-type" >
+                <ng-multiselect-dropdown style="margin-bottom: 10px;"
+                                         [settings]="dropdownSettingsTypeDureeDate"
+                                         [data]="dropdownListTypeDureeDate"
+                                         [placeholder]="'Type de durée'">
+                </ng-multiselect-dropdown>
+              </div><ngx-duration-picker [(value)]="duree" [options]="{ showWeeks: false, showHours: false,
           showMinutes:false,showSeconds:false,previewFormat:'{{Y}} années, {{M}} mois, {{D}} jours' }"></ngx-duration-picker>
+            </div>
+              <div class="custom-control custom-checkbox slider-container" >
+                <mat-checkbox class="example-margin">En retard</mat-checkbox>
             </div>
           </div>
 

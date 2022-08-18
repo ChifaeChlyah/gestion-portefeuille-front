@@ -1,0 +1,156 @@
+
+#planning .fa-plus{
+  margin-top: 40px;
+  font-size: large;
+  color: #370821;
+  border-radius: 50px;
+  background: #d8c3ca;
+  padding: 5px;
+}
+#planning .fa-plus:hover{
+  opacity:0.75;
+  cursor:pointer;
+}
+#planning .table{
+  width: 100%;
+}
+#planning .table thead th{
+  text-align: center;
+  border-left: 1px solid #dee2e6;
+  font-weight: 400;
+}
+.dropdown-table{
+  width:200px
+}
+#planning .table td {
+  padding:0;
+  border-left: 1px solid #dee2e6;
+  border-top: 1px solid transparent;
+}
+#planning td .form-control{
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%!important;
+}
+:host ::ng-deep td  button{
+  border: 1px solid transparent!important;
+  border-bottom: 2px solid #ccc!important;
+  border-radius: 0!important;
+  width: 100%;
+  line-height: 1.42857143;
+}
+#planning thead tr{
+  background: #d8c3ca;
+}
+:host ::ng-deep .md-drppicker .btn
+{
+  background: #370821;
+}
+:host ::ng-deep .md-drppicker td.active, .md-drppicker td.active {
+  background: #370821;
+}
+
+:host ::ng-deep .ngx-dropdown-container .ngx-disabled {
+  background-color: #f3f0f2 !important;
+  border: none!important;
+}
+
+:host ::ng-deep .ngx-dropdown-container button:disabled .nsdicon-angle-down {
+  color: transparent;
+}
+
+textarea {
+  resize: none;
+}
+.form-label {
+  font-size: 12px;
+  color: #880e4f;
+  margin: 0;
+  display: block;
+  opacity: 1;
+  -webkit-transition: .333s ease top, .333s ease opacity;
+  transition: .333s ease top, .333s ease opacity;
+}
+.form-control {
+  border-radius: 0;
+  border-color: #ccc;
+  border-width: 0 0 2px 0;
+  border-style: none none solid none;
+  box-shadow: none;
+  margin-left: 5px;
+  margin-right: 5px;
+  background: #cccccc1c;
+}
+.form-control:disabled {
+  border-radius: 5px;
+  background: #f3f0f2;
+  border-color: transparent;
+}
+.form-control:focus {
+  box-shadow: none;
+  border-color: #880e4f;
+}
+.js-hide-label {
+  opacity: 0;
+}
+.js-unhighlight-label {
+  color: #999
+}
+.btn-start-order {
+  background: 0 0 #ffffff;
+  border: 1px solid #2f323a;
+  border-radius: 3px;
+  color: #2f323a;
+  font-family: "Raleway", sans-serif;
+  font-size: 16px;
+  line-height: inherit;
+  margin: 30px 0;
+  padding: 10px 50px;
+  text-transform: uppercase;
+  transition: all 0.25s ease 0s;
+  width: 60%;
+}
+.btn-start-order:hover,.btn-start-order:active, .btn-start-order:focus {
+  border-color: #880e4f;
+  color: #880e4f;
+}
+
+
+
+.fa-file-pen:hover
+{
+  color: #880e4f!important;
+}
+.fa-file-pen
+{
+  cursor: pointer;
+}
+#planning  .fa-x{
+  color: darkred!important;
+  cursor: pointer;
+}
+#planning  .fa-check {
+  color: yellowgreen !important;
+  cursor: pointer;
+}
+#planning  .fa-x:hover{
+  opacity: 0.75;
+}
+#planning  .fa-check:hover{
+  opacity: 0.75;
+}
+
+
+.activites-container{
+  margin: 30px;
+}
+:host ::ng-deep .page-item.active .page-link {
+  background-color: #a98e97;
+  border-color: #a98e97;
+}
+:host ::ng-deep .page-link {
+  color:#8b7b80;
+}
+:host ::ng-deep .page-item.active .page-link span{
+  display:none!important;
+}

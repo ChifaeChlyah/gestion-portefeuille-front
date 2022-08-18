@@ -5,6 +5,8 @@ import Gantt from 'frappe-gantt';
 import {Tache} from "../../../../model/Tache.model";
 import {DatePipe} from "@angular/common";
 import {colors} from "@angular/cli/src/utilities/color";
+import {ProjetsService} from "../../../../services/projets.service";
+import {Projet} from "../../../../model/Projet.model";
 declare var $ :any
 
 declare var angular: any;
@@ -16,16 +18,18 @@ declare var angular: any;
 export class GanttComponent implements OnInit {
   @ViewChild("editor") editor: GanttEditorComponent;
   @Input() tachesProjetInput?: Tache[] ;
+  @Input() isDiagrammeDeTache?: boolean ;
   public editorOptions: GanttEditorOptions;
   public data: any;
-
-  constructor(public fb: FormBuilder,public datepipe: DatePipe) {}
+  projets:Projet[];
+  constructor(public fb: FormBuilder,public datepipe: DatePipe,
+              private projetsService:ProjetsService) {}
 
   ngOnInit() {
-
-    this.data = this.initialData();
+  if(this.isDiagrammeDeTache==true) {
+    this.data = this.initialDataDiagrammeDeTache();
     this.editorOptions = {
-      vFormat: "day",
+      vFormat: 'Day',
       vEditable: false,
       vEventsChange: {
         taskname: () => {
@@ -36,14 +40,36 @@ export class GanttComponent implements OnInit {
       vShowStartDate:false,
       vShowRes:false,
       vShowDur:false,
-      vShowComp:false
-    };
+      vShowComp:false,
 
+    };
+  }
+  else{
+    this.projetsService.tousLesProjets().subscribe(
+      projets=>{
+        this.projets=projets;
+        this.data=this.initialDataDiagrammeDeProjets();
+        this.editorOptions = {
+          vFormat: "day",
+          vEditable: false,
+          vEventsChange: {
+            taskname: () => {
+              console.log("taskname");
+            }
+          },
+          vShowEndDate:false,
+          vShowStartDate:false,
+          vShowRes:false,
+          vShowDur:false,
+          vShowComp:false
+        };
+      });
+  }
   }
 
 
 
-  initialData() {
+  initialDataDiagrammeDeTache() {
     let tasks=new Array();
     this.tachesProjetInput.forEach(tache=>{
       let ressources=new Array();
@@ -456,6 +482,93 @@ export class GanttComponent implements OnInit {
   //     //   pNotes: ""
   //     // }
   //   ];
+  }
+  initialDataDiagrammeDeProjets() {
+    let tasks=new Array();
+    for(let i=1;i<=this.projets.length;i++){
+      let ressources=new Array();
+      // tache.interventions.forEach(
+      //   i=>{
+      //     ressources.push(i.intervenant.nom+" "+i.intervenant.prenom)
+      //   }
+      // )
+      var childColors = ["gtaskpink","gtaskblue","gtaskgreen","gtaskyellow"];
+      var randColor = childColors[Math.floor(Math.random() * childColors.length)];
+      var parent=null;
+      // if(tache.tacheMere!=null)
+      //   parent=tache.tacheMere.idTache;
+      var dependances="";
+      var dep=[];
+      var dep2:boolean[]=[];
+      for(let x=1;x<=this.projets[i-1].predecesseurs.length;x++)
+      {
+        for(let j=1;j<=this.projets.length;j++)
+        {
+          if(this.projets[i-1].predecesseurs[x-1].codeProjet==this.projets[j-1].codeProjet) {
+            dep.push(j);
+            dep2[j]=true;
+          }
+        }
+        // if(i!=0)
+        //   dependances+=","+i;
+        // else
+        //   dependances+=i;
+      }
+      dep.forEach(d=>{
+        dep.forEach(d2=>{
+          this.projets[d-1].predecesseurs.forEach(p=>{
+            if(p.codeProjet==this.projets[d2-1].codeProjet)
+              dep2[d2]=false;
+          })
+        })
+      })
+      for(let x=1;x<=dep.length;x++)
+      {
+        let first=true;
+        if(dep2[dep[x-1]]==true){
+          if (first) {
+            first=false;
+            dependances += dep[x-1];
+          }
+          else
+            dependances += "," + dep[x-1];
+        }
+      }
+      var pClass="";
+      var mere=false;
+      // this.tachesProjetInput.forEach(
+      //   t=>{
+      //     if(t.tacheMere!=null&&t.tacheMere.idTache==tache.idTache)
+      //       mere=true;
+      //   }
+      // );
+      if(mere)
+        pClass="ggroupblack";
+      else
+        pClass=randColor;
+      var t={
+        pID: i,
+        pName: this.projets[i-1].titreProjet,
+        pStart: this.datepipe.transform(this.projets[i-1].dateDebutPrevue, 'yyyy-MM-dd'),
+        pEnd: this.datepipe.transform(this.projets[i-1].dateFinPrevue, 'yyyy-MM-dd'),
+        pClass: pClass,
+        pLink: "",
+        pMile: 0,
+        pRes: this.projets[i-1].chefProjet.nom+" "+this.projets[i-1].chefProjet.prenom,
+        pComp: this.projets[i-1].avancement,
+        pGroup: (mere)?1:0,
+        pParent: (parent==null)?"":parent,
+        pOpen: 1,
+        pDepend: dependances,
+        pCaption: "",
+        pNotes: this.projets[i-1].description
+      }
+      tasks.push(t);
+    }
+    console.log(tasks)
+    return tasks;
+
+
   }
 
 

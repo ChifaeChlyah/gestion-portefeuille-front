@@ -7,66 +7,60 @@ import {environment} from "../../../environments/environment";
 import {ProjetsService} from "../../services/projets.service";
 import {DatePipe} from "@angular/common";
 declare var $:any;
+import * as FileSaver from 'file-saver';
+
 @Component({
   selector: 'app-mes-projets-geres',
   templateUrl: './mes-projets-geres.component.html',
   styleUrls: ['./mes-projets-geres.component.css']
 })
 export class MesProjetsGeresComponent implements OnInit {
+  exportColumns: any[];
+  rows = 10;
+  private cols: ({ field: string; header: string; customExportHeader: string } | { field: string; header: string } | { field: string; header: string })[];
 
   constructor(private authService:AuthentificationService,private ressourcesService:RessourcesService,
               private serviceProjets:ProjetsService,public datepipe: DatePipe,
               private ressourceService:RessourcesService) { }
   user:Ressource;
   projetsGeres:Projet[];
-  dtOptions: any = {};
   host=environment.host;
   edit:boolean[]=new Array();
   priorite:any[]=new Array();
   statut:any[]=new Array();
   submitted:boolean[]=new Array();
   projetASupprimer:Projet;
+
+  exportPdf() {
+    import("jspdf").then(jsPDF => {
+      import("jspdf-autotable").then(x => {
+        const doc = new jsPDF.default();
+
+        (doc as any).autoTable(this.exportColumns, this.projetsGeres);
+        doc.save('projets gérés.pdf');
+      })
+    })
+  }
+
+  exportExcel() {
+    import("xlsx").then(xlsx => {
+      const worksheet = xlsx.utils.json_to_sheet(this.projetsGeres);
+      const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer, "projets gérés");
+    });
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    let EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE
+    });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
   ngOnInit(): void {
     this.tousLesProjets();
-    this.dtOptions = {
-      scrollX: true,
-      // Declare the use of the extension in the dom parameter
-      dom: 'Bfrtip',
-      // Configure the buttons
-      buttons: [
-        // 'columnsToggle',
-        { "extend": 'excel', "text":'Excel  <i style="margin-left:5px" class="fa-solid fa-file-excel"></i>',"className": 'btn btn-default btn-xs' },
-        { "extend": 'colvis', "text":'Filtrer <i class="fa-solid fa-filter"></i>',"className": 'btn btn-default btn-xs' },
-        { "extend": 'copy', "text":'Copier <i class="fa-solid fa-copy"></i>',"className": 'btn btn-default btn-xs' },
-        // 'print',
-      ],
-      language:
-        {
-          "decimal":        "",
-          "emptyTable":     "Aucun Projet disponible",
-          "info":           "Total des projets : _TOTAL_",
-          "infoEmpty":      "Total des projets : 0 ",
-          "infoFiltered":   "(filtered from _MAX_ total entries)",
-          "infoPostFix":    "",
-          "thousands":      ",",
-          "lengthMenu":     "Show _MENU_ entries",
-          "loadingRecords": "Chargement...",
-          "processing":     "",
-          "search":         "Rechercher:",
-          "zeroRecords":    "Aucun projet retrouvé",
-          "paginate": {
-            "first":      "Premier",
-            "last":       "Dernier",
-            "next":       "Suivant",
-            "previous":   "Précédant"
-          },
-          "aria": {
-            "sortAscending":  ": activate to sort column ascending",
-            "sortDescending": ": activate to sort column descending"
-          }
-        },
-      pagingType:'full_numbers'
-    };
     this.javaScriptForm();
     this.imageJavaScript();
     this.ressourceService.tousLesChef().subscribe(chefs=>
@@ -165,6 +159,23 @@ export class MesProjetsGeresComponent implements OnInit {
         this.user = user;
         this.ressourcesService.projetsGeres(user.codeRessource).subscribe(projets=>{
           this.projetsGeres=projets;
+          this.cols = [
+            { field: 'codeProjet', header: 'Code'},
+            { field: 'titreProjet', header: 'Titre' },
+            { field: 'description', header: 'description' },
+            { field: 'dateDebutPlanifiee', header: 'Date de début Planifiée'},
+            { field: 'dateFinPlanifiee', header: 'Date de fin Planifiée' },
+            { field: 'dateDebutPrevue', header: 'Date de début Prévue' },
+            { field: 'dateDebutReelle', header: 'Date de début Réelle'},
+            { field: 'dateFinReelle', header: 'Date de fin Réelle' },
+            { field: 'priorite', header: 'Priorité' },
+            { field: 'avancement', header: 'Avancement' },
+            { field: 'statut', header: 'Statut'},
+            { field: 'coutInitial', header: 'Coût Initial' },
+            { field: 'coutReel', header: 'Coût Réel' },
+            { field: 'chefProjet', header: 'Chef de projet' },
+          ];
+          this.exportColumns = this.cols.map(col => ({title: col.header, dataKey: col.field}));
           for(let i=0;i<projets.length;i++)
           {
             this.edit[i]=false;

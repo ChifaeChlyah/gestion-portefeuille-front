@@ -1,61 +1,61 @@
-<!--<app-nav-bar-top ></app-nav-bar-top>-->
+<app-nav-bar-top *ngIf="mesTachesPage" ></app-nav-bar-top>
 
-<!--<h2 class="bienvenu">Bienvenu {{user.prenom}}</h2>-->
-<!--<div class="taches-container">-->
-<!--  <mat-accordion *ngFor="let tache of taches| paginate: { itemsPerPage: 6, currentPage: p };let i=index">-->
-<!--    <mat-expansion-panel>-->
-<!--      <mat-expansion-panel-header>-->
-<!--        <mat-panel-title> {{tache.titre}} </mat-panel-title>-->
-<!--        <mat-panel-description>-->
-<!--          {{tache.description}}-->
+<h2 class="bienvenu" *ngIf="mesTachesPage">Bienvenu {{user.prenom}}</h2>
+<h1 class="titreTaches" *ngIf="mesTachesPage">Toutes mes tâches</h1>
+<div class="taches-container" *ngIf="taches">
+  <mat-accordion *ngFor="let tache of taches| paginate: { itemsPerPage: 15, currentPage: p };let i=index"
+  [ngStyle]="{'width':(mesTachesPage)?'30%':'45%'}">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title> {{tache.titre}} </mat-panel-title>
+        <mat-panel-description>
+          {{tache.description}}
 
-<!--        </mat-panel-description>-->
-<!--      </mat-expansion-panel-header>-->
-<!--      <p class="titre-group-inputs"><i class="fa-solid fa-angles-right"></i> Dates de la tâches</p>-->
-<!--      <div class="dates">-->
-<!--        <span class="date-container">-->
-<!--          <span class="date-titre">Date de début planifiée :</span>-->
-<!--          <span class="date">{{datepipe.transform(tache.dateDebutPlanifiee, 'dd-MM-yyyy')}}</span>-->
-<!--        </span>-->
-<!--        <span class="date-container">-->
-<!--          <span class="date-titre">Date de fin planifiée :</span>-->
-<!--          <span class="date" >{{datepipe.transform(tache.dateFinPlanifiee, 'dd-MM-yyyy')}}</span>-->
-<!--        </span>-->
-<!--        <span class="date-container">-->
-<!--          <span class="date-titre">Date de début prevue :</span>-->
-<!--          <span class="date" >{{datepipe.transform(tache.dateDebutPrevue, 'dd-MM-yyyy')}}</span>-->
-<!--        </span>-->
-<!--        <span class="date-container">-->
-<!--          <span class="date-titre">Date de fin prevue :</span>-->
-<!--          <span class="date" >{{datepipe.transform(tache.dateDebutPrevue, 'dd-MM-yyyy')}}</span>-->
-<!--&lt;!&ndash;          <span class="date-container pas-encore-valide">&ndash;&gt;-->
-<!--&lt;!&ndash;          <span>*Changement pas encore validé:</span>&ndash;&gt;-->
-<!--&lt;!&ndash;          <span>{{datepipe.transform(tache.dateDebutPrevue, 'dd-MM-yyyy')}}</span>&ndash;&gt;-->
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p class="titre-group-inputs"><i class="fa-solid fa-angles-right"></i> Dates et avancement de la tâche</p>
+      <span >
+        <span class="date-container">
+                  <span class="date-titre" >Projet :</span>
+                  <span class="date">{{tache.projet.titreProjet}}</span>
+        </span>
+        <span class="date-container">
+                  <span class="date-titre" >Dates planifiées :</span>
+                  <span class="date">{{datepipe.transform(tache.dateDebutPlanifiee, 'dd-MM-yyyy')}} / {{datepipe.transform(tache.dateFinPlanifiee, 'dd-MM-yyyy')}}</span>
+        </span>
+          <br>
+        <span class="date-container">
+        <span class="date-titre">Dates Prévues :</span>
+                  <span class="date-icon"><span class="date">{{datepipe.transform(tache.dateDebutPrevue, 'dd-MM-yyyy')}} / {{datepipe.transform(tache.dateFinPrevue, 'dd-MM-yyyy')}}</span>
+          <i *ngIf="mesTachesPage" matTooltip="Changer les dates prévues" class="fa-solid fa-calendar-plus"></i>
+                    </span>
+         <span *ngIf="mesTachesPage" class="date-container invalide tooltip-right"
+               ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+               popoverTitle="Message d'invalidation">
+          <span>*Changement invalide:
+          {{datepipe.transform(tache.dateDebutPrevue, 'dd-MM-yyyy')}} / {{datepipe.transform(tache.dateFinPrevue, 'dd-MM-yyyy')}}</span>
+          </span>
+        </span>
+          <br>
+        <span class="date-container">
+        <span class="date-titre">Dates réelles :</span>
+                  <span class="date">{{datepipe.transform(tache.dateDebutRelle, 'dd-MM-yyyy')}} / {{datepipe.transform(tache.dateFinRelle, 'dd-MM-yyyy')}}</span>
+                </span>
+        </span>
+      <br>
+      <span class="date-container">
+      <span class="date-titre">Avancement: </span>
+        <span class="date-icon"><span class="date">{{tache.avancement}} %</span>
+        <i *ngIf="mesTachesPage" matTooltip="Changer l'avancement" class="fa-solid fa-sliders"></i> </span>
+        </span>
+      <span *ngIf="mesTachesPage" class="date-container pas-encore-valide">
+          <span>*Changement pas encore validé: {{tache.avancement}} %</span>
+        </span>
+    </mat-expansion-panel>
 
-<!--          <span class="date-container invalide tooltip-right"  data-tooltip="Message d'invalidation" >-->
-<!--          <span>*Changement invalide:</span>-->
-<!--          <span>{{datepipe.transform(tache.dateDebutPrevue, 'dd-MM-yyyy')}}</span>-->
-<!--          </span>-->
+  </mat-accordion>
+  </div>
 
-
-<!--        </span>-->
-<!--        <span class="date-container" *ngIf="tache.dateDebutRelle">-->
-<!--&lt;!&ndash;        <span class="date-container">&ndash;&gt;-->
-<!--          <span class="date-titre">Date de début réelle :</span>-->
-<!--          <span class="date" >{{datepipe.transform(tache.dateDebutRelle, 'dd-MM-yyyy')}}</span>-->
-<!--        </span>-->
-<!--        <span class="date-container" *ngIf="tache.dateFinRelle">-->
-<!--&lt;!&ndash;        <span class="date-container">&ndash;&gt;-->
-<!--          <span class="date-titre">Date de fin Réelle :</span>-->
-<!--          <span class="date" >{{datepipe.transform(tache.dateFinRelle, 'dd-MM-yyyy')}}</span>-->
-<!--        </span>-->
-<!--        <span><span class="changer-button"><i class="fa-solid fa-calendar-plus"></i> Changer les dates prevues</span></span>-->
-<!--      </div>-->
-<!--    </mat-expansion-panel>-->
-
-<!--  </mat-accordion>-->
-<!--  </div>-->
-
-<!--<pagination-controls previousLabel="Précédent"-->
-<!--                     nextLabel="Suivant" (pageChange)="p = $event"></pagination-controls>-->
+<pagination-controls previousLabel="Précédent"
+                     nextLabel="Suivant" (pageChange)="p = $event"></pagination-controls>
 

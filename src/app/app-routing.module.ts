@@ -14,7 +14,7 @@ import {
   NouveauPortefeuilleComponent
 } from "./components/dashboard/projets/nouveau-portefeuille/nouveau-portefeuille.component";
 import {MesTachesComponent} from "./components/mes-taches/mes-taches.component";
-import {MonEmploiComponent} from "./components/mon-emploi/mon-emploi.component";
+import {MonEmploiComponent} from "./components/feuille-de-temps/mon-emploi.component";
 import {MesInfosComponent} from "./components/mes-infos/mes-infos.component";
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {ConnexionComponent} from "./components/connexion/connexion.component";
@@ -100,7 +100,7 @@ const routes: Routes = [
             component:ChefsProjetsComponent
           },
           {
-            path: 'details-ressource',
+            path: 'details-ressource/:codeRessource',
             component:DetailsEmployeComponent
           }
 
@@ -204,7 +204,7 @@ const routes: Routes = [
 
   },
   {
-    path: 'mon-emploi',
+    path: 'ma-feuille-de-temps',
     component: MonEmploiComponent,
     canActivate: [AuthGuard,RoleGuard],
     data: {

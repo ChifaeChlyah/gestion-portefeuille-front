@@ -1,4 +1,5 @@
 import {Intervention} from "./Intervention.model";
+import {Projet} from "./Projet.model";
 
 export class Tache {
   idTache:number;
@@ -16,4 +17,5 @@ export class Tache {
   tacheMere:Tache;
   dependances:Tache[];
   interventions:Intervention[];
+  projet:Projet
 }

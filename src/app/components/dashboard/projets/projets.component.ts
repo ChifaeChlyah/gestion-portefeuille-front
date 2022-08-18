@@ -1,29 +1,108 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {IDropdownSettings} from "ng-multiselect-dropdown";
 import {Options} from "@angular-slider/ngx-slider";
 import {Router} from "@angular/router";
 import {AuthentificationService} from "../../../services/authentification.service";
+import {FormControl, FormGroup} from "@angular/forms";
+import {DateAdapter, MAT_DATE_LOCALE} from "@angular/material/core";
+import {Projet, StatutMapping} from "../../../model/Projet.model";
+import {PortefeuilleService} from "../../../services/portefeuille.service";
+import {RessourcesService} from "../../../services/ressources.service";
+import {Ressource} from "../../../model/Ressource.model";
+import {ProjetsService} from "../../../services/projets.service";
 declare var $: any;
 @Component({
   selector: 'app-projets',
   templateUrl: './projets.component.html',
-  styleUrls: ['./projets.component.css']
+  styleUrls: ['./projets.component.css'],
 })
 export class ProjetsComponent implements OnInit {
-  constructor(private router:Router,public authService:AuthentificationService) {
-  }
-  dropdownList:any[] = [];
-  dropdownSettings:IDropdownSettings={};
-  minCout: number = 50;
-  maxCout: number = 200;
-  minBudget: number = 50;
-  maxBudget: number = 200;
+  optionsCoutInitial: Options={ceil:500000,floor:0};
+  minCoutReel: number=0;
+  maxCoutReel: number=200000;
+  minCoutInitial: number=0;
+  maxCoutInitial: number=20000;
   FilterHidden: boolean=true;
 
-  options: Options = {
-    floor: 0,
-    ceil: 250
+  optionsCoutReel: Options={ceil:500,floor:0};
+  tousLesChefs:Ressource[]
+  tousLesProjets:Projet[]
+  public StatutMapping = StatutMapping;
+  constructor(private router:Router,public authService:AuthentificationService,
+              private portefeuillesService:PortefeuilleService,
+              private ressourcesService:RessourcesService, private projetsService:ProjetsService) {
+  }
+  rangeDateDebut = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
+  rangeDateFin = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
+  dropdownList:any[] = [];
+  dropdownSettings:IDropdownSettings={
+    selectAllText: 'Sélectionner tout',
+    unSelectAllText: 'Désélectionner tout',
   };
+  // --------DropdownStatut--------------------------
+  dropdownListStatut:any[] = [
+    {id:0,valeur:this.StatutMapping[0]},
+    {id:1,valeur:this.StatutMapping[1]},
+    {id:2,valeur:this.StatutMapping[2]},
+    {id:3,valeur:this.StatutMapping[3]},
+    {id:4,valeur:this.StatutMapping[4]},
+    {id:5,valeur:this.StatutMapping[5]},
+    {id:6,valeur:this.StatutMapping[6]},
+  ];
+  dropdownSettingsStatut:IDropdownSettings={
+    idField: 'id',
+    textField: 'valeur',
+    selectAllText: 'Sélectionner tout',
+    unSelectAllText: 'Désélectionner tout',
+  };
+  // --------DropdownRisque--------------------------
+  dropdownListRisque:any[] = [
+    {id:0,valeur:"Faible"},
+    {id:1,valeur:"Moyen"},
+    {id:2,valeur:"Elevé"},
+  ];
+  dropdownSettingsRisque:IDropdownSettings={
+    idField: 'id',
+    textField: 'valeur',
+    selectAllText: 'Sélectionner tout',
+    unSelectAllText: 'Désélectionner tout',
+  };
+  // --------DropdownTypeDureeDate--------------------------
+  dropdownListTypeDureeDate:any[] = [
+    {id:0,valeur:"Planifiée"},
+    {id:1,valeur:"Prévue"},
+    {id:2,valeur:"Réelle"},
+  ];
+  dropdownSettingsTypeDureeDate:IDropdownSettings={
+    idField: 'id',
+    textField: 'valeur',
+    selectAllText: 'Sélectionner tout',
+    unSelectAllText: 'Désélectionner tout',
+  };
+  // --------DropdownPortefeuille--------------------------
+  dropdownListPortefeuilles:any[] ;
+  dropdownSettingsPortefeuilles:IDropdownSettings={
+    idField: 'codeFamille',
+    textField: 'titreFamille',
+    selectAllText: 'Sélectionner tout',
+    unSelectAllText: 'Désélectionner tout',
+  };
+  // --------DropdownChefs--------------------------
+  dropdownListChefs:any[] =[];
+  dropdownSettingsChefs:IDropdownSettings={
+    idField: 'id',
+    textField: 'nom_prenom',
+    selectAllText: 'Sélectionner tout',
+    unSelectAllText: 'Désélectionner tout',
+  };
+
+
 
   duree: any;
 JqueryCode(){
@@ -34,52 +113,7 @@ JqueryCode(){
 
 }
   risque: number = 1;
-  options2: Options = {
-    floor: 0,
-    ceil: 3,
-    showSelectionBar: true,
 
-    getSelectionBarColor: (value: number): string => {
-      if (value == 1) {
-        return '#2AE02A';
-      }
-      if (value == 2) {
-        return 'orange';
-      }
-      if (value == 3) {
-        return 'red';
-      }
-      return '#2AE02A';
-    },
-    getPointerColor:(value: number): string => {
-      if (value == 1) {
-        return '#2AE02A';
-      }
-      if (value == 2) {
-        return 'orange';
-      }
-      if (value == 3) {
-        return 'red';
-      }
-      return '#2AE02A';
-    },
-    showTicksValues:false,
-    hidePointerLabels:true,
-    hideLimitLabels:true,
-    showTicks: true,
-    getLegend: (value: number): string => {
-      if (value == 1) {
-        return 'Faible';
-      }
-      if (value == 2) {
-        return 'Moyen';
-      }
-      if (value == 3) {
-        return 'Fort';
-      }
-      return 'Aucun';
-    }
-  };
   form: any;
   priorite: number = 2;
   optionsPriorite: Options = {
@@ -129,21 +163,45 @@ JqueryCode(){
 
 
   ngOnInit() {
-    this.dropdownList = [
-      {item_id: 1, item_text: 'PSIN'},
-      {item_id: 2, item_text: 'PSIG'},
-      {item_id: 3, item_text: 'INFR'},
-      {item_id: 4, item_text: 'ATPR'},
-      {item_id: 5, item_text: 'MAINT'},
-      {item_id: 5, item_text: 'EAST'}
-    ];
-    this.dropdownSettings = {
-      idField: 'item_id',
-      textField: 'item_text',
-      allowSearchFilter: true,
+    this.portefeuillesService.tousLesPortefeuilles().subscribe(
+      portefeuilles=>{
+        this.dropdownListPortefeuilles=portefeuilles;
+      }
+    )
+    this.ressourcesService.tousLesChef().subscribe(chefs=>{
+      this.tousLesChefs=chefs;
+      let cs=[]
+      chefs.forEach(c=>{
+        cs.push({id:c.codeRessource,nom_prenom:c.nom+" "+c.prenom})
+      })
+      this.dropdownListChefs=cs;
+      console.log("chefs")
+      console.log(this.dropdownListChefs)
+    })
+    this.loadCout()
+  }
+  async loadCout(){
+    await this.projetsService.tousLesProjets().toPromise().then(
+      projets=>{
+      this.tousLesProjets=projets;
+      let maxReel=0
+      let maxInitial=0
+      projets.forEach(p=>{
+        if(p.coutInitial>maxInitial) {
+          maxInitial=p.coutInitial;
+        }
+        if(p.coutReel>maxReel) {
+          maxReel = p.coutReel;
+        }
+      })
 
-    };
-    // this.JqueryCode();
+      this.optionsCoutReel = {ceil:maxReel,floor:0};
+      this.maxCoutReel = maxReel;
+      this.optionsCoutInitial = {ceil:maxInitial,floor:0};
+      this.maxCoutInitial = maxInitial;
+      console.log("this.optionsCoutInitialthis.optionsCoutInitial")
+      console.log(this.optionsCoutInitial)
+    })
   }
   async delay(ms: number) {
     await new Promise<void>(resolve => setTimeout(()=>resolve(), ms)).then(()=>console.log("fired"));
@@ -160,17 +218,4 @@ JqueryCode(){
   getUrl():string{
     return this.router.url;
 }
-//dropdown type de duree
-  selectionChangedTypeDuree($event: any) {
-
-  }
-  configDropdownTypeDuree={
-    placeholder:'Type de durée'
-  }
-  dropdownOptionsTypeDuree=[
-    'Planifiée',
-    'Prévue',
-    'Réelle',
-
-  ];
 }

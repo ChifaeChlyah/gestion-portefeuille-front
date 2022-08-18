@@ -21,9 +21,9 @@ declare var $:any
   styleUrls: ['./nouveau-projet.component.css']
 })
 export class NouveauProjetComponent implements OnInit {
-  nbTaches: number[] = [0];
+  nbTaches: number[] = [];
   nbInterventionParTaches: any[]=new Array();
-  taches:Tache[]=new Array(1);
+  taches:Tache[]=new Array();
   piecesJointesValid:boolean=true;
   infoGeneralesValid:boolean=true;
   risquesF:Risque[]=new Array();
@@ -548,8 +548,7 @@ export class NouveauProjetComponent implements OnInit {
     this.nbTaches.push(this.nbTaches.length)
     this.taches[this.nbTaches.length-1]=new Tache();
     this.taches[this.nbTaches.length-1].idTache=this.nbTaches.length-1;
-    this.nbInterventionParTaches[this.nbTaches.length-1]=[0];
-    this.taches[this.nbTaches.length-1].interventions=new Array();
+    this.nbInterventionParTaches[this.nbTaches.length-1]=[];
     for(let j=0;j<this.taches.length;j++)
     {
       let t=new Array()
@@ -636,10 +635,7 @@ export class NouveauProjetComponent implements OnInit {
     this.taches[indiceTache].interventions[indiceIntervention].affectation=event.target.value;
   }
   ngOnInit(): void {
-    this.taches[0]=new Tache();
-    this.taches[0].interventions=new Array()
-    this.taches[0].interventions[0]=new Intervention()
-    this.nbInterventionParTaches[0]=[0];
+
 
 
     this.ressourceService.tousLesChef().subscribe(chefs=>
@@ -691,27 +687,27 @@ export class NouveauProjetComponent implements OnInit {
     this.javaScriptForm();
     this.imageJavaScript()
   }
-
-  datesChangePlanifiee() {
-    if(this.dateRelle.startDate==null)
-      this.datePrevue=this.datePlanifiee;
-  }
-  datesChangeRelle() {
-    if(this.dateRelle.startDate!=null)
-    {
-      this.datePrevue=this.dateRelle;
-      this.avancement=100;
-    }
-  }
-  datesChangePrevue() {
-    if(this.avancement==100&&this.datePrevue.startDate!=null)
-      this.dateRelle=this.datePrevue;
-  }
-  avancementChange()
-  {
-    if(this.avancement==100&&this.datePrevue.startDate!=null)
-      this.dateRelle=this.datePrevue;
-  }
+  //
+  // datesChangePlanifiee() {
+  //   if(this.dateRelle.startDate==null)
+  //     this.datePrevue=this.datePlanifiee;
+  // }
+  // datesChangeRelle() {
+  //   if(this.dateRelle.startDate!=null)
+  //   {
+  //     this.datePrevue=this.dateRelle;
+  //     this.avancement=100;
+  //   }
+  // }
+  // datesChangePrevue() {
+  //   if(this.avancement==100&&this.datePrevue.startDate!=null)
+  //     this.dateRelle=this.datePrevue;
+  // }
+  // avancementChange()
+  // {
+  //   if(this.avancement==100&&this.datePrevue.startDate!=null)
+  //     this.dateRelle=this.datePrevue;
+  // }
   onSelectedFile(event) {
     this.selectedFiles=event.target.files;
   }

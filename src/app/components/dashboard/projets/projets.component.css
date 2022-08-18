@@ -192,7 +192,7 @@
   right: 0;
   top: 50px;
   z-index: 9;
-  height: 730px!important;
+  height: max-content!important;
   padding-right: 0px;
 
 }
@@ -252,7 +252,7 @@
   border-radius: 5px;
 }
 :host ::ng-deep .multiselect-dropdown{
-  height: 35px;
+  height: max-content;
 }
 .slider-container2 {
   display: flex;
@@ -277,4 +277,44 @@
   width: 100%;
   position: relative;
   margin-top: 10px;
+}
+:host ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+  background: white;
+  font-size: medium;
+  width: 100%;
+}
+mat-form-field{
+  width: 100%;
+}
+:host ::ng-deep .mat-form-field-underline {
+   position: initial!important;
+}
+:host ::ng-deep .mat-form-field-wrapper {
+  padding: 0;
+}
+:host ::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #880e4f;
+}
+
+:host ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: #880e4f;
+}
+:host ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+  border-radius: 4px;
+  padding: 2px .75em 0 .75em;
+}
+
+:host ::ng-deep .mat-checkbox-layout {
+   margin-bottom: 0;
+ }
+
+ :host ::ng-deep .mat-checkbox-inner-container {
+   background: white;
+ }
+:host ::ng-deep .mat-checkbox-frame {
+   border-color: transparent;
+}
+:host ::ng-deep .dropdown-type .multiselect-dropdown .dropdown-btn {
+  border-color: transparent;
+  border-bottom-color:#adadad ;
 }

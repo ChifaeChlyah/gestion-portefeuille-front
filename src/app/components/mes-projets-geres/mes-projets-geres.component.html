@@ -1,156 +1,308 @@
 <app-nav-bar-top></app-nav-bar-top>
 <h2 class="bienvenu">Bienvenu {{user.prenom}}</h2>
 <div id="table-projets-container" >
-  <table *ngIf="projetsGeres" id="table-projets"  datatable [dtOptions]="dtOptions" class="row-border table-bordered hover">
-    <thead>
-    <tr>
-      <th>Logo</th>
-      <th>Code</th>
-      <th>Titre</th>
-      <th>Description</th>
-      <th>Date début planifiées</th>
-      <th>Date fin planifiées</th>
-      <th>Date début prévue</th>
-      <th>Date fin prévue</th>
-      <th>Date début Réelle</th>
-      <th>Date fin Réelle</th>
-      <th>Priorité</th>
-      <th>% Avancement</th>
-      <th>Statut</th>
-      <th>Coût Initial</th>
-      <th>Coût Réel</th>
-<!--      <th>Chef de projet</th>-->
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
+<!--  <table *ngIf="projetsGeres" id="table-projets"  datatable [dtOptions]="dtOptions" class="row-border table-bordered hover">-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--      <th>Logo</th>-->
+<!--      <th>Code</th>-->
+<!--      <th>Titre</th>-->
+<!--      <th>Description</th>-->
+<!--      <th>Date début planifiées</th>-->
+<!--      <th>Date fin planifiées</th>-->
+<!--      <th>Date début prévue</th>-->
+<!--      <th>Date fin prévue</th>-->
+<!--      <th>Date début Réelle</th>-->
+<!--      <th>Date fin Réelle</th>-->
+<!--      <th>Priorité</th>-->
+<!--      <th>% Avancement</th>-->
+<!--      <th>Statut</th>-->
+<!--      <th>Coût Initial</th>-->
+<!--      <th>Coût Réel</th>-->
+<!--      <th>Actions</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
 
-    <tr *ngFor="let p of projetsGeres;let i=index; ">
-      <td style="text-align: center">
-        <img [src]="host+'/logoProjet/'+p.codeProjet | authImage | async" class="picture-src" id="wizardPicturePreview" title="">
-        <!--        <div [ngClass]="(edit[i])?'picture-container':'picture-container-disabled'">-->
-        <!--          <div [ngClass]="(edit[i])?'picture':'picture-disabled'">-->
-        <!--            <img [src]="host+'/logoProjet/'+p.codeProjet| authImage | async"  class="picture-src" id="wizardPicturePreview" title="">-->
-        <!--            <i class="fa-solid fa-laptop-file"></i>-->
-        <!--            <input [disabled]="!edit[i]" (change)="onSelectedFile($event)" type="file" id="wizard-picture" class="">-->
-        <!--          </div>-->
-        <!--          <h6 *ngIf="edit[i]" style="color: #880e4f" class="">Logo <i class="fa-solid fa-camera"></i></h6>-->
-        <!--        </div>-->
-      </td>
-      <td style="padding-left: 10px!important;">
-        <!--        <input [disabled]="true" type="text" [attr.value]="p.codeProjet" class="form-control">-->
-        <span >{{p.codeProjet}}</span>
-      </td>
-      <td>
-        <input [disabled]="!edit[i]"  type="text" [attr.value]="p.titreProjet" class="form-control"
-               (change)="titreChanged($event,i)"
-               [class.is-invalid]="submitted[i] && p.titreProjet==''">
-        <span hidden>{{p.titreProjet}}</span>
-      </td>
-      <td>
+<!--    <tr *ngFor="let p of projetsGeres;let i=index; ">-->
+<!--      <td style="text-align: center">-->
+<!--        <img [src]="host+'/logoProjet/'+p.codeProjet | authImage | async" class="picture-src" id="wizardPicturePreview" title="">-->
+<!--      </td>-->
+<!--      <td style="padding-left: 10px!important;">-->
+<!--        <span >{{p.codeProjet}}</span>-->
+<!--      </td>-->
+<!--      <td>-->
+<!--        <input [disabled]="!edit[i]"  type="text" [attr.value]="p.titreProjet" class="form-control"-->
+<!--               (change)="titreChanged($event,i)"-->
+<!--               [class.is-invalid]="submitted[i] && p.titreProjet==''">-->
+<!--        <span hidden>{{p.titreProjet}}</span>-->
+<!--      </td>-->
+<!--      <td>-->
+<!--        <textarea [disabled]="!edit[i]"  type="text" rows="1" class="form-control" [attr.value]="p.description"-->
+<!--                  (change)="DescriptionChanged($event,i)"-->
+<!--                  [class.is-invalid]="submitted[i] && p.description==''"-->
+<!--        >{{p.description}}</textarea>-->
+<!--      </td>-->
+<!--      <td>-->
+<!--        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateDebutPlanifiee, 'yyyy-MM-dd')"-->
+<!--               (change)="DateDebutPlanifieeChanged($event,i)" class="form-control"-->
+<!--               [class.is-invalid]="submitted[i] && (p.dateDebutPlanifiee==null|| p.dateDebutPlanifiee=='')">-->
+<!--        <span hidden>{{p.dateDebutPlanifiee}}</span>-->
+<!--      </td>-->
+<!--      <td>-->
+<!--        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinPlanifiee, 'yyyy-MM-dd')"-->
+<!--               (change)="DateFinPlanifieeChanged($event,i)" class="form-control"-->
+<!--               [class.is-invalid]="submitted[i] && (p.dateFinPlanifiee==null|| p.dateFinPlanifiee=='')">-->
+<!--        <span hidden>{{p.dateFinPlanifiee}}</span>-->
+<!--      </td>-->
+<!--      <td>-->
+<!--        <input [disabled]="!edit[i]" type="Date" [attr.value]="datepipe.transform(p.dateDebutPrevue, 'yyyy-MM-dd')"-->
+<!--               (change)="DateDebutPrevueChanged($event,i)" class="form-control"-->
+<!--               [class.is-invalid]="submitted[i] && (p.dateDebutPrevue==null|| p.dateDebutPrevue=='')">-->
+<!--        <span hidden>{{p.dateDebutPrevue}}</span>-->
+<!--      </td>-->
+<!--      <td>-->
+<!--        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinPrevue, 'yyyy-MM-dd')"-->
+<!--               (change)="DateFinPrevueChanged($event,i)" class="form-control"-->
+<!--               [class.is-invalid]="submitted[i] &&(p.dateFinPrevue==null|| p.dateFinPrevue=='')">-->
+<!--        <span hidden>{{p.dateFinPrevue}}</span>-->
+<!--      </td>-->
+<!--      <td>-->
+<!--        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateDebutReelle, 'yyyy-MM-dd')"-->
+<!--               (change)="DateDebutReelleChanged($event,i)" class="form-control">-->
+<!--        <span hidden>{{p.dateDebutReelle}}</span>-->
+
+<!--      </td>-->
+<!--      <td>-->
+<!--        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinReelle, 'yyyy-MM-dd')"-->
+<!--               (change)="DateFinReelleChanged($event,i)" class="form-control">-->
+<!--        <span hidden>{{p.dateFinReelle}}</span>-->
+<!--      </td>-->
+<!--      <td>-->
+<!--        <ngx-select-dropdown (change)="selectionChangedPriorite($event,i)"-->
+<!--                             [_value]="priorite[i]"-->
+<!--                             [config]="configDropdownPriorite" [options]="dropdownOptionsPriorite"-->
+<!--                             [disabled]="!edit[i]"-->
+<!--                             [class.is-invalid]="submitted[i] && priorite[i]==null">-->
+<!--        </ngx-select-dropdown>-->
+<!--        <span hidden>{{p.priorite}}</span>-->
+<!--      </td>-->
+<!--      <td>-->
+<!--        <input [disabled]="!edit[i]"  type="number" [attr.value]="p.avancement" class="form-control"-->
+<!--               (change)="avancementChanged($event,i)">-->
+<!--        <span hidden>{{p.avancement}}</span>-->
+<!--      </td>-->
+<!--      <td>-->
+<!--        <ngx-select-dropdown (change)="selectionChangedStatut($event,i)"-->
+<!--                             [_value]="statut[i]"-->
+<!--                             [config]="configDropdownStatut" [options]="dropdownOptionsStatut"-->
+<!--                             [disabled]="!edit[i]"-->
+<!--                             [class.is-invalid]="submitted[i]&&statut[i]==null ">-->
+<!--        </ngx-select-dropdown>-->
+<!--        <span hidden>{{p.statut}}</span>-->
+<!--      </td>-->
+<!--      <td>-->
+<!--        <input [disabled]="!edit[i]"  type="text" [attr.value]="p.coutInitial" class="form-control"-->
+<!--               (change)="coutInitialChanged($event,i)">-->
+<!--        <span hidden>{{p.coutInitial}}</span>-->
+<!--      </td>-->
+<!--      <td>-->
+<!--        <input [disabled]="!edit[i]"  type="text" [attr.value]="p.coutReel" class="form-control"-->
+<!--               (change)="coutReelChanged($event,i)">-->
+<!--        <span hidden>{{p.coutReel}}</span>-->
+<!--      </td>-->
+<!--      <td>-->
+<!--          <span mat-raised-button-->
+<!--                matTooltip="Modifier"  (click)="edit[i]=true;">-->
+<!--            <i *ngIf="!edit[i]"  class="fa-solid fa-file-pen"></i>-->
+<!--            </span>-->
+<!--        <i *ngIf="edit[i]" (click)="updateProjet(i)" mat-raised-button-->
+<!--           matTooltip="Enregister"  class="fa-solid fa-check"></i>-->
+<!--        <i *ngIf="edit[i]" mat-raised-button-->
+<!--           matTooltip="Annuler"  (click)="annulerUpdate(i)" class="fa-solid fa-x"></i>-->
+
+<!--        <span mat-raised-button matTooltip="Détails"  [routerLink]="'/projets/details-projet/'+p.codeProjet" ><i class="fa-solid fa-circle-info"></i></span>-->
+<!--        <span data-toggle="modal" data-target="#modalDelete"  >-->
+<!--          <span mat-raised-button-->
+<!--                matTooltip="Supprimer"  (click)="projetASupprimer=p;" ><i class="fa-solid fa-file-circle-xmark"></i></span>-->
+<!--        </span>-->
+<!--      </td>-->
+<!--    </tr>-->
+
+
+<!--    </tbody>-->
+<!--  </table>-->
+
+
+  <p-table #dt1 [value]="projetsGeres" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" style="width: 100%"
+           [globalFilterFields]="['codeFamille','titreFamille','description']" [resizableColumns]="true" columnResizeMode="expand"
+           currentPageReportTemplate=" {first} sur {last} de {totalRecords} projets" [rowsPerPageOptions]="[5,10,15,20]"
+           [exportHeader]="'customExportHeader'"
+           styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" responsiveLayout="scroll">
+    <ng-template pTemplate="caption" style="display:flex;justify-content:space-between">
+      <div class="flex" style="width: fit-content">
+        <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"></button>
+        <!--        <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>-->
+      </div>
+      <div class="flex" style="width: fit-content">
+                <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt1.filterGlobal($any($event).target.value, 'contains')" placeholder="Search keyword" />
+                </span>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Logo</th>
+        <th pResizableColumn pSortableColumn="codeProjet">Code <p-sortIcon field="codeProjet"></p-sortIcon>
+          <p-columnFilter type="text" field="codeProjet" display="menu"></p-columnFilter></th>
+        <th pResizableColumn pSortableColumn="titreProjet">Titre <p-sortIcon field="titreProjet"></p-sortIcon>
+          <p-columnFilter type="text" field="titreProjet" display="menu"></p-columnFilter></th>
+        <th pResizableColumn pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon>
+          <p-columnFilter type="text" field="description" display="menu"></p-columnFilter></th>
+        <th pResizableColumn pSortableColumn="dateDebutPlanifiee">Date de début Planifiée<p-sortIcon field="dateDebutPlanifiee"></p-sortIcon>
+          <p-columnFilter type="text" field="dateDebutPlanifiee" display="menu"></p-columnFilter></th>
+        <th pResizableColumn pSortableColumn="dateFinPlanifiee">Date de fin Planifiée<p-sortIcon field="dateFinPlanifiee"></p-sortIcon>
+          <p-columnFilter type="text" field="dateFinPlanifiee" display="menu"></p-columnFilter></th>
+        <th pResizableColumn pSortableColumn="dateDebutPrevue">Date de début Prévue<p-sortIcon field="dateDebutPrevue"></p-sortIcon>
+          <p-columnFilter type="text" field="dateDebutPrevue" display="menu"></p-columnFilter></th>
+        <th pResizableColumn pSortableColumn="dateFinPrevue">Date de fin Prévue<p-sortIcon field="dateFinPrevue"></p-sortIcon>
+          <p-columnFilter type="text" field="dateFinPrevue" display="menu"></p-columnFilter></th>
+        <th pResizableColumn pSortableColumn="dateDebutReelle">Date de début Réelle<p-sortIcon field="dateDebutReelle"></p-sortIcon>
+          <p-columnFilter type="text" field="dateDebutReelle" display="menu"></p-columnFilter></th>
+        <th pResizableColumn pSortableColumn="dateFinReelle">Date de fin Réelle<p-sortIcon field="dateFinReelle"></p-sortIcon>
+          <p-columnFilter type="text" field="dateFinReelle" display="menu"></p-columnFilter></th>
+        <th pResizableColumn pSortableColumn="priorite">Priorité<p-sortIcon field="priorite"></p-sortIcon>
+          <p-columnFilter type="text" field="priorite" display="menu"></p-columnFilter></th>
+        <th pResizableColumn pSortableColumn="avancement">Avancement<p-sortIcon field="avancement"></p-sortIcon>
+          <p-columnFilter type="text" field="avancement" display="menu"></p-columnFilter></th>
+        <th pResizableColumn pSortableColumn="statut">Statut<p-sortIcon field="statut"></p-sortIcon>
+          <p-columnFilter type="text" field="statut" display="menu"></p-columnFilter></th>
+        <th pResizableColumn pSortableColumn="coutInitial">Coût Initial<p-sortIcon field="coutInitial"></p-sortIcon>
+          <p-columnFilter type="text" field="coutInitial" display="menu"></p-columnFilter></th>
+        <th pResizableColumn pSortableColumn="coutReel">Coût Réel<p-sortIcon field="coutReel"></p-sortIcon>
+          <p-columnFilter type="text" field="coutReel" display="menu"></p-columnFilter></th>
+        <th pResizableColumn pSortableColumn="chefProjet">Chef de projet<p-sortIcon field="chefProjet"></p-sortIcon>
+          <p-columnFilter type="text" field="chefProjet" display="menu"></p-columnFilter></th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-i="rowIndex" let-p>
+      <tr>
+        <td style="text-align: center">
+          <img [src]="host+'/logoProjet/'+p.codeProjet | authImage | async" class="picture-src" title="">
+        </td>
+        <td style="padding-left: 10px!important;">
+          <span >{{p.codeProjet}}</span>
+        </td>
+        <td>
+          <input [disabled]="!edit[i]"  type="text" [attr.value]="p.titreProjet" class="form-control"
+                 (change)="titreChanged($event,i)"
+                 [class.is-invalid]="submitted[i] && p.titreProjet==''">
+          <span hidden>{{p.titreProjet}}</span>
+        </td>
+        <td>
         <textarea [disabled]="!edit[i]"  type="text" rows="1" class="form-control" [attr.value]="p.description"
                   (change)="DescriptionChanged($event,i)"
                   [class.is-invalid]="submitted[i] && p.description==''"
         >{{p.description}}</textarea>
-      </td>
-      <td>
-        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateDebutPlanifiee, 'yyyy-MM-dd')"
-               (change)="DateDebutPlanifieeChanged($event,i)" class="form-control"
-               [class.is-invalid]="submitted[i] && (p.dateDebutPlanifiee==null|| p.dateDebutPlanifiee=='')">
-        <span hidden>{{p.dateDebutPlanifiee}}</span>
-      </td>
-      <td>
-        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinPlanifiee, 'yyyy-MM-dd')"
-               (change)="DateFinPlanifieeChanged($event,i)" class="form-control"
-               [class.is-invalid]="submitted[i] && (p.dateFinPlanifiee==null|| p.dateFinPlanifiee=='')">
-        <span hidden>{{p.dateFinPlanifiee}}</span>
-      </td>
-      <td>
-        <input [disabled]="!edit[i]" type="Date" [attr.value]="datepipe.transform(p.dateDebutPrevue, 'yyyy-MM-dd')"
-               (change)="DateDebutPrevueChanged($event,i)" class="form-control"
-               [class.is-invalid]="submitted[i] && (p.dateDebutPrevue==null|| p.dateDebutPrevue=='')">
-        <span hidden>{{p.dateDebutPrevue}}</span>
-      </td>
-      <td>
-        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinPrevue, 'yyyy-MM-dd')"
-               (change)="DateFinPrevueChanged($event,i)" class="form-control"
-               [class.is-invalid]="submitted[i] &&(p.dateFinPrevue==null|| p.dateFinPrevue=='')">
-        <span hidden>{{p.dateFinPrevue}}</span>
-      </td>
-      <td>
-        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateDebutReelle, 'yyyy-MM-dd')"
-               (change)="DateDebutReelleChanged($event,i)" class="form-control">
-        <span hidden>{{p.dateDebutReelle}}</span>
-
-      </td>
-      <td>
-        <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinReelle, 'yyyy-MM-dd')"
-               (change)="DateFinReelleChanged($event,i)" class="form-control">
-        <span hidden>{{p.dateFinReelle}}</span>
-      </td>
-      <td>
-        <ngx-select-dropdown (change)="selectionChangedPriorite($event,i)"
-                             [_value]="priorite[i]"
-                             [config]="configDropdownPriorite" [options]="dropdownOptionsPriorite"
-                             [disabled]="!edit[i]"
-                             [class.is-invalid]="submitted[i] && priorite[i]==null">
-        </ngx-select-dropdown>
-        <span hidden>{{p.priorite}}</span>
-      </td>
-      <td>
-        <input [disabled]="!edit[i]"  type="number" [attr.value]="p.avancement" class="form-control"
-               (change)="avancementChanged($event,i)">
-        <span hidden>{{p.avancement}}</span>
-      </td>
-      <td>
-        <ngx-select-dropdown (change)="selectionChangedStatut($event,i)"
-                             [_value]="statut[i]"
-                             [config]="configDropdownStatut" [options]="dropdownOptionsStatut"
-                             [disabled]="!edit[i]"
-                             [class.is-invalid]="submitted[i]&&statut[i]==null ">
-        </ngx-select-dropdown>
-        <span hidden>{{p.statut}}</span>
-      </td>
-      <td>
-        <input [disabled]="!edit[i]"  type="text" [attr.value]="p.coutInitial" class="form-control"
-               (change)="coutInitialChanged($event,i)">
-        <span hidden>{{p.coutInitial}}</span>
-      </td>
-      <td>
-        <input [disabled]="!edit[i]"  type="text" [attr.value]="p.coutReel" class="form-control"
-               (change)="coutReelChanged($event,i)">
-        <span hidden>{{p.coutReel}}</span>
-      </td>
-<!--      <td>-->
-<!--        <ngx-select-dropdown (change)="selectionChangedChefProjet($event,i)"-->
-<!--                             [_value]="p.chefProjet"-->
-<!--                             [config]="configDropdownChefProjet" [options]="dropdownOptionsChefProjet"-->
-<!--                             [disabled]="!edit[i]"-->
-<!--                             [class.is-invalid]="submitted[i] && p.chefProjet==null">-->
-<!--        </ngx-select-dropdown>-->
-<!--        <span hidden *ngIf="p.chefProjet">{{p.chefProjet.nom+' '+p.chefProjet.prenom}}</span>-->
-<!--      </td>-->
-      <td>
+        </td>
+        <td>
+          <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateDebutPlanifiee, 'yyyy-MM-dd')"
+                 (change)="DateDebutPlanifieeChanged($event,i)" class="form-control"
+                 [class.is-invalid]="submitted[i] && (p.dateDebutPlanifiee==null|| p.dateDebutPlanifiee=='')">
+          <span hidden>{{p.dateDebutPlanifiee}}</span>
+        </td>
+        <td>
+          <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinPlanifiee, 'yyyy-MM-dd')"
+                 (change)="DateFinPlanifieeChanged($event,i)" class="form-control"
+                 [class.is-invalid]="submitted[i] && (p.dateFinPlanifiee==null|| p.dateFinPlanifiee=='')">
+          <span hidden>{{p.dateFinPlanifiee}}</span>
+        </td>
+        <td>
+          <input [disabled]="!edit[i]" type="Date" [attr.value]="datepipe.transform(p.dateDebutPrevue, 'yyyy-MM-dd')"
+                 (change)="DateDebutPrevueChanged($event,i)" class="form-control"
+                 [class.is-invalid]="submitted[i] && (p.dateDebutPrevue==null|| p.dateDebutPrevue=='')">
+          <span hidden>{{p.dateDebutPrevue}}</span>
+        </td>
+        <td>
+          <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinPrevue, 'yyyy-MM-dd')"
+                 (change)="DateFinPrevueChanged($event,i)" class="form-control"
+                 [class.is-invalid]="submitted[i] &&(p.dateFinPrevue==null|| p.dateFinPrevue=='')">
+          <span hidden>{{p.dateFinPrevue}}</span>
+        </td>
+        <td>
+          <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateDebutReelle, 'yyyy-MM-dd')"
+                 (change)="DateDebutReelleChanged($event,i)" class="form-control">
+        </td>
+        <td>
+          <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinReelle, 'yyyy-MM-dd')"
+                 (change)="DateFinReelleChanged($event,i)" class="form-control">
+          <span hidden>{{p.dateDebutReelle}}</span>
+        </td>
+        <td>
+          <ngx-select-dropdown (change)="selectionChangedPriorite($event,i)"
+                               [_value]="priorite[i]"
+                               [config]="configDropdownPriorite" [options]="dropdownOptionsPriorite"
+                               [disabled]="!edit[i]"
+                               [class.is-invalid]="submitted[i] && priorite[i]==null">
+          </ngx-select-dropdown>
+          <span hidden>{{p.dateFinReelle}}</span>
+        </td>
+        <td>
+          <input [disabled]="!edit[i]"  type="number" [attr.value]="p.avancement" class="form-control"
+                 (change)="avancementChanged($event,i)">
+          <span hidden>{{p.avancement}}</span>
+        </td>
+        <td>
+          <ngx-select-dropdown (change)="selectionChangedStatut($event,i)"
+                               [_value]="statut[i]"
+                               [config]="configDropdownStatut" [options]="dropdownOptionsStatut"
+                               [disabled]="!edit[i]"
+                               [class.is-invalid]="submitted[i]&&statut[i]==null ">
+          </ngx-select-dropdown>
+          <span hidden>{{p.statut}}</span>
+        </td>
+        <td>
+          <input [disabled]="!edit[i]"  type="text" [attr.value]="p.coutInitial" class="form-control"
+                 (change)="coutInitialChanged($event,i)">
+          <span hidden>{{p.coutInitial}}</span>
+        </td>
+        <td>
+          <input [disabled]="!edit[i]"  type="text" [attr.value]="p.coutReel" class="form-control"
+                 (change)="coutReelChanged($event,i)">
+          <span hidden>{{p.coutReel}}</span>
+        </td>
+        <td>
+          <ngx-select-dropdown (change)="selectionChangedChefProjet($event,i)"
+                               [_value]="p.chefProjet"
+                               [config]="configDropdownChefProjet" [options]="dropdownOptionsChefProjet"
+                               [disabled]="!edit[i]"
+                               [class.is-invalid]="submitted[i] && p.chefProjet==null">
+          </ngx-select-dropdown>
+          <span hidden *ngIf="p.chefProjet">{{p.chefProjet.nom+' '+p.chefProjet.prenom}}</span>
+        </td>
+        <td>
           <span mat-raised-button
                 matTooltip="Modifier"  (click)="edit[i]=true;">
             <i *ngIf="!edit[i]"  class="fa-solid fa-file-pen"></i>
             </span>
-        <i *ngIf="edit[i]" (click)="updateProjet(i)" mat-raised-button
-           matTooltip="Enregister"  class="fa-solid fa-check"></i>
-        <i *ngIf="edit[i]" mat-raised-button
-           matTooltip="Annuler"  (click)="annulerUpdate(i)" class="fa-solid fa-x"></i>
+          <i *ngIf="edit[i]" (click)="updateProjet(i)" mat-raised-button
+             matTooltip="Enregister"  class="fa-solid fa-check"></i>
+          <i *ngIf="edit[i]" mat-raised-button
+             matTooltip="Annuler"  (click)="annulerUpdate(i)" class="fa-solid fa-x"></i>
 
-        <span mat-raised-button matTooltip="Détails"  [routerLink]="'/projets/details-projet/'+p.codeProjet" ><i class="fa-solid fa-circle-info"></i></span>
-        <span data-toggle="modal" data-target="#modalDelete"  >
+          <span mat-raised-button matTooltip="Détails"  [routerLink]="'/projets/details-projet/'+p.codeProjet" ><i class="fa-solid fa-circle-info"></i></span>
+          <span data-toggle="modal" data-target="#modalDelete"  >
           <span mat-raised-button
                 matTooltip="Supprimer"  (click)="projetASupprimer=p;" ><i class="fa-solid fa-file-circle-xmark"></i></span>
         </span>
-      </td>
-    </tr>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 
-
-    </tbody>
-  </table>
 </div>
 
 

@@ -31,7 +31,10 @@
               "node_modules/jsgantt-improved/dist/jsgantt.css",
               "node_modules/datatables.net-buttons-dt/css/buttons.dataTables.css",
               "node_modules/datatables.net-colreorder-dt/css/colReorder.dataTables.css",
-              "node_modules/frappe-gantt/src/gantt.scss"
+              "node_modules/frappe-gantt/src/gantt.scss",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",

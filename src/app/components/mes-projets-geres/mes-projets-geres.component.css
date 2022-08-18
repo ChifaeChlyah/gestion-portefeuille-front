@@ -27,44 +27,6 @@
   opacity: 0.75;
 }
 
-:host ::ng-deep div.dataTables_wrapper {
-  padding: 20px;
-  border: #8080802e 1px solid;
-  border-radius: 10px;
-  box-shadow: 1px 0px 2px 0px #888888;
-  width: 100%!important;
-}
-:host ::ng-deep #table-projets-container .btn:not(:disabled):not(.disabled),
-:host ::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-.dataTables_wrapper .dataTables_paginate .paginate_button.current
-{
-  cursor: pointer;
-  background: #f8f8f8de!important;
-  border-color: #8080803b!important;
-}
-:host ::ng-deep #table-projets-container .btn:not(:disabled):not(.disabled):hover{
-  background: #e1e1e1de!important;
-
-}
-:host ::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
-:host ::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current :hover{
-  background: #e1e1e1de;
-}
-:host ::ng-deep .dataTables_wrapper .dataTables_filter input
-{
-  border: 1px solid #aaaaaa73;
-  border-radius: 3px;
-  padding: 5px;
-  background-color: transparent;
-  margin-left: 3px;
-}
-:host ::ng-deep table.dataTable thead th, table.dataTable tfoot th {
-  font-weight: 500;
-  background: #e2e2e263;
-  color: black;
-}
-
-
 .modal-title{
   text-align: center;
   width: 100%;
@@ -74,18 +36,6 @@
 }
 .modal-body{
   background: #f6f6f6;
-}
-#table-projets{
-  width: max-content!important;
-}
-:host ::ng-deep #table-projets_wrapper {
-  width: 95vw!important;
-}
-:host ::ng-deep table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting_asc_disabled, table.dataTable thead > tr > th.sorting_desc_disabled, table.dataTable thead > tr > td.sorting, table.dataTable thead > tr > td.sorting_asc, table.dataTable thead > tr > td.sorting_desc, table.dataTable thead > tr > td.sorting_asc_disabled, table.dataTable thead > tr > td.sorting_desc_disabled {
-  width: 160px!important;
-}
-:host ::ng-deep table.dataTable {
-  width: max-content!important;
 }
 
 
@@ -236,3 +186,10 @@ img{
   background-size: calc(.75em + .375rem) calc(.75em + .375rem)!important;
 }
 
+:host ::ng-deep .p-datatable{
+  margin: 30px;
+}
+:host ::ng-deep .p-datatable.p-datatable-sm .p-datatable-header {
+  display:flex;
+  justify-content: space-between;
+}

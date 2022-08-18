@@ -48,5 +48,41 @@
   background-color: transparent;
 }
 .tab-pane{
-  min-height: 463px;
+  height: max-content ;
+}
+
+.picture{
+  width: 90px;
+  border: 2px solid gray;
+  border-radius: 70px;
+  margin-right: 20px;
+}
+.card-ressource{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+
+.picture-src{
+  border: 2px #000000 solid;
+  width: 40px;
+  padding: 2px;
+  border-radius: 10px;
+}
+.projetModal
+{
+  display: flex;
+  align-items: center;
+}
+
+.projetModalContainer{
+  display: flex;
+  background: #f8f9fa;
+  padding: 10px ;
+  border-radius: 10px;
+  border: 1px solid gainsboro;
+  margin-bottom: 10px;
+  justify-content: space-between;
 }

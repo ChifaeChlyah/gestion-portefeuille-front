@@ -1,0 +1,62 @@
+<app-nav-bar-top *ngIf="isMaFeuilleDeTempsPage" ></app-nav-bar-top>
+<div id="planning" class="activites-container" [ngStyle]="{'margin':(isMaFeuilleDeTempsPage)?'30px':'20px 0'}">
+  <div id="alerts-container">
+  </div>
+<span *ngIf="editMode" class="table-add float-right mb-3 mr-2" mat-raised-button matTooltip="Ajouter une Tâche"
+><a  class="text-success"
+><i (click)="addRow()" class="fas fa-plus fa-2x" aria-hidden="true"></i></a
+></span>
+<div style="float:right;font-size: x-large">
+  <span (click)="editMode=true;" *ngIf="isMaFeuilleDeTempsPage">
+            <i *ngIf="!editMode" mat-raised-button matTooltip="Modifier"  class="fa-solid fa-file-pen"></i>
+            </span>
+  <i (click)="saveEdit()"*ngIf="editMode" mat-raised-button matTooltip="Enregistrer"  class="fa-solid fa-check"></i>
+  <i (click)="annulerEdit()" *ngIf="editMode" mat-raised-button matTooltip="Annuler" class="fa-solid fa-x"></i>
+</div>
+<div  class="table-responsive" [ngStyle]="{'min-height':((activites.length-page*10)*3+20)+'vw'}">
+  <table id="table" class="table">
+    <thead >
+    <tr [ngStyle]="{'background':(isMaFeuilleDeTempsPage)?'#d8c3ca':'white'}">
+      <th scope="col">Tâche</th>
+      <th scope="col">Date</th>
+      <th scope="col" style="width: 70%">Description</th>
+      <th scope="col" *ngIf="editMode"></th>
+    </tr>
+    </thead>
+    <tr *ngIf="activites.length==0" >
+      <td colspan="3" style="text-align: center;background: #7788997d">
+        ---Aucune activité disponible---
+      </td>
+    </tr>
+    <tbody *ngFor="let n of nbActivites | slice: (page-1) * pageSize : page * pageSize" >
+    <tr *ngIf="activites[n]" [ngStyle]="{'background':(!editMode)? '#f3f0f2':'transparent'}">
+      <td class="dropdown-table">
+        <ngx-select-dropdown  [config]="configDropdownTaches"
+                              [options]="dropdownOptionsTaches"
+                              (change)="selectionChangedTaches($event,n)"
+                              [_value]="activites[n].tache"
+                              [disabled]="!editMode">
+        </ngx-select-dropdown>
+      </td>
+      <td>
+        <input type="date" [disabled]="!editMode"  class="form-control" [value]="datePipe.transform(activites[n].date, 'yyyy-MM-dd')"  (change)="dateChange($event,n)">
+      </td>
+      <td>
+        <textarea type="text" [disabled]="!editMode" rows="1"  class="form-control" [value]="(activites[n].description)?activites[n].description:''"  (change)="descriptionChange($event,n)"></textarea>
+      </td>
+
+      <td  *ngIf="editMode">
+        <button class="btn btn-danger" mat-raised-button matTooltip="Supprimer"  (click)="removeRow($event,n)">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <ngb-pagination style="float: right"
+    [(page)]="page"
+    [pageSize]="pageSize"
+    [collectionSize]="activites.length"></ngb-pagination>
+</div>
+
+</div>

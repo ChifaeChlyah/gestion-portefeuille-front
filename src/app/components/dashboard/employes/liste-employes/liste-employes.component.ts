@@ -5,14 +5,19 @@ import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from 
 import {RessourcesService} from "../../../../services/ressources.service";
 import {environment} from "../../../../../environments/environment";
 declare var $:any;
+import * as FileSaver from 'file-saver';
+
 @Component({
   selector: 'app-liste-employes',
   templateUrl: './liste-employes.component.html',
   styleUrls: ['./liste-employes.component.css']
 })
 export class ListeEmployesComponent implements OnInit {
+  exportColumns: any[];
+  rows = 10;
+  private cols: ({ field: string; header: string; customExportHeader: string } | { field: string; header: string } | { field: string; header: string })[];
+
 // Must be declared as "any", not as "DataTables.Settings"
-  dtOptions: any = {};
   ressources:Ressource[];
   //form invalid si aucun role n'est selectionné
   rolesSelected: string[]=[];
@@ -35,52 +40,49 @@ export class ListeEmployesComponent implements OnInit {
   }
   //dropdown Roles-----------------------------------
   constructor(private ressourceService:RessourcesService,private fb:FormBuilder) { }
+  exportPdf() {
+    import("jspdf").then(jsPDF => {
+      import("jspdf-autotable").then(x => {
+        const doc = new jsPDF.default();
 
+        (doc as any).autoTable(this.exportColumns, this.ressources);
+        doc.save('ressources.pdf');
+      })
+    })
+  }
+
+  exportExcel() {
+    import("xlsx").then(xlsx => {
+      const worksheet = xlsx.utils.json_to_sheet(this.ressources);
+      const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer, "ressources");
+    });
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    let EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE
+    });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
   ngOnInit(): void {
     this.toutesLesRessources();
-    this.dtOptions = {
-      // Declare the use of the extension in the dom parameter
-      dom: 'Bfrtip',
-      // Configure the buttons
-      buttons: [
-        // 'columnsToggle',
-        { "extend": 'excel', "text":'Excel  <i style="margin-left:5px" class="fa-solid fa-file-excel"></i>',"className": 'btn btn-default btn-xs' },
-        { "extend": 'colvis', "text":'Filtrer <i class="fa-solid fa-filter"></i>',"className": 'btn btn-default btn-xs' },
-        { "extend": 'copy', "text":'Copier <i class="fa-solid fa-copy"></i>',"className": 'btn btn-default btn-xs' },
-        // 'print',
-      ],
-      language:
-        {
-          "decimal":        "",
-          "emptyTable":     "Aucune ressource disponible",
-          "info":           "Total des ressources : _TOTAL_",
-          "infoEmpty":      "Total des ressources : 0 ",
-          "infoFiltered":   "(filtered from _MAX_ total entries)",
-          "infoPostFix":    "",
-          "thousands":      ",",
-          "lengthMenu":     "Show _MENU_ entries",
-          "loadingRecords": "Chargement...",
-          "processing":     "",
-          "search":         "Rechercher:",
-          "zeroRecords":    "Aucune ressource retrouvée",
-          "paginate": {
-            "first":      "Premier",
-            "last":       "Dernier",
-            "next":       "Suivant",
-            "previous":   "Précédant"
-          },
-          "aria": {
-            "sortAscending":  ": activate to sort column ascending",
-            "sortDescending": ": activate to sort column descending"
-          }
-        },
-      pagingType:'full_numbers'
-    };
-
   }
   toutesLesRessources() {
     this.ressourceService.tous().subscribe((ret:Ressource[])=>{
       this.ressources=ret;
+      this.cols = [
+        { field: 'codeRessource', header: 'Code'},
+        { field: 'nom', header: 'Nom' },
+        { field: 'prenom', header: 'Prénom' },
+        { field: 'email', header: 'Email' },
+        { field: 'tel', header: 'Téléphone' },
+        { field: 'emploi', header: 'Emploi' },
+      ];
+      this.exportColumns = this.cols.map(col => ({title: col.header, dataKey: col.field}));
       console.log(ret)
     },error => {
       console.log(error)
@@ -128,7 +130,17 @@ export class ListeEmployesComponent implements OnInit {
       }
     );
   }
-
+  estDeveloppeur(r:Ressource)
+  {
+    let estdev=false;
+    r.roles.forEach(
+      r=>{
+        if(r.nomRole==environment.INTERVENANT_DEVELOPPEUR_ROLE)
+          estdev=true;
+      }
+    )
+    return estdev
+  }
 
   //supprimer une ressource
   codeRessource:bigint;
