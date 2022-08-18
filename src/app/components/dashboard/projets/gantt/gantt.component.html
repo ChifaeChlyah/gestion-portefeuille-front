@@ -1,4 +1,4 @@
 
 <div style="height:300px; width: 75vw;margin-top: 60px;">
-  <ng-gantt *ngIf="projets" [options]="editorOptions" [data]="data" #editor></ng-gantt>
+  <ng-gantt *ngIf="isDiagrammeDeTache||projets" [options]="editorOptions" [data]="data" #editor></ng-gantt>
 </div>

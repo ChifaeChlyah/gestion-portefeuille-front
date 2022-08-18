@@ -8,6 +8,7 @@ import {Priorite, PrioriteMapping, Projet, Statut, StatutMapping} from "../../mo
 import {environment} from "../../../environments/environment";
 declare var $:any;
 import * as FileSaver from 'file-saver';
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-mes-projets-affecte',
@@ -22,7 +23,8 @@ export class MesProjetsAffecteComponent implements OnInit {
 
   constructor(private authService:AuthentificationService,private ressourcesService:RessourcesService,
               private serviceProjets:ProjetsService,public datepipe: DatePipe,
-              private ressourceService:RessourcesService) { }
+              private ressourceService:RessourcesService,
+              private messageService: MessageService) { }
   user:Ressource;
   projetsGeres:Projet[];
   host=environment.host;
@@ -31,6 +33,15 @@ export class MesProjetsAffecteComponent implements OnInit {
 
   }
 
+  addSingleSuccess(summary,detail) {
+    this.messageService.add({severity:'success', summary:summary, detail:detail});
+  }
+  addSingleInfo(summary,detail) {
+    this.messageService.add({severity:'info', summary:summary, detail:detail});
+  }
+  addSingleDanger(summary,detail) {
+    this.messageService.add({severity:'error', summary:summary, detail:detail});
+  }
   exportPdf() {
     import("jspdf").then(jsPDF => {
       import("jspdf-autotable").then(x => {

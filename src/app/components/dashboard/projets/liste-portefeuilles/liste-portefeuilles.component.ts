@@ -8,6 +8,7 @@ import {AuthentificationService} from "../../../../services/authentification.ser
 import {DataTableDirective} from "angular-datatables";
 import {Subject} from "rxjs";
 import * as FileSaver from 'file-saver';
+import {MessageService} from "primeng/api";
 declare var $:any;
 @Component({
   selector: 'app-liste-portefeuilles',
@@ -48,7 +49,8 @@ export class ListePortefeuillesComponent implements OnInit {
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
   }
   portefeuilles$:FamilleProjet[]
-  constructor(private portefeuilleService:PortefeuilleService,private fb:FormBuilder,private authService:AuthentificationService) { }
+  constructor(private portefeuilleService:PortefeuilleService,private fb:FormBuilder,private authService:AuthentificationService
+  ,private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.tousLesPortefeuilles();
@@ -80,12 +82,14 @@ export class ListePortefeuillesComponent implements OnInit {
       }
     )
   }
+  addSingleSuccess(summary,detail) {
+    this.messageService.add({severity:'success', summary:summary, detail:detail});
+  }
   onSavePortefeuille() {
     this.submitted=true;
     this.portefeuilleService.update(this.portefeuilleFormGroup.value).subscribe(data=> {
       this.tousLesPortefeuilles();
-      alert("success projet update");
-
+      this.addSingleSuccess("Succès !","Vos modifications ont bien été enregistrées.")
     }
   );
   }
@@ -106,6 +110,8 @@ export class ListePortefeuillesComponent implements OnInit {
     this.portefeuilleService.delete(this.codePortefeuille).subscribe(
       data=>{
         this.tousLesPortefeuilles()
+        this.addSingleSuccess("Succès !","Le portefeuille a bien été supprimé.")
+
       }
     )
   }

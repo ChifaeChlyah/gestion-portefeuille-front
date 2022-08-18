@@ -72,6 +72,10 @@ import {ButtonModule} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {RippleModule} from "primeng/ripple";
 import {TooltipModule} from "primeng/tooltip";
+import {ToastModule} from "primeng/toast";
+import {MessageModule} from "primeng/message";
+import {ConfirmationService, MessageService} from "primeng/api";
+import {ConfirmDialog, ConfirmDialogModule} from "primeng/confirmdialog";
 
 @NgModule({
   declarations: [
@@ -145,11 +149,16 @@ import {TooltipModule} from "primeng/tooltip";
     ButtonModule,
     InputTextModule,
     RippleModule,
-    TooltipModule
+    TooltipModule,
+    ToastModule,
+    MessageModule,
+    ConfirmDialogModule
   ],
   providers: [
     DatePipe,
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    MessageService,
+    ConfirmationService
   ],
   bootstrap: [AppComponent]
 })

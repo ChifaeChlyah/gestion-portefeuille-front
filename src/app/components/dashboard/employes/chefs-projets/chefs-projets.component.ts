@@ -6,6 +6,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Projet} from "../../../../model/Projet.model";
 declare var $:any;
 import * as FileSaver from 'file-saver';
+import {MessageService} from "primeng/api";
 @Component({
   selector: 'app-chefs-projets',
   templateUrl: './chefs-projets.component.html',
@@ -21,7 +22,18 @@ export class ChefsProjetsComponent implements OnInit {
   host=environment.host;
   modalProjets:Projet[];
   constructor(private ressourceService:RessourcesService,
-              private fb:FormBuilder, ) { }
+              private fb:FormBuilder,
+    private messageService: MessageService) { }
+
+  addSingleSuccess(summary,detail) {
+    this.messageService.add({severity:'success', summary:summary, detail:detail});
+  }
+  addSingleInfo(summary,detail) {
+    this.messageService.add({severity:'info', summary:summary, detail:detail});
+  }
+  addSingleDanger(summary,detail) {
+    this.messageService.add({severity:'error', summary:summary, detail:detail});
+  }
   exportPdf() {
     import("jspdf").then(jsPDF => {
       import("jspdf-autotable").then(x => {
@@ -115,7 +127,10 @@ export class ChefsProjetsComponent implements OnInit {
     this.ressourceFormGroup.value.roles=this.ressourceService.getRoles(this.rolesSelected);
     this.ressourceService.update(this.ressourceFormGroup.value).subscribe(data=> {
         this.tousLesChefs();
-        // alert("success ressource update");
+      this.addSingleSuccess("Succès !","Vos modifications ont bien été enregistrées.")
+
+
+      // alert("success ressource update");
       }
     );
   }
@@ -138,6 +153,7 @@ export class ChefsProjetsComponent implements OnInit {
       data=>{
         this.tousLesChefs()
       }
+
     )
   }
 

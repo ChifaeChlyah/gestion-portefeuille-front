@@ -26,10 +26,8 @@ export class GanttComponent implements OnInit {
               private projetsService:ProjetsService) {}
 
   ngOnInit() {
-  if(this.isDiagrammeDeTache==true) {
-    this.data = this.initialDataDiagrammeDeTache();
     this.editorOptions = {
-      vFormat: 'Day',
+      vFormat: 'day',
       vEditable: false,
       vEventsChange: {
         taskname: () => {
@@ -41,8 +39,10 @@ export class GanttComponent implements OnInit {
       vShowRes:false,
       vShowDur:false,
       vShowComp:false,
-
     };
+    console.log(this.editorOptions)
+  if(this.isDiagrammeDeTache==true) {
+    this.data = this.initialDataDiagrammeDeTache();
   }
   else{
     this.projetsService.tousLesProjets().subscribe(
@@ -50,7 +50,7 @@ export class GanttComponent implements OnInit {
         this.projets=projets;
         this.data=this.initialDataDiagrammeDeProjets();
         this.editorOptions = {
-          vFormat: "day",
+          vFormat: "quarter",
           vEditable: false,
           vEventsChange: {
             taskname: () => {

@@ -134,7 +134,8 @@ const routes: Routes = [
             data:{
               RolesPermis:[environment.ADMIN_ROLE,
                 environment.GESTIONNAIRE_PORTEFEUILLES_ROLE,
-                environment.CHEF_PROJET_ROLE
+                environment.CHEF_PROJET_ROLE,
+                environment.INTERVENANT_DEVELOPPEUR_ROLE
               ]
             },
           },

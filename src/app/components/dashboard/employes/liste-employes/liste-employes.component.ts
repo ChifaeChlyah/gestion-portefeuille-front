@@ -6,6 +6,7 @@ import {RessourcesService} from "../../../../services/ressources.service";
 import {environment} from "../../../../../environments/environment";
 declare var $:any;
 import * as FileSaver from 'file-saver';
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-liste-employes',
@@ -39,7 +40,18 @@ export class ListeEmployesComponent implements OnInit {
     this.noRoleSelected=(this.rolesSelected.length==0);
   }
   //dropdown Roles-----------------------------------
-  constructor(private ressourceService:RessourcesService,private fb:FormBuilder) { }
+  constructor(private ressourceService:RessourcesService,private fb:FormBuilder
+    ,private messageService: MessageService) { }
+
+  addSingleSuccess(summary,detail) {
+    this.messageService.add({severity:'success', summary:summary, detail:detail});
+  }
+  addSingleInfo(summary,detail) {
+    this.messageService.add({severity:'info', summary:summary, detail:detail});
+  }
+  addSingleDanger(summary,detail) {
+    this.messageService.add({severity:'error', summary:summary, detail:detail});
+  }
   exportPdf() {
     import("jspdf").then(jsPDF => {
       import("jspdf-autotable").then(x => {
@@ -126,7 +138,7 @@ export class ListeEmployesComponent implements OnInit {
     this.ressourceFormGroup.value.roles=this.ressourceService.getRoles(this.rolesSelected);
     this.ressourceService.update(this.ressourceFormGroup.value).subscribe(data=> {
         this.toutesLesRessources();
-        // alert("success ressource update");
+        this.addSingleSuccess("Succès !","Vos modifications ont bien été enregistrées.")
       }
     );
   }
@@ -158,6 +170,7 @@ export class ListeEmployesComponent implements OnInit {
     this.ressourceService.delete(this.codeRessource).subscribe(
       data=>{
         this.toutesLesRessources()
+        this.addSingleSuccess("Succès !","La ressource a bien été supprimé.")
       }
     )
   }

@@ -17,6 +17,7 @@ import {DatePipe} from "@angular/common";
 import {PieceJointe} from "../../../../model/PieceJointe.model";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogGanttComponent} from "./dialog-gantt/dialog-gantt.component";
+import {ConfirmationService, MessageService} from "primeng/api";
 
 declare var $:any;
 @Component({
@@ -81,8 +82,20 @@ export class DetailsProjetComponent implements OnInit {
               private projetService:ProjetsService,
               private route: ActivatedRoute,
               public datepipe: DatePipe,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              private messageService: MessageService,
+              private confirmationService: ConfirmationService) {
 
+  }
+
+  addSingleSuccess(summary,detail) {
+    this.messageService.add({severity:'success', summary:summary, detail:detail});
+  }
+  addSingleInfo(summary,detail) {
+    this.messageService.add({severity:'info', summary:summary, detail:detail});
+  }
+  addSingleDanger(summary,detail) {
+    this.messageService.add({severity:'error', summary:summary, detail:detail});
   }
   openDialog() {
     this.dialog.open(DialogGanttComponent, {
@@ -953,11 +966,7 @@ export class DetailsProjetComponent implements OnInit {
     this.dateFinRelle=this.datepipe.transform(this.projet.dateFinReelle, 'yyyy-MM-dd')
     this.dateDebutRelle=this.datepipe.transform(this.projet.dateDebutReelle, 'yyyy-MM-dd')
     this.dateFinPrevue=this.datepipe.transform(this.projet.dateFinPrevue, 'yyyy-MM-dd')
-    var alert=$("<div class=\"alert alert-secondary alert-dismissible\">\n" +
-      "             <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-      "             <strong>Annulé !</strong> Vos modifications ont été annulées.\n" +
-      "           </div>");
-    $("#alerts-container2").append(alert);
+    this.addSingleDanger("Annulé !","Vos modifications ont été annulées.")
   }
   saveEdit(){
     this.submitted=true;
@@ -1038,11 +1047,7 @@ export class DetailsProjetComponent implements OnInit {
             })
             // this.selectedFiles = undefined
           }
-          var alert=$("<div class=\"alert alert-success alert-dismissible\">\n" +
-            "             <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-            "             <strong>Succès !</strong> Vos modifications ont bien été entregistées.\n" +
-            "           </div>");
-          $("#alerts-container2").append(alert);
+          this.addSingleSuccess("Succès !","Vos modifications ont bien été enregistrées.")
         }
       );
     }
@@ -1061,11 +1066,7 @@ export class DetailsProjetComponent implements OnInit {
               this.projet=p;
               this.initTaches();
               this.dropdownOptionsIntervenantsTache=this.projet.intervenants;
-              var alert=$("<div class=\"alert alert-success alert-dismissible\">\n" +
-                "             <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-                "             <strong>Succès !</strong> Vos modifications ont bien été entregistées.\n" +
-                "           </div>");
-              $("#alerts-container").append(alert);
+              this.addSingleSuccess("Succès !","Vos modifications ont bien été enregistrées.")
               this.editModePlanning=false;
             })
           }
@@ -1077,16 +1078,19 @@ export class DetailsProjetComponent implements OnInit {
   }
 
   deletePieceJointe(p: PieceJointe) {
-    if(window.confirm('Etes-vous sûr de vouloir supprimer la piece jointe ?')){
-      this.projetService.deletePiceJointe(p.idPieceJointe).subscribe(data=>
-      {
-        this.projetService.getProjetByCode(this.codeProjet).subscribe(
-          p=> {
-            console.log(p)
-            this.projet = p;
-          });
-      })
-    }
+    this.confirmationService.confirm({
+      message: 'Etes-vous sûr de vouloir supprimer la pièce jointe ?',
+      accept: () => {
+        this.projetService.deletePiceJointe(p.idPieceJointe).subscribe(data => {
+          this.addSingleSuccess("Succès !","La pièce jointe a bien été supprimée.")
+          this.projetService.getProjetByCode(this.codeProjet).subscribe(
+            p => {
+              console.log(p)
+              this.projet = p;
+            });
+        })
+      }
+    })
   }
 
   enregistrerPiecesJointes() {
@@ -1122,31 +1126,34 @@ export class DetailsProjetComponent implements OnInit {
             alert("Problème de chargement");
           })
         }
+        this.addSingleSuccess("Succès !","Les pièces jointes ont bien été ajoutées.")
       })
     }
   }
 
   deleteRisque(idRisque: any) {
-    if(window.confirm('Etes-vous sûr de vouloir supprimer le risque ?')){
-      this.projetService.deleteRisque(idRisque).subscribe(data=>
-      {
-        this.projetService.getProjetByCode(this.codeProjet).subscribe(
-          p=> {
-            console.log(p)
-            this.projet = p;
-          });
-      })
+    this.confirmationService.confirm({
+      message: 'Etes-vous sûr de vouloir supprimer le risque ?',
+      accept: () => {
+        this.projetService.deleteRisque(idRisque).subscribe(data=>
+        {
+          this.addSingleSuccess("Succès !","Le risque a bien été supprimé.")
+          this.projetService.getProjetByCode(this.codeProjet).subscribe(
+            p=> {
+              console.log(p)
+              this.projet = p;
+            });
+        })
+      }
+    });
+
     }
-  }
+
 
   annulerEditPlanning() {
     this.initTaches();
     this.editModePlanning=false;
-    var alert=$("<div class=\"alert alert-secondary alert-dismissible\">\n" +
-      "             <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-      "             <strong>Annulé !</strong> Vos modifications ont été annulées.\n" +
-      "           </div>");
-    $("#alerts-container").append(alert);
+    this.addSingleDanger("Annulé !","Vos modifications ont été annulées.")
   }
 
   saveEditIntervenants() {
@@ -1180,11 +1187,7 @@ export class DetailsProjetComponent implements OnInit {
       this.projetService.update(this.projet).subscribe(
         p=>{
           this.projet=p;
-          var alert=$("<div class=\"alert alert-success alert-dismissible\">\n" +
-            "             <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-            "             <strong>Succès !</strong> Vos Modifications ont bien été enregistrées.\n" +
-            "           </div>");
-          $("#alerts-container-intervenants").append(alert);
+          this.addSingleSuccess("Succès !","Vos modifications ont bien été enregistrées.")
         }
       )
     }
@@ -1195,11 +1198,7 @@ export class DetailsProjetComponent implements OnInit {
     {
       this.projet=p;
       this.intervenants=this.projet.intervenants;
-      var alert=$("<div class=\"alert alert-secondary alert-dismissible\">\n" +
-        "             <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-        "             <strong>Annulé !</strong> Vos modifications ont été annulées.\n" +
-        "           </div>");
-      $("#alerts-container-intervenants").append(alert);
+      this.addSingleDanger("Annulé !","Vos modifications ont été annulées.")
       this.editModeIntervenants=false;
     })
   }
@@ -1209,11 +1208,7 @@ export class DetailsProjetComponent implements OnInit {
     this.projetService.update(this.projet).subscribe(
       p=>{
         this.projet=p;
-        var alert=$("<div class=\"alert alert-success alert-dismissible\">\n" +
-          "             <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-          "             <strong>Succès !</strong> Vos Modifications ont bien été enregistrées.\n" +
-          "           </div>");
-        $("#alerts-container-predecesseurs").append(alert);
+        this.addSingleSuccess("Succès !","Vos modifications ont bien été enregistrées.")
         this.projetService.getProjetByCode(this.codeProjet).subscribe(p=> {
           this.projet = p;
           this.predecesseurs = this.projet.predecesseurs;
@@ -1229,11 +1224,7 @@ export class DetailsProjetComponent implements OnInit {
     {
       this.projet=p;
       this.predecesseurs=this.projet.predecesseurs;
-      var alert=$("<div class=\"alert alert-secondary alert-dismissible\">\n" +
-        "             <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-        "             <strong>Annulé !</strong> Vos modifications ont été annulées.\n" +
-        "           </div>");
-      $("#alerts-container-predecesseurs").append(alert);
+      this.addSingleDanger("Annulé !","Vos modifications ont été annulées.")
     })
   }
 }

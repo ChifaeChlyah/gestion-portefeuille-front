@@ -9,6 +9,7 @@ import {environment} from "../../../../../environments/environment";
 import {RessourcesService} from "../../../../services/ressources.service";
 declare var $ :any;
 import * as FileSaver from 'file-saver';
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-liste-projets',
@@ -28,7 +29,7 @@ export class ListeProjetsComponent implements OnInit {
   submitted:boolean[]=new Array();
   projetASupprimer:Projet;
   constructor(private serviceProjets:ProjetsService,public datepipe: DatePipe,
-              private ressourceService:RessourcesService) { }
+              private ressourceService:RessourcesService,private messageService: MessageService) { }
 
   exportPdf() {
     import("jspdf").then(jsPDF => {
@@ -57,6 +58,16 @@ export class ListeProjetsComponent implements OnInit {
       type: EXCEL_TYPE
     });
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
+
+  addSingleSuccess(summary,detail) {
+    this.messageService.add({severity:'success', summary:summary, detail:detail});
+  }
+  addSingleInfo(summary,detail) {
+    this.messageService.add({severity:'info', summary:summary, detail:detail});
+  }
+  addSingleDanger(summary,detail) {
+    this.messageService.add({severity:'error', summary:summary, detail:detail});
   }
   ngOnInit(): void {
     this.tousLesProjets();
@@ -289,11 +300,8 @@ export class ListeProjetsComponent implements OnInit {
       ||this.priorite[i]==null
       ||this.statut[i]==null)
     {
-      var alert=$("<div class=\"alert alert-danger alert-dismissible\">\n" +
-        "             <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-        "             <strong>Echec !</strong> Veuillez remplir tous les champs obligatoires.\n" +
-        "           </div>");
-      $("#alerts-container").append(alert);
+      this.addSingleSuccess("Succès !","Vos modifications ont bien été enregistrées.")
+
       return;
     }
     else{
@@ -303,11 +311,7 @@ export class ListeProjetsComponent implements OnInit {
         projet=>{
           this.projets$[i]=projet;
           this.edit[i]=false;
-          var alert=$("<div class=\"alert alert-success alert-dismissible\">\n" +
-            "             <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-            "             <strong>Succès !</strong> Vos Modifications ont bien été enregistrées.\n" +
-            "           </div>");
-          $("#alerts-container").append(alert);
+          this.addSingleSuccess("Succès !","Vos modifications ont bien été enregistrées.")
         }
       );
 
@@ -321,11 +325,7 @@ export class ListeProjetsComponent implements OnInit {
         this.priorite[i]={nom:this.Priorite[(Object.keys(PrioriteMapping)).find(key => PrioriteMapping[key] === projet.priorite)],valeur:this.PrioriteMapping[(Object.keys(PrioriteMapping)).find(key => PrioriteMapping[key] === projet.priorite)]}
         this.statut[i]={nom:this.Statuts[(Object.keys(StatutMapping)).find(key => StatutMapping[key] === projet.statut)],valeur:this.StatutMapping[(Object.keys(StatutMapping)).find(key => StatutMapping[key] === projet.statut)]}
         this.edit[i]=false;
-        var alert=$("<div class=\"alert alert-secondary alert-dismissible\">\n" +
-          "             <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-          "             <strong>Annulé !</strong> Vos modifications ont été annulées.\n" +
-          "           </div>");
-        $("#alerts-container").append(alert);
+        this.addSingleDanger("Annulé !","Vos modifications ont été annulées.")
       }
     )
   }
@@ -334,11 +334,8 @@ export class ListeProjetsComponent implements OnInit {
     this.serviceProjets.deleteProjet(this.projetASupprimer.codeProjet).subscribe(
       data=>{
         this.tousLesProjets();
-        var alert=$("<div class=\"alert alert-success alert-dismissible\">\n" +
-          "             <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-          "             <strong>Succès !</strong> Le projet à bien été suppprimé.\n" +
-          "           </div>");
-        $("#alerts-container").append(alert);
+        this.addSingleSuccess("Succès !","Le projet a bien été supprimé.")
+
       }
     )
   }
