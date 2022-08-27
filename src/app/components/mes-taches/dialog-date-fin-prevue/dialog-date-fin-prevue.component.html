@@ -1,0 +1,9 @@
+<div mat-dialog-content  style="margin: 20px 0px;padding: 0">
+  <p>Glissement en jour :</p>
+    <input type="text" matInput class="form-control" [(ngModel)]="data">
+</div>
+<div style="display: flex; justify-content: space-between">
+  <button class="btn-dark btn" (click)="onNoClick()">Annuler</button>
+  <button class="btn-dark btn"  [mat-dialog-close]="data" cdkFocusInitial>Enregistrer</button>
+</div>
+

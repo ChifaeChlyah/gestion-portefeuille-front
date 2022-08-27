@@ -3,13 +3,11 @@ mat-accordion{
   width: 30%;
 }
 .taches-container{
-  margin-top: 70px;
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
-  justify-content: center;
+  justify-content: space-between;
   align-content: flex-start;
-  margin-bottom: 30px;
+  margin: 30px;
 }
 :host ::ng-deep .ngx-pagination .current {
   padding: .1875rem .625rem;
@@ -23,7 +21,7 @@ pagination-controls {
 :host ::ng-deep body{
   background:#c487a70a!important;
 }
-.bienvenu{
+.Bienvenue{
   font-weight: 370;
   margin: 20px 20px 0px;
   font-size: 250%;
@@ -39,6 +37,7 @@ pagination-controls {
 .date-container{
   display: flex;
   flex-direction: column;
+  margin: 10px
 }
 .date{
   width: 95%;

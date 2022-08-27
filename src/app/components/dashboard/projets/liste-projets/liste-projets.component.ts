@@ -201,7 +201,12 @@ export class ListeProjetsComponent implements OnInit {
   }
 
   DateFinReelleChanged($event, i: number) {
-    this.projets$[i].dateFinReelle=$event.target.value;
+    if(this.toDate($event.target.value)>new Date()) {
+    this.addSingleDanger("Erreur", "La date de fin réelle ne peut pas être une date future")
+  }
+  else {
+    this.projets$[i].dateDebutReelle = $event.target.value;
+  }
   }
 
   avancementChanged($event, i: number) {
@@ -286,6 +291,7 @@ export class ListeProjetsComponent implements OnInit {
   //dropdown ChefProjet-----------------------------------
   updateProjet(i: any) {
     this.submitted[i]=true;
+    let nop=false;
     if(this.projets$[i].titreProjet==''
       ||this.projets$[i].description==''
       ||this.projets$[i].dateDebutPlanifiee==null
@@ -300,11 +306,35 @@ export class ListeProjetsComponent implements OnInit {
       ||this.priorite[i]==null
       ||this.statut[i]==null)
     {
-      this.addSingleSuccess("Succès !","Vos modifications ont bien été enregistrées.")
-
-      return;
+      this.addSingleDanger("Erreur !","Veuillez remplir les champs manquants.")
+      nop=true;
     }
-    else{
+    if(this.projets$[i].dateDebutPlanifiee>this.projets$[i].dateFinPlanifiee
+    ||this.projets$[i].dateDebutPrevue>this.projets$[i].dateFinPrevue
+    ||this.projets$[i].dateDebutReelle>this.projets$[i].dateFinReelle)
+    {
+      nop=true;
+      let txtErr='';
+      if(this.projets$[i].dateDebutPlanifiee>this.projets$[i].dateFinPlanifiee)
+        txtErr+="date planifiée"
+      if(this.projets$[i].dateDebutPrevue>this.projets$[i].dateFinPrevue) {
+        if(txtErr!='')
+          txtErr+=", "
+        txtErr += "date prévue"
+      }
+      if(this.projets$[i].dateDebutReelle>this.projets$[i].dateFinReelle) {
+        if (txtErr != '')
+          txtErr += ", "
+        txtErr += "date réelle"
+      }
+      txtErr="La date de fin ne peut pas précéder la date de début ("+txtErr+")";
+      this.addSingleDanger("Erreur !",txtErr)
+    }
+    if(this.projets$[i].avancement>100||this.projets$[i].avancement<0) {
+      nop=true;
+      this.addSingleDanger("Erreur !","L'avancement doit être compris entre 0 et 100 !");
+    }
+    if(!nop){
       this.projets$[i].priorite=this.priorite[i].valeur;
       this.projets$[i].statut=this.statut[i].valeur;
       this.serviceProjets.update(this.projets$[i]).subscribe(
@@ -338,5 +368,9 @@ export class ListeProjetsComponent implements OnInit {
 
       }
     )
+  }
+
+  toDate(date): Date {
+    return new Date(date);
   }
 }

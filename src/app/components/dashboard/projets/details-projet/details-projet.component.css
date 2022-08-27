@@ -24,9 +24,9 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
-  height: 40px;
+  height: max-content;
   margin-bottom: 10px;
-  align-items: center;
+  align-items: flex-start;
 }
 #codeGroup{
   width: 30%;
@@ -95,7 +95,7 @@
   border: 1px solid #370821;
 }
 
-.bienvenu{
+.Bienvenue{
   font-weight: 370;
   margin: 20px 20px 0px;
   font-size: 250%;
@@ -330,7 +330,7 @@ textarea {
 }
 .form-control:disabled {
   border-radius: 5px;
-  background: #f3f0f2;
+  background: #f3f0f2!important;
   border-color: transparent;
 }
 .form-control:focus {
@@ -506,6 +506,7 @@ textarea {
   margin-left: 0;
   margin-right: 0;
   width: 100%!important;
+  background: white;
 }
 :host ::ng-deep td  button{
   border: 1px solid transparent!important;
@@ -761,4 +762,18 @@ textarea {
 .cdk-overlay-pane{
   width: 90vw!important;
   height: 90% !important;
+}
+
+.titre-risque{
+  text-align: center;
+  padding: 10px;
+  font-size: large;
+  background: #f3f3f3;
+}
+
+:host ::ng-deep .risqueproba{
+  margin: 0;
+  font-size: small;
+  text-align: right;
+  color: gray;
 }

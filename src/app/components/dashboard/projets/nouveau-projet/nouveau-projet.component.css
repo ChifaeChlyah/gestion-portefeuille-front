@@ -24,9 +24,9 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
-  height: 40px;
+  height: 45px;
   margin-bottom: 10px;
-  align-items: center;
+  align-items: flex-start;
 }
 #codeGroup{
   width: 30%;
@@ -39,6 +39,10 @@
 }
 .input1sur3{
   width: 33%;
+  margin-bottom: 4px;
+}
+.input1sur4{
+  width: 24.5%;
   margin-bottom: 4px;
 }
 .input1sur2{
@@ -221,13 +225,13 @@ opacity: 0.75;
 :host ::ng-deep .ligne-risque-btn:hover{
   opacity: 0.75;
 }
-:host ::ng-deep .ligne-risque:focus{
+:host ::ng-deep .ligne-risqueF:focus{
   opacity: 0.9;
   background: yellowgreen!important;
   box-shadow: none;
   border-color: white;
 }
-:host ::ng-deep .ligne-risque{
+:host ::ng-deep .ligne-risqueF{
   display:flex;
   justify-content: space-between;
 }
@@ -297,6 +301,15 @@ textarea {
 .form-label {
   font-size: 12px;
   color: #880e4f;
+  margin: 0;
+  display: block;
+  opacity: 1;
+  -webkit-transition: .333s ease top, .333s ease opacity;
+  transition: .333s ease top, .333s ease opacity;
+}
+.form-label2 {
+  font-size: 12px;
+  color: gray;
   margin: 0;
   display: block;
   opacity: 1;
@@ -462,6 +475,7 @@ textarea {
   padding:0;
   border-left: 1px solid #dee2e6;
   border-top: 1px solid transparent;
+  background: #dee2e6;
 }
 td .form-control{
   margin-left: 0;
@@ -514,5 +528,21 @@ thead tr{
   cursor: pointer;
 }
 .suppInter:hover{
+  color: gray;
+}
+.table .invalid-feedback{
+  min-width: 250px;
+  padding: 5px;
+}
+.titre-risque{
+  text-align: center;
+  padding: 10px;
+  font-size: large;
+  background: #f3f3f3;
+}
+:host ::ng-deep .risqueproba{
+  margin: 0;
+  font-size: small;
+  text-align: right;
   color: gray;
 }

@@ -1,3 +1,4 @@
+<p-toast position="bottom-right"></p-toast>
 <app-nav-bar-top></app-nav-bar-top>
 <div id="info-container">
 <div class="container d-flex justify-content-center mt-20">
@@ -22,12 +23,12 @@
 
           <div class="row">
                   <div class="picture-container">
-                    <div class="picture">
+                    <div class="picture" >
                       <img [src]="host+'/photo-user/'+user.codeRessource | authImage | async" class="picture-src" id="wizardPicturePreview" title="">
 <!--                      <img src="" class="picture-src" id="wizardPicturePreview" title="">-->
                       <i class="fa-solid fa-circle-user"></i>
 <!--                      <input type="file" id="wizard-picture" >-->
-                      <input type="file" id="wizard-picture" (change)="onSelectedFile($event)">
+                      <input type="file" id="wizard-picture" (change)="onSelectedFile($event)" accept="image/x-png,image/gif,image/jpeg">
                     </div>
                     <h6 class="">Choisissez une photo <i class="fa-solid fa-camera"></i></h6>
               </div>

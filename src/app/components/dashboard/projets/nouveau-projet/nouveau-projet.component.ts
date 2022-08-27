@@ -14,6 +14,7 @@ import {NgxSmartModalService} from "ngx-smart-modal";
 import {Tache} from "../../../../model/Tache.model";
 import {Intervention} from "../../../../model/Intervention.model";
 import {Router} from "@angular/router";
+import {MessageService} from "primeng/api";
 declare var $:any
 @Component({
   selector: 'app-nouveau-projet',
@@ -21,20 +22,27 @@ declare var $:any
   styleUrls: ['./nouveau-projet.component.css']
 })
 export class NouveauProjetComponent implements OnInit {
+  textErreurDependancesTaches:string[]=new Array(10);
+  risqueErr:boolean=false;
+  codeExistant:boolean=false;
   nbTaches: number[] = [];
   nbInterventionParTaches: any[]=new Array();
   taches:Tache[]=new Array();
   piecesJointesValid:boolean=true;
   infoGeneralesValid:boolean=true;
+  tachesValid:boolean=true;
+  predecesseursValid:boolean=true;
+  predecesseursInvalid:string='';
   risquesF:Risque[]=new Array();
   risquesM:Risque[]=new Array();
-  risquesE:Risque[]=new Array();
+  risques:Risque[]=new Array();
   selectedFiles;
   progress;
   currentFileUpload;
   private currentTime: number;
   user:Ressource;
-  datePlanifiee;
+  dateFinPlanifiee:Date;
+  dateDebutPlanifiee:Date;
   dateRelle;
   datePrevue;
   avancement:number;
@@ -58,7 +66,8 @@ export class NouveauProjetComponent implements OnInit {
     ,private portefeuilleService:PortefeuilleService,private projetsService:ProjetsService,
               public authService:AuthentificationService,
               private projetService:ProjetsService,
-              private router:Router) {
+              private router:Router,
+              private messageService: MessageService,) {
 
   }
 
@@ -197,6 +206,19 @@ export class NouveauProjetComponent implements OnInit {
     this.intervenants=$event.value;
     this.dropdownOptionsIntervenantsTache=this.intervenants;
     console.log(this.intervenants)
+    this.taches.forEach(t => {
+      t.interventions.forEach(i => {
+        let found = false;
+        this.intervenants.forEach(intervenant => {
+          if (i.intervenant.codeRessource == intervenant.codeRessource)
+            found = true;
+        })
+        if (found == false) {
+          this.addSingleDanger("Erreur", "L'intervenant \"" + i.intervenant.nom + " " + i.intervenant.prenom + "\" que vous essayez de supprimer intervient dans la tâche \"" + t.titre + "\"")
+          this.intervenants.push(i.intervenant)
+        }
+      })
+    })
   }
   //dropdown Intervenants-----------------------------------
 
@@ -242,6 +264,16 @@ export class NouveauProjetComponent implements OnInit {
   dropdownOptionsPredecesseurs;
   selectionChangedPredecesseurs($event: any) {
     this.predecesseurs=$event.value;
+    this.predecesseursValid=true;
+    this.predecesseursInvalid='';
+    if(this.predecesseurs!=null) {
+      this.predecesseurs.forEach(p => {
+        if (p.dateFinPrevue > this.dateDebutPlanifiee) {
+          this.predecesseursValid = false;
+          this.predecesseursInvalid += p.titreProjet + ", "
+        }
+      })
+    }
   }
   //dropdown Portefeuille-----------------------------------
 
@@ -279,6 +311,14 @@ export class NouveauProjetComponent implements OnInit {
       else
         this.piecesJointes[number]={pieceJointe:event.target.files[0],desc:'',deleted:false}
         $("#validationPJ"+number).remove();
+      let filename=event.target.files[0].name;
+      var extn = filename.split(".").pop();
+      if(extn!="png"&&extn!="jpg"&&extn!="jpeg"&&extn!="jpeg"&&extn!="doc"&&extn!="docx"&&extn!="pdf"&&extn!="text"&&extn!="csv"&&extn!="xls"&&extn!="xlsx") {
+        this.addSingleDanger("Erreur !", "Veuillez fournir un format de pièces jointe valide:\n 'jpg', 'png', 'jpeg', 'doc', 'docx', 'pdf', 'text', 'csv','xls', 'xlsx!")
+        this.piecesJointes[number].pieceJointe=null;
+        $("#pieceJointe"+number).val(null);
+        $("#custom-file-label"+number).text("Glissez la pièce jointe");
+      }
       console.log(this.piecesJointes);
     });
   }
@@ -297,8 +337,10 @@ export class NouveauProjetComponent implements OnInit {
     var pieceJointe=$("<div id=\"pieceJointeC"+this.nbPiecesJointes+"\" class=\"pieceJointe\">\n" +
       "<i  id=\"deletePieceJointe"+this.nbPiecesJointes+"\" data-toggle='tooltip' title='Supprimer la pièce jointe' class=\"fa-solid fa-rectangle-xmark\"></i>"+
       "          <div class=\"custom-file\">\n"+
-      "            <input id=\"pieceJointe"+this.nbPiecesJointes+"\" name=\"pieceJointe"+this.nbPiecesJointes+"\" type=\"file\"  class=\"custom-file-input\" >\n" +
-      "            <label class=\"custom-file-label\" for=\"pieceJointe"+this.nbPiecesJointes+"\">Glissez la pièce jointe</label>\n" +
+      "            <input  accept=\"image/x-png,image/gif,image/jpeg,application/pdf,.csv,s application/vnd.openxmlformats-officedocument.spreadsheetml.sheet," +
+      " application/vnd.ms-excel,text/plain,.doc,.docx,application/vnd.ms-powerpoint\" " +
+      "id=\"pieceJointe"+this.nbPiecesJointes+"\" name=\"pieceJointe"+this.nbPiecesJointes+"\" type=\"file\"  class=\"custom-file-input\" >\n" +
+      "            <label class=\"custom-file-label\" id='custom-file-label"+this.nbPiecesJointes+"' for=\"pieceJointe"+this.nbPiecesJointes+"\">Glissez la pièce jointe</label>\n" +
       "          </div>\n" +
       "          <div class=\"form-group desc-pieceJointe\">\n" +
       "          <textarea rows=\"2\" placeholder=\"Description de la pièce jointe\" class=\"form-control \"\n" +
@@ -413,50 +455,61 @@ export class NouveauProjetComponent implements OnInit {
   //Risque Moyen--------------------------------------------------------
 
 
-  //Risque élevé--------------------------------------------------------
-  probaRisqueE:number;
-  titreRisqueE:string='';
-  descriptionRisqueE:string='';
-  nbRisquesEleves:number=0;
-  ajoutRisqueE(){
-    this.nbRisquesEleves++;
-    this.titreRisqueE=$("#titreRisqueE").val();
-    this.probaRisqueE=$("#probaRisqueE").val();
-    this.descriptionRisqueE=$("#descriptionRisqueE").val();
+  //Risque --------------------------------------------------------
+  probaRisque:number;
+  sevRisque:number;
+  titreRisque:string='';
+  descriptionRisque:string='';
+  nbRisques:number=0;
+  ajoutRisque(){
+    this.nbRisques++;
     let r=new Risque();
-    r.titre=this.titreRisqueE;
-    r.probabilite=this.probaRisqueE;
-    r.severite='Elevé';
-    r.description=this.descriptionRisqueE;
-    this.risquesE[this.nbRisquesEleves-1]=r;
-    console.log(this.risquesE);
-    var risqueE=$("<div id=\"risqueEleve-"+this.nbRisquesEleves+"\" class=\"ligne-risque-container\">\n" +
-      "              <i data-toggle='tooltip' title='Supprimer le risque' id=\"deleteRisqueEleve"+this.nbRisquesEleves+"\" class=\"fa-solid fa-x\"></i>\n" +
-      "              <div id=\"ligne-risque-btn\" class=\"ligne-risque-btn ligne-risqueE-btn\" type=\"button\" data-toggle=\"collapse\" data-target=\"#collapseRisqueEleve"+this.nbRisquesEleves+"\" aria-expanded=\"false\">\n" +
-      "                <button  data-toggle=\"Tooltip\" titre=\"Détails\" id=\"ligne-risqueE\" class=\"ligne-risqueE btn form-control\">\n" +
-      "                  <span id=\"titre-risque-btn\" class=\"titre-risque-btn\"> "+this.titreRisqueE+"</span><span id=\"proba-risque-btn\" class=\"proba-risque-btn\">\n" +
-      "                  "+this.probaRisqueE +"% <i class=\"fa-solid fa-angle-down\"></i></span>\n" +
+    r.titre=this.titreRisque;
+    r.probabilite=this.probaRisque;
+    r.severity=this.sevRisque;
+    r.description=this.descriptionRisque;
+    this.risques[this.nbRisques-1]=r;
+    console.log(this.risques);
+    let niveau=this.probaRisque*this.sevRisque/100
+    let n="";
+    if(niveau<=33)
+      n="F"
+    else if(niveau<=66)
+      n="M"
+    else
+      n="E"
+    var risque=$("<div id=\"risque-"+this.nbRisques+"\" class=\"ligne-risque-container\">\n" +
+      "              <i data-toggle='tooltip' title='Supprimer le risque' id=\"deleteRisque"+this.nbRisques+"\" class=\"fa-solid fa-x\"></i>\n" +
+      "              <div id=\"ligne-risque"+n+"-btn\" class=\"ligne-risque"+n+"-btn ligne-risque-btn\" type=\"button\" data-toggle=\"collapse\" data-target=\"#collapseRisque"+this.nbRisques+"\" aria-expanded=\"false\">\n" +
+      "                <button  data-toggle=\"Tooltip\" titre=\"Détails\" id=\"ligne-risque\" class=\"ligne-risque"+n+" btn form-control\">\n" +
+      "                  <span id=\"titre-risque-btn\" class=\"titre-risque-btn\"> "+this.titreRisque+"</span><span id=\"proba-risque-btn\" class=\"proba-risque-btn\">\n" +
+      "                  "+ niveau+"% <i class=\"fa-solid fa-angle-down\"></i></span>\n" +
       "                </button>\n" +
       "              </div>\n" +
       "            </div>\n" +
-      "            <div class=\"collapse\" id=\"collapseRisqueEleve"+this.nbRisquesEleves+"\" >\n" +
+      "            <div class=\"collapse\" id=\"collapseRisque"+this.nbRisques+"\" >\n" +
       "              <div class=\"card card-body\">\n" +
-      this.descriptionRisqueE+
+      this.descriptionRisque+"<p class='risqueproba'>Sévérité du risque: "+this.sevRisque+"%</p>"+
+      "<p class='risqueproba'>Probabilité du risque: "+this.probaRisque+"%</p>"+
       "              </div>\n" +
       "            </div>")
-    $("#risquesEleves").append(risqueE);
-    const deleteButton = document.getElementById('deleteRisqueEleve'+this.nbRisquesEleves);
+    if(niveau<=33)
+    $("#risquesFaibles").append(risque);
+    else if(niveau<=66)
+    $("#risquesMoyens").append(risque);
+    else
+    $("#risquesEleves").append(risque);
+    const deleteButton = document.getElementById('deleteRisque'+this.nbRisques);
     deleteButton.addEventListener('click', () => {
       deleteButton.parentElement.remove();
-      this.risquesE[+(deleteButton.parentElement.id.split("-").pop()) -1]=undefined;
-      console.log(this.risquesE);
-      //alert(deleteButton.parentElement.id.split("-").pop());
-      // !!!!!!!! --> pour avoir le numéro du risque utile pour un usage dans un tableau
+      this.risques[+(deleteButton.parentElement.id.split("-").pop()) -1]=undefined;
+      console.log(this.risques);
     });
-    $("#modalRisqueEleve").close();
-    this.titreRisqueE=null;
-    this.probaRisqueE=null;
-    this.descriptionRisqueE=null;
+    $("#modalRisque").close();
+    this.titreRisque=null;
+    this.probaRisque=null;
+    this.descriptionRisque=null;
+    this.sevRisque=null;
   }
   //Risque Moyen--------------------------------------------------------
   javaScriptForm()
@@ -549,6 +602,7 @@ export class NouveauProjetComponent implements OnInit {
     this.taches[this.nbTaches.length-1]=new Tache();
     this.taches[this.nbTaches.length-1].idTache=this.nbTaches.length-1;
     this.nbInterventionParTaches[this.nbTaches.length-1]=[];
+    this.taches[this.nbTaches.length-1].interventions=[]
     for(let j=0;j<this.taches.length;j++)
     {
       let t=new Array()
@@ -617,6 +671,7 @@ export class NouveauProjetComponent implements OnInit {
   }
   selectionChangedTacheDependances($event,number) {
     this.taches[number].dependances=$event.value;
+    this.textErreurDependancesTaches[number]='';
   }
   selectionChangedIntervenantTache($event,indiceTache,indiceIntervention)
   {
@@ -635,8 +690,7 @@ export class NouveauProjetComponent implements OnInit {
     this.taches[indiceTache].interventions[indiceIntervention].affectation=event.target.value;
   }
   ngOnInit(): void {
-
-
+    // this.addRow();
 
     this.ressourceService.tousLesChef().subscribe(chefs=>
     {
@@ -710,10 +764,21 @@ export class NouveauProjetComponent implements OnInit {
   // }
   onSelectedFile(event) {
     this.selectedFiles=event.target.files;
+    let filename=this.selectedFiles.item(0).name;
+    var extn = filename.split(".").pop();
+    if(extn!="png"&&extn!="jpg"&&extn!="jpeg") {
+      this.addSingleDanger("Erreur !", "Veuillez fournir un format d'image valide !")
+      this.selectedFiles=null;
+      $("#wizard-picture").val(null);
+      $('#wizardPicturePreview').attr('src', "")
+    }
+
   }
   enregistrer() {
     this.piecesJointesValid=true;
     this.infoGeneralesValid=true;
+    this.tachesValid=true;
+    this.submitted=true;
     for(let i=0;i<this.piecesJointes.length;i++)
     {
       if(this.piecesJointes[i]==undefined||((this.piecesJointes[i].pieceJointe==null||this.piecesJointes[i].desc=='')&&this.piecesJointes[i].deleted==false))
@@ -723,32 +788,84 @@ export class NouveauProjetComponent implements OnInit {
         this.piecesJointesValid=false;
       }
     }
+    this.taches.forEach(
+      t=> {
+        console.log("this.toDate(t.dateDebutPlanifiee)")
+        console.log(this.toDate(t.dateDebutPlanifiee))
+        console.log("this.toDate(this.dateDebutPlanifiee)")
+        console.log(this.toDate(this.dateDebutPlanifiee))
+        if (t.titre == null || t.titre == ''
+          || t.description == null || t.description == ''
+          || t.avancement>100 || t.avancement<0
+          || t.dateDebutPlanifiee == null || t.dateDebutPlanifiee == ''
+          || t.dateFinPlanifiee == null || t.dateFinPlanifiee == ''
+          || this.toDate(t.dateDebutPlanifiee) > this.toDate(t.dateFinPlanifiee)
+          || this.toDate(t.dateDebutPlanifiee)<this.toDate(this.dateDebutPlanifiee)
+          || this.toDate(t.dateFinPlanifiee)>this.toDate(this.dateFinPlanifiee)
+          || t.tacheMere != null && (this.toDate(t.dateDebutPlanifiee) < this.toDate(t.tacheMere.dateDebutPlanifiee))) {
+          this.tachesValid = false;
+        }
+        let nbDep: number = 0;
+        this.textErreurDependancesTaches[t.idTache]=''
+        if (t.dependances != null) {
+          t.dependances.forEach(d => {
+            if (new Date(t.dateDebutPlanifiee) < new Date(d.dateFinPlanifiee)) {
+              nbDep++;
+              if (nbDep == 1) {
+                this.textErreurDependancesTaches[t.idTache] = d.titre;
+              } else if(nbDep==2){
+                this.textErreurDependancesTaches[t.idTache] = "*Les dépendances : \"" + this.textErreurDependancesTaches[t.idTache] + "\", \"" + d.titre;
+              } else{
+                this.textErreurDependancesTaches[t.idTache] = this.textErreurDependancesTaches[t.idTache] + ", \"" + d.titre;
+              }
+            }
+          })
+          if (nbDep == 1) {
+            this.textErreurDependancesTaches[t.idTache] = "*La dépendance : " + this.textErreurDependancesTaches[t.idTache] +
+              " ne peut pas débuter avant la tâche dépendante: " + t.titre+" !";
+            this.tachesValid = false;
+          } else if (nbDep > 0) {
+            this.textErreurDependancesTaches[t.idTache] = this.textErreurDependancesTaches[t.idTache]+
+              "\" ne peuvent pas débuter avant la tâche dépendante: \"" + t.titre+"\" !";
+            this.tachesValid = false;
+          }
+        }
+      }
+    );
+    if(this.predecesseurs!=null) {
+      this.predecesseursInvalid='';
+      this.predecesseurs.forEach(p => {
+        if (p.dateFinPrevue > this.dateDebutPlanifiee) {
+          this.predecesseursValid = false;
+          this.predecesseursInvalid += p.titreProjet + ", "
+        }
+      })
+    }
 
-    this.submitted=true;
     if(this.projetFormGroup.invalid||
-      this.piecesJointesValid==false||
-      this.datePrevue.startDate==null||
-      this.datePlanifiee.startDate==null||
-      this.avancement==null||
+      // this.datePrevue.startDate==null||
+      // this.datePlanifiee.startDate==null||
+      // this.avancement==null||
       this.chef==null||
       this.statut==null||
       this.priorite==null||
-      this.portefeuille==null)
+      this.portefeuille==null||
+    this.dateDebutPlanifiee>this.dateFinPlanifiee)
     {
       this.infoGeneralesValid=false;
-      return;
     }
-
+    if(!this.infoGeneralesValid||!this.piecesJointesValid||!this.tachesValid||!this.predecesseursValid)
+      return;
     else{
-      this.projetFormGroup.controls.dateDebutPlanifiee.setValue(this.datePlanifiee.startDate.toDate());
-      if(this.dateRelle.startDate!=null)
-        this.projetFormGroup.controls.dateDebutRelle.setValue(this.dateRelle.startDate.toDate());
-      this.projetFormGroup.controls.dateDebutPrevue.setValue(this.datePrevue.startDate.toDate());
-      this.projetFormGroup.controls.dateFinPlanifiee.setValue(this.datePlanifiee.endDate.toDate());
-      this.projetFormGroup.controls.dateFinPrevue.setValue(this.datePrevue.endDate.toDate());
-      if(this.dateRelle.endDate!=null)
-        this.projetFormGroup.controls.dateFinRelle.setValue(this.dateRelle.endDate.toDate());
-      this.projetFormGroup.controls.avancement.setValue(this.avancement);
+      this.projetFormGroup.controls.dateDebutPlanifiee.setValue(this.dateDebutPlanifiee);
+      // if(this.dateRelle.startDate!=null)
+      //   this.projetFormGroup.controls.dateDebutRelle.setValue(this.dateRelle.startDate.toDate());
+      // this.projetFormGroup.controls.dateDebutPrevue.setValue(this.datePrevue.startDate.toDate());
+      this.projetFormGroup.controls.dateFinPlanifiee.setValue(this.dateFinPlanifiee);
+      // this.projetFormGroup.controls.dateFinPrevue.setValue(this.datePrevue.endDate.toDate());
+      // if(this.dateRelle.endDate!=null)
+      //   this.projetFormGroup.controls.dateFinRelle.setValue(this.dateRelle.endDate.toDate());
+      // this.projetFormGroup.controls.avancement.setValue(this.avancement);
       this.projetFormGroup.controls.coutInitial.setValue(this.coutInitial);
       this.projetFormGroup.controls.coutReel.setValue(this.coutReel);
       this.projetFormGroup.controls.chefProjet.setValue(this.chef);
@@ -757,8 +874,15 @@ export class NouveauProjetComponent implements OnInit {
       this.projetFormGroup.controls.priorite.setValue(this.priorite);
       this.projetFormGroup.controls.familleProjet.setValue(this.portefeuille);
       this.projetFormGroup.controls.predecesseurs.setValue(this.predecesseurs);
+
       this.projetsService.save(this.projetFormGroup.value).subscribe(
         data=>{
+          if(data==false)
+          {
+            this.codeExistant=true;
+            this.infoGeneralesValid=false;
+            return;
+          }
           //logo------------------------------------------------------------------------------
           if(this.selectedFiles!=undefined)
           {
@@ -795,31 +919,31 @@ export class NouveauProjetComponent implements OnInit {
           })
 
           //Risques-------------------------------------------------------------------------------
-          this.risquesF.forEach(rf=>
-          {
-            if(rf!=undefined)
-            {
-              this.projetsService.addRisque(rf,this.projetFormGroup.controls.codeProjet.value).subscribe(
-                data=>
-                {
-                  // alert("done !");
-                }
-              )
-            }
-          })
-          this.risquesM.forEach(rf=>
-          {
-            if(rf!=undefined)
-            {
-              this.projetsService.addRisque(rf,this.projetFormGroup.controls.codeProjet.value).subscribe(
-                data=>
-                {
-                  // alert("done !");
-                }
-              )
-            }
-          })
-          this.risquesE.forEach(rf=>
+          // this.risquesF.forEach(rf=>
+          // {
+          //   if(rf!=undefined)
+          //   {
+          //     this.projetsService.addRisque(rf,this.projetFormGroup.controls.codeProjet.value).subscribe(
+          //       data=>
+          //       {
+          //         // alert("done !");
+          //       }
+          //     )
+          //   }
+          // })
+          // this.risquesM.forEach(rf=>
+          // {
+          //   if(rf!=undefined)
+          //   {
+          //     this.projetsService.addRisque(rf,this.projetFormGroup.controls.codeProjet.value).subscribe(
+          //       data=>
+          //       {
+          //         // alert("done !");
+          //       }
+          //     )
+          //   }
+          // })
+          this.risques.forEach(rf=>
           {
             if(rf!=undefined)
             {
@@ -836,8 +960,14 @@ export class NouveauProjetComponent implements OnInit {
           console.log(this.taches)
           this.taches.forEach(t=>
           {
-            if(t!=null)
+            if(t!=null) {
+              t.dateDebutPrevue=t.dateDebutPlanifiee;
+              t.dateFinPrevue=t.dateFinPlanifiee;
+              if(t.avancement>0)
+                t.dateDebutRelle=t.dateDebutPlanifiee;
               taches.push(t);
+            }
+
           })
           console.log(taches)
           this.projetsService.ajouterTaches(this.projetFormGroup.controls.codeProjet.value,taches).subscribe();
@@ -847,5 +977,25 @@ export class NouveauProjetComponent implements OnInit {
 
 
     }
+  }
+
+  dateDebutPlanifieeChange() {
+    this.predecesseursValid=true;
+    this.predecesseursInvalid='';
+    if(this.predecesseurs!=null) {
+      this.predecesseurs.forEach(p => {
+        if (p.dateFinPrevue > this.dateDebutPlanifiee) {
+          this.predecesseursValid = false;
+          this.predecesseursInvalid += p.titreProjet + ", "
+        }
+      })
+    }
+  }
+  toDate(date):Date
+  {
+    return new Date(date);
+  }
+  addSingleDanger(summary,detail) {
+    this.messageService.add({severity:'error', summary:summary, detail:detail});
   }
 }

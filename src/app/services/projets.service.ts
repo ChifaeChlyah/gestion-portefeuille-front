@@ -8,6 +8,7 @@ import {FamilleProjet} from "../model/FamilleProjet.model";
 import {Risque} from "../model/Risque.model";
 import {Tache} from "../model/Tache.model";
 import {PieceJointe} from "../model/PieceJointe.model";
+import {Intervention} from "../model/Intervention.model";
 
 @Injectable({
   providedIn: 'root'
@@ -45,9 +46,9 @@ export class ProjetsService {
      return this.http.delete<Projet>(this.host+"/delete-all-taches/" +idProjet,
       {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
   }
-  save(projet:Projet):Observable<Projet> {
+  save(projet:Projet):Observable<boolean> {
     let host = environment.host;
-    let proj=this.http.post<Projet>(host + "/add-projet", projet,
+    let proj=this.http.post<boolean>(host + "/add-projet", projet,
       {headers: new HttpHeaders({'Authorization': this.authService.getToken()})});
     return proj;
   }
@@ -56,6 +57,17 @@ export class ProjetsService {
     let proj=this.http.post<Projet>(host + "/update-projet", projet,
       {headers: new HttpHeaders({'Authorization': this.authService.getToken()})});
     return proj;
+  }
+  updateTache(tache:Tache,glissement:number):Observable<Tache> {
+    let host = environment.host;
+    return this.http.post<Tache>(host + "/update-tache/"+glissement, tache,
+      {headers: new HttpHeaders({'Authorization': this.authService.getToken()})});
+  }
+
+  updateInterventionAvancement(intervention: Intervention, idTache: number):Observable<Intervention> {
+    let host = environment.host;
+    return this.http.post<Intervention>(host + "/update-intervention-avancement/"+idTache, intervention,
+      {headers: new HttpHeaders({'Authorization': this.authService.getToken()})});
   }
   ajouterTaches(codeProjet,taches:Tache[]):Observable<Projet> {
     let host = environment.host;

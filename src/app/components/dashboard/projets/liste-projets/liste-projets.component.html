@@ -19,14 +19,14 @@
       <div class="flex" style="width: fit-content">
                 <span class="p-input-icon-left ml-auto">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt1.filterGlobal($any($event).target.value, 'contains')" placeholder="Search keyword" />
+                    <input pInputText type="text" (input)="dt1.filterGlobal($any($event).target.value, 'contains')" placeholder="Rechercher" />
                 </span>
       </div>
     </ng-template>
 
     <ng-template pTemplate="header">
       <tr>
-        <th>Logo</th>
+        <th >Logo</th>
         <th pResizableColumn pSortableColumn="codeProjet">Code <p-sortIcon field="codeProjet"></p-sortIcon>
           <p-columnFilter type="text" field="codeProjet" display="menu"></p-columnFilter></th>
         <th pResizableColumn pSortableColumn="titreProjet">Titre <p-sortIcon field="titreProjet"></p-sortIcon>
@@ -83,35 +83,39 @@
         <td>
           <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateDebutPlanifiee, 'yyyy-MM-dd')"
                  (change)="DateDebutPlanifieeChanged($event,i)" class="form-control"
-                 [class.is-invalid]="submitted[i] && (p.dateDebutPlanifiee==null|| p.dateDebutPlanifiee=='')">
+                 [class.is-invalid]="submitted[i] && (p.dateDebutPlanifiee==null|| p.dateDebutPlanifiee==''||p.dateDebutPlanifiee>p.dateFinPlanifiee)">
           <span hidden>{{p.dateDebutPlanifiee}}</span>
         </td>
         <td>
           <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinPlanifiee, 'yyyy-MM-dd')"
                  (change)="DateFinPlanifieeChanged($event,i)" class="form-control"
-                 [class.is-invalid]="submitted[i] && (p.dateFinPlanifiee==null|| p.dateFinPlanifiee=='')">
+                 [class.is-invalid]="submitted[i] && (p.dateFinPlanifiee==null|| p.dateFinPlanifiee==''||p.dateDebutPlanifiee>p.dateFinPlanifiee)">
           <span hidden>{{p.dateFinPlanifiee}}</span>
         </td>
         <td>
           <input [disabled]="!edit[i]" type="Date" [attr.value]="datepipe.transform(p.dateDebutPrevue, 'yyyy-MM-dd')"
                  (change)="DateDebutPrevueChanged($event,i)" class="form-control"
-                 [class.is-invalid]="submitted[i] && (p.dateDebutPrevue==null|| p.dateDebutPrevue=='')">
+                 [class.is-invalid]="submitted[i] && (p.dateDebutPrevue==null|| p.dateDebutPrevue==''||p.dateDebutPrevue>p.dateFinPrevue)">
           <span hidden>{{p.dateDebutPrevue}}</span>
         </td>
         <td>
           <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinPrevue, 'yyyy-MM-dd')"
                  (change)="DateFinPrevueChanged($event,i)" class="form-control"
-                 [class.is-invalid]="submitted[i] &&(p.dateFinPrevue==null|| p.dateFinPrevue=='')">
+                 [class.is-invalid]="submitted[i] &&(p.dateFinPrevue==null|| p.dateFinPrevue==''||p.dateDebutPrevue>p.dateFinPrevue)">
           <span hidden>{{p.dateFinPrevue}}</span>
         </td>
         <td>
           <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateDebutReelle, 'yyyy-MM-dd')"
-                 (change)="DateDebutReelleChanged($event,i)" class="form-control">
+                 (change)="DateDebutReelleChanged($event,i)" class="form-control"
+                 [class.is-invalid]="submitted[i] &&p.dateDebutReelle>p.dateFinRelle">
+          <span hidden>{{p.dateDebutRelle}}</span>
+
         </td>
         <td>
           <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinReelle, 'yyyy-MM-dd')"
-                 (change)="DateFinReelleChanged($event,i)" class="form-control">
-          <span hidden>{{p.dateDebutReelle}}</span>
+                 (change)="DateFinReelleChanged($event,i)" class="form-control"
+                 [class.is-invalid]="submitted[i] &&p.dateDebutReelle>p.dateFinRelle">
+          <span hidden>{{p.dateFinReelle}}</span>
         </td>
         <td>
           <ngx-select-dropdown (change)="selectionChangedPriorite($event,i)"
@@ -123,7 +127,7 @@
           <span hidden>{{p.dateFinReelle}}</span>
         </td>
         <td>
-          <input [disabled]="!edit[i]"  type="number" [attr.value]="p.avancement" class="form-control"
+          <input [disabled]="true"  type="number" [attr.value]="p.avancement" class="form-control"
                  (change)="avancementChanged($event,i)">
           <span hidden>{{p.avancement}}</span>
         </td>
@@ -158,7 +162,7 @@
         <td>
           <span mat-raised-button
                 matTooltip="Modifier"  (click)="edit[i]=true;">
-            <i *ngIf="!edit[i]"  class="fa-solid fa-file-pen"></i>
+            <i *ngIf="!edit[i]"  class="fa-solid fa-pen-to-square"></i>
             </span>
           <i *ngIf="edit[i]" (click)="updateProjet(i)" mat-raised-button
              matTooltip="Enregister"  class="fa-solid fa-check"></i>
@@ -168,7 +172,7 @@
           <span mat-raised-button matTooltip="Détails"  [routerLink]="'/projets/details-projet/'+p.codeProjet" ><i class="fa-solid fa-circle-info"></i></span>
           <span data-toggle="modal" data-target="#modalDelete"  >
           <span mat-raised-button
-                matTooltip="Supprimer"  (click)="projetASupprimer=p;" ><i class="fa-solid fa-file-circle-xmark"></i></span>
+                matTooltip="Supprimer"  (click)="projetASupprimer=p;" ><i class="fa-solid fa-circle-xmark"></i></span>
         </span>
         </td>
       </tr>

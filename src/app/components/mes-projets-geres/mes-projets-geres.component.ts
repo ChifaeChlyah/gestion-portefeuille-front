@@ -226,10 +226,14 @@ export class MesProjetsGeresComponent implements OnInit {
     this.projetsGeres[i].dateDebutReelle=$event.target.value;
   }
 
-  DateFinReelleChanged($event, i: number) {
-    this.projetsGeres[i].dateFinReelle=$event.target.value;
+  toDate(date): Date {
+    return new Date(date);
   }
-
+  DateFinReelleChanged($event, i: number) {
+    if (this.toDate($event.target.value) > new Date()) {
+      this.addSingleDanger("Erreur", "La date de fin réelle ne peut pas être une date future")
+    }
+  }
   avancementChanged($event, i: number) {
     this.projetsGeres[i].avancement=$event.target.value;
   }
@@ -312,6 +316,7 @@ export class MesProjetsGeresComponent implements OnInit {
   //dropdown ChefProjet-----------------------------------
   updateProjet(i: any) {
     this.submitted[i]=true;
+    let nop=false;
     if(this.projetsGeres[i].titreProjet==''
       ||this.projetsGeres[i].description==''
       ||this.projetsGeres[i].dateDebutPlanifiee==null
@@ -326,14 +331,35 @@ export class MesProjetsGeresComponent implements OnInit {
       ||this.priorite[i]==null
       ||this.statut[i]==null)
     {
-      var alert=$("<div class=\"alert alert-danger alert-dismissible\">\n" +
-        "             <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-        "             <strong>Echec !</strong> Veuillez remplir tous les champs obligatoires.\n" +
-        "           </div>");
-      $("#alerts-container").append(alert);
-      return;
+      this.addSingleDanger("Erreur !","Veuillez remplir les champs manquants.")
+      nop=true;
     }
-    else{
+    if(this.projetsGeres[i].dateDebutPlanifiee>this.projetsGeres[i].dateFinPlanifiee
+      ||this.projetsGeres[i].dateDebutPrevue>this.projetsGeres[i].dateFinPrevue
+      ||this.projetsGeres[i].dateDebutReelle>this.projetsGeres[i].dateFinReelle)
+    {
+      nop=true;
+      let txtErr='';
+      if(this.projetsGeres[i].dateDebutPlanifiee>this.projetsGeres[i].dateFinPlanifiee)
+        txtErr+="date planifiée"
+      if(this.projetsGeres[i].dateDebutPrevue>this.projetsGeres[i].dateFinPrevue) {
+        if(txtErr!='')
+          txtErr+=", "
+        txtErr += "date prévue"
+      }
+      if(this.projetsGeres[i].dateDebutReelle>this.projetsGeres[i].dateFinReelle) {
+        if (txtErr != '')
+          txtErr += ", "
+        txtErr += "date réelle"
+      }
+      txtErr="La date de fin ne peut pas précéder la date de début ("+txtErr+")";
+      this.addSingleDanger("Erreur !",txtErr)
+    }
+    if(this.projetsGeres[i].avancement>100||this.projetsGeres[i].avancement<0) {
+      nop=true;
+      this.addSingleDanger("Erreur !","L'avancement doit être compris entre 0 et 100 !");
+    }
+    if(!nop){
       this.projetsGeres[i].priorite=this.priorite[i].valeur;
       this.projetsGeres[i].statut=this.statut[i].valeur;
       this.serviceProjets.update(this.projetsGeres[i]).subscribe(

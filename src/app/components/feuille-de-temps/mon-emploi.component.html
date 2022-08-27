@@ -1,3 +1,4 @@
+<p-toast position="bottom-right"></p-toast>
 <app-nav-bar-top *ngIf="isMaFeuilleDeTempsPage" ></app-nav-bar-top>
 <div id="planning" class="activites-container" [ngStyle]="{'margin':(isMaFeuilleDeTempsPage)?'30px':'20px 0'}">
   <div id="alerts-container">
@@ -30,19 +31,37 @@
     </tr>
     <tbody *ngFor="let n of nbActivites | slice: (page-1) * pageSize : page * pageSize" >
     <tr *ngIf="activites[n]" [ngStyle]="{'background':(!editMode)? '#f3f0f2':'transparent'}">
-      <td class="dropdown-table">
+      <td class="dropdown-table" [ngStyle]="{'background':(activites[n].tache==null)&&submitted?'#f8e5e5':'white'}">
         <ngx-select-dropdown  [config]="configDropdownTaches"
                               [options]="dropdownOptionsTaches"
                               (change)="selectionChangedTaches($event,n)"
+                              [class.is-invalid]=" (activites[n].tache==null||activites[n].tache=='')&&submitted"
                               [_value]="activites[n].tache"
                               [disabled]="!editMode">
         </ngx-select-dropdown>
+        <div *ngIf="(activites[n].tache==null||activites[n].tache=='')&&submitted" class=
+          "invalid-feedback">
+          <div>*Ce champs est obligatoire</div>
+        </div>
       </td>
-      <td>
-        <input type="date" [disabled]="!editMode"  class="form-control" [value]="datePipe.transform(activites[n].date, 'yyyy-MM-dd')"  (change)="dateChange($event,n)">
+      <td [ngStyle]="{'background':(activites[n].date==null||activites[n].date=='')&&submitted?'#f8e5e5':'white'}">
+        <input type="date" [disabled]="!editMode"  class="form-control" [value]="datePipe.transform(activites[n].date, 'yyyy-MM-dd')"  (change)="dateChange($event,n)"
+               [class.is-invalid]=" (activites[n].date==null||activites[n].date=='')&&submitted">
+        <div *ngIf="(activites[n].date==null||activites[n].date=='')&&submitted" class=
+          "invalid-feedback">
+          <div>*Ce champs est obligatoire</div>
+        </div>
       </td>
-      <td>
-        <textarea type="text" [disabled]="!editMode" rows="1"  class="form-control" [value]="(activites[n].description)?activites[n].description:''"  (change)="descriptionChange($event,n)"></textarea>
+      <td [ngStyle]="{'background':(activites[n].description==null||activites[n].description=='')&&submitted?'#f8e5e5':'white'}">
+        <textarea type="text" [disabled]="!editMode" rows="1"  class="form-control"
+                  [value]="(activites[n].description)?activites[n].description:''"
+                  (change)="descriptionChange($event,n)"
+                  [class.is-invalid]=" (activites[n].description==null||activites[n].description=='')&&submitted">
+        </textarea>
+        <div *ngIf="(activites[n].description==null||activites[n].description=='')&&submitted" class=
+          "invalid-feedback">
+          <div>*Ce champs est obligatoire</div>
+        </div>
       </td>
 
       <td  *ngIf="editMode">

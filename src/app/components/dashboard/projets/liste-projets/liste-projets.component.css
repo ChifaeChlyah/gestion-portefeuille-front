@@ -186,3 +186,7 @@ img{
   display:flex;
   justify-content: space-between;
 }
+
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-list-container{
+  position:initial!important
+}

@@ -7,6 +7,7 @@ import {AccueilComponent} from "../dashboard/accueil/accueil.component";
 import {HttpEventType, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {CustomValidators} from "../../CustomValidator";
+import {MessageService} from "primeng/api";
 declare var $:any;
 @Component({
   selector: 'app-mes-infos',
@@ -16,7 +17,8 @@ declare var $:any;
 export class MesInfosComponent implements OnInit {
 
   constructor(private authService:AuthentificationService,private fb:FormBuilder
-  ,private ressourceService:RessourcesService) { }
+  ,private ressourceService:RessourcesService,
+              private messageService: MessageService) { }
   imageJavaScript()
   {
     $(document).ready(function(){
@@ -31,6 +33,7 @@ export class MesInfosComponent implements OnInit {
 
         reader.onload = function (e) {
           $('#wizardPicturePreview').attr('src', e.target.result).fadeIn('slow');
+          console.log("tiwtiw")
         }
         reader.readAsDataURL(input.files[0]);
       }
@@ -155,32 +158,44 @@ export class MesInfosComponent implements OnInit {
   }
   onSelectedFile(event) {
     this.selectedFiles=event.target.files;
+    let filename=this.selectedFiles.item(0).name;
+    var extn = filename.split(".").pop();
+    if(extn!="png"&&extn!="jpg"&&extn!="jpeg") {
+      this.addSingleDanger("Erreur !", "Veuillez fournir un format d'image valide !")
+      this.selectedFiles=null;
+      $("#wizard-picture").val(null);
+      // $('#wizardPicturePreview').attr('src', "")
+    }
+
   }
 
   onSaveUser() {
     if(this.userFormGroup.invalid) return;
-    this.ressourceService.updateWithoutRoles(this.userFormGroup.value).subscribe(data=> {
-      }
-    );
-    this.progress = 0;
-    if(this.selectedFiles!=undefined)
-    {
-      this.currentFileUpload = this.selectedFiles.item(0)
-      this.ressourceService.uploadPhoto(this.currentFileUpload, this.user.codeRessource).subscribe(event => {
-        if (event.type === HttpEventType.UploadProgress) {
-          this.progress = Math.round(100 * event.loaded / event.total);
-        } else if (event instanceof HttpResponse) {
-          //console.log(this.router.url);
-          //this.getProducts(this.currentRequest);
-          //this.refreshUpdatedProduct();
-          this.currentTime=Date.now();
+    else {
+      this.ressourceService.updateWithoutRoles(this.userFormGroup.value).subscribe(data => {
+          if (this.selectedFiles == undefined)
+            this.addSingleSuccess("Succès !", "Vos modifications ont bien été enregistrées.")
         }
-      },err=>{
-        alert("Problème de chargement");
-      })
-      this.selectedFiles = undefined
+      );
+      this.progress = 0;
+      if (this.selectedFiles != undefined) {
+        this.currentFileUpload = this.selectedFiles.item(0)
+        this.ressourceService.uploadPhoto(this.currentFileUpload, this.user.codeRessource).subscribe(event => {
+          if (event.type === HttpEventType.UploadProgress) {
+            this.progress = Math.round(100 * event.loaded / event.total);
+          } else if (event instanceof HttpResponse) {
+            //console.log(this.router.url);
+            //this.getProducts(this.currentRequest);
+            //this.refreshUpdatedProduct();
+            this.currentTime = Date.now();
+            this.addSingleSuccess("Succès !", "Vos modifications ont bien été enregistrées.")
+          }
+        }, err => {
+          alert("Problème de chargement");
+        })
+        this.selectedFiles = undefined
+      }
     }
-
   }
   onClickInput(){
      this.mot_de_passe_invalide=false;
@@ -195,8 +210,18 @@ export class MesInfosComponent implements OnInit {
       this.ressourceService.changePassword(this.passwordFormGroup.value,this.user.codeRessource).subscribe(
         data=>{
           this.mot_de_passe_invalide=!data;
+          if(!this.mot_de_passe_invalide)
+            this.addSingleSuccess("Succès !", "Vos modifications ont bien été enregistrées.")
+
         }
       )
     }
+  }
+
+  addSingleDanger(summary,detail) {
+    this.messageService.add({severity:'error', summary:summary, detail:detail});
+  }
+  addSingleSuccess(summary, detail) {
+    this.messageService.add({severity: 'success', summary: summary, detail: detail});
   }
 }

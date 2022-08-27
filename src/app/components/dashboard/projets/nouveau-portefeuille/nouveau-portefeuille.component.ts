@@ -12,6 +12,7 @@ declare var $:any;
 export class NouveauPortefeuilleComponent implements OnInit {
   portefeuilleFormGroup!:FormGroup;
   submitted: boolean;
+  codeExistant;
   constructor(private fb:FormBuilder,private portefeuilleService:PortefeuilleService,
               private router:Router) { }
 
@@ -94,6 +95,11 @@ export class NouveauPortefeuilleComponent implements OnInit {
     if(this.portefeuilleFormGroup?.invalid) return;
     this.portefeuilleService.save(this.portefeuilleFormGroup.value).subscribe(
       data=>{
+        if(data==false)
+        {
+          this.codeExistant=true;
+          return;
+        }
         this.router.navigateByUrl("/projets/liste-portefeuilles");
       }
     );

@@ -5,4 +5,5 @@ export class Risque {
   description:string;
   probabilite:number;
   severite:string;
+  severity:number;
 }

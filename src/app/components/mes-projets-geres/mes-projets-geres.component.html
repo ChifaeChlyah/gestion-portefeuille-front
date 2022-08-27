@@ -1,7 +1,7 @@
 <app-nav-bar-top></app-nav-bar-top>
 <p-toast position="bottom-right"></p-toast>
 
-<h2 class="bienvenu">Bienvenu {{user.prenom}}</h2>
+<h2 class="Bienvenue">Bienvenue {{user.prenom}}</h2>
 <div id="table-projets-container" >
 <!--  <table *ngIf="projetsGeres" id="table-projets"  datatable [dtOptions]="dtOptions" class="row-border table-bordered hover">-->
 <!--    <thead>-->
@@ -149,7 +149,7 @@
       <div class="flex" style="width: fit-content">
                 <span class="p-input-icon-left ml-auto">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt1.filterGlobal($any($event).target.value, 'contains')" placeholder="Search keyword" />
+                    <input pInputText type="text" (input)="dt1.filterGlobal($any($event).target.value, 'contains')" placeholder="Rechercher" />
                 </span>
       </div>
     </ng-template>
@@ -185,8 +185,6 @@
           <p-columnFilter type="text" field="coutInitial" display="menu"></p-columnFilter></th>
         <th pResizableColumn pSortableColumn="coutReel">Coût Réel<p-sortIcon field="coutReel"></p-sortIcon>
           <p-columnFilter type="text" field="coutReel" display="menu"></p-columnFilter></th>
-        <th pResizableColumn pSortableColumn="chefProjet">Chef de projet<p-sortIcon field="chefProjet"></p-sortIcon>
-          <p-columnFilter type="text" field="chefProjet" display="menu"></p-columnFilter></th>
         <th>Actions</th>
       </tr>
     </ng-template>
@@ -213,35 +211,39 @@
         <td>
           <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateDebutPlanifiee, 'yyyy-MM-dd')"
                  (change)="DateDebutPlanifieeChanged($event,i)" class="form-control"
-                 [class.is-invalid]="submitted[i] && (p.dateDebutPlanifiee==null|| p.dateDebutPlanifiee=='')">
+                 [class.is-invalid]="submitted[i] && (p.dateDebutPlanifiee==null|| p.dateDebutPlanifiee==''||p.dateDebutPlanifiee>p.dateFinPlanifiee)">
           <span hidden>{{p.dateDebutPlanifiee}}</span>
         </td>
         <td>
           <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinPlanifiee, 'yyyy-MM-dd')"
                  (change)="DateFinPlanifieeChanged($event,i)" class="form-control"
-                 [class.is-invalid]="submitted[i] && (p.dateFinPlanifiee==null|| p.dateFinPlanifiee=='')">
+                 [class.is-invalid]="submitted[i] && (p.dateFinPlanifiee==null|| p.dateFinPlanifiee==''||p.dateDebutPlanifiee>p.dateFinPlanifiee)">
           <span hidden>{{p.dateFinPlanifiee}}</span>
         </td>
         <td>
           <input [disabled]="!edit[i]" type="Date" [attr.value]="datepipe.transform(p.dateDebutPrevue, 'yyyy-MM-dd')"
                  (change)="DateDebutPrevueChanged($event,i)" class="form-control"
-                 [class.is-invalid]="submitted[i] && (p.dateDebutPrevue==null|| p.dateDebutPrevue=='')">
+                 [class.is-invalid]="submitted[i] && (p.dateDebutPrevue==null|| p.dateDebutPrevue==''||p.dateDebutPrevue>p.dateFinPrevue)">
           <span hidden>{{p.dateDebutPrevue}}</span>
         </td>
         <td>
           <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinPrevue, 'yyyy-MM-dd')"
                  (change)="DateFinPrevueChanged($event,i)" class="form-control"
-                 [class.is-invalid]="submitted[i] &&(p.dateFinPrevue==null|| p.dateFinPrevue=='')">
+                 [class.is-invalid]="submitted[i] &&(p.dateFinPrevue==null|| p.dateFinPrevue==''||p.dateDebutPrevue>p.dateFinPrevue)">
           <span hidden>{{p.dateFinPrevue}}</span>
         </td>
         <td>
           <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateDebutReelle, 'yyyy-MM-dd')"
-                 (change)="DateDebutReelleChanged($event,i)" class="form-control">
+                 (change)="DateDebutReelleChanged($event,i)" class="form-control"
+                 [class.is-invalid]="submitted[i] &&p.dateDebutReelle>p.dateFinRelle">
+          <span hidden>{{p.dateDebutRelle}}</span>
+
         </td>
         <td>
           <input [disabled]="!edit[i]"  type="Date" [attr.value]="datepipe.transform(p.dateFinReelle, 'yyyy-MM-dd')"
-                 (change)="DateFinReelleChanged($event,i)" class="form-control">
-          <span hidden>{{p.dateDebutReelle}}</span>
+                 (change)="DateFinReelleChanged($event,i)" class="form-control"
+                 [class.is-invalid]="submitted[i] &&p.dateDebutReelle>p.dateFinRelle">
+          <span hidden>{{p.dateFinReelle}}</span>
         </td>
         <td>
           <ngx-select-dropdown (change)="selectionChangedPriorite($event,i)"
@@ -275,15 +277,6 @@
           <input [disabled]="!edit[i]"  type="text" [attr.value]="p.coutReel" class="form-control"
                  (change)="coutReelChanged($event,i)">
           <span hidden>{{p.coutReel}}</span>
-        </td>
-        <td>
-          <ngx-select-dropdown (change)="selectionChangedChefProjet($event,i)"
-                               [_value]="p.chefProjet"
-                               [config]="configDropdownChefProjet" [options]="dropdownOptionsChefProjet"
-                               [disabled]="!edit[i]"
-                               [class.is-invalid]="submitted[i] && p.chefProjet==null">
-          </ngx-select-dropdown>
-          <span hidden *ngIf="p.chefProjet">{{p.chefProjet.nom+' '+p.chefProjet.prenom}}</span>
         </td>
         <td>
           <span mat-raised-button

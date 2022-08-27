@@ -1,13 +1,14 @@
 <app-nav-bar-top *ngIf="mesTachesPage" ></app-nav-bar-top>
+<p-toast position="bottom-right"></p-toast>
 
-<h2 class="bienvenu" *ngIf="mesTachesPage">Bienvenu {{user.prenom}}</h2>
+<h2 class="Bienvenue" *ngIf="mesTachesPage">Bienvenue {{user.prenom}}</h2>
 <h1 class="titreTaches" *ngIf="mesTachesPage">Toutes mes tâches</h1>
 <div class="taches-container" *ngIf="taches">
   <mat-accordion *ngFor="let tache of taches| paginate: { itemsPerPage: 15, currentPage: p };let i=index"
   [ngStyle]="{'width':(mesTachesPage)?'30%':'45%'}">
     <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <mat-panel-title> {{tache.titre}} </mat-panel-title>
+        <mat-panel-title> {{tache.titre}} <i *ngIf="tache.avancement==100" style="margin-left: 10px;color: #5d0c37;font-size:x-large" class="fa-solid fa-check"></i></mat-panel-title>
         <mat-panel-description>
           {{tache.description}}
 
@@ -17,45 +18,46 @@
       <span >
         <span class="date-container">
                   <span class="date-titre" >Projet :</span>
-                  <span class="date">{{tache.projet.titreProjet}}</span>
+                  <span class="date">{{tache.projet.titreProjet}} </span>
         </span>
         <span class="date-container">
                   <span class="date-titre" >Dates planifiées :</span>
                   <span class="date">{{datepipe.transform(tache.dateDebutPlanifiee, 'dd-MM-yyyy')}} / {{datepipe.transform(tache.dateFinPlanifiee, 'dd-MM-yyyy')}}</span>
         </span>
-          <br>
         <span class="date-container">
         <span class="date-titre">Dates Prévues :</span>
                   <span class="date-icon"><span class="date">{{datepipe.transform(tache.dateDebutPrevue, 'dd-MM-yyyy')}} / {{datepipe.transform(tache.dateFinPrevue, 'dd-MM-yyyy')}}</span>
-          <i *ngIf="mesTachesPage" matTooltip="Changer les dates prévues" class="fa-solid fa-calendar-plus"></i>
+          <i *ngIf="mesTachesPage&&tache.avancement!=100" (click)="openDialogDatesPrevues(i)" matTooltip="Ajouter un glissement en jour" class="fa-solid fa-calendar-plus"></i>
                     </span>
-         <span *ngIf="mesTachesPage" class="date-container invalide tooltip-right"
-               ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-               popoverTitle="Message d'invalidation">
-          <span>*Changement invalide:
-          {{datepipe.transform(tache.dateDebutPrevue, 'dd-MM-yyyy')}} / {{datepipe.transform(tache.dateFinPrevue, 'dd-MM-yyyy')}}</span>
-          </span>
+<!--         <span *ngIf="mesTachesPage" class="date-container invalide tooltip-right"-->
+<!--               ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."-->
+<!--               popoverTitle="Message d'invalidation">-->
+<!--          <span>*Changement invalide:-->
+<!--          {{datepipe.transform(tache.dateDebutPrevue, 'dd-MM-yyyy')}} / {{datepipe.transform(tache.dateFinPrevue, 'dd-MM-yyyy')}}</span>-->
+<!--          </span>-->
         </span>
-          <br>
         <span class="date-container">
         <span class="date-titre">Dates réelles :</span>
                   <span class="date">{{datepipe.transform(tache.dateDebutRelle, 'dd-MM-yyyy')}} / {{datepipe.transform(tache.dateFinRelle, 'dd-MM-yyyy')}}</span>
                 </span>
         </span>
-      <br>
       <span class="date-container">
-      <span class="date-titre">Avancement: </span>
+      <span class="date-titre">Mon avancement: </span>
+        <span class="date-icon"><span class="date">{{interventions[i].avancement}} %</span>
+        <i *ngIf="mesTachesPage&&tache.avancement!=100" (click)="openDialogAvancement(i)" matTooltip="Changer l'avancement" class="fa-solid fa-sliders"></i> </span>
+      </span>
+        <span class="date-container">
+      <span class="date-titre">Avancement global de la tâche: </span>
         <span class="date-icon"><span class="date">{{tache.avancement}} %</span>
-        <i *ngIf="mesTachesPage" matTooltip="Changer l'avancement" class="fa-solid fa-sliders"></i> </span>
         </span>
-      <span *ngIf="mesTachesPage" class="date-container pas-encore-valide">
-          <span>*Changement pas encore validé: {{tache.avancement}} %</span>
         </span>
+<!--      <span *ngIf="mesTachesPage" class="date-container pas-encore-valide">-->
+<!--          <span>*Changement pas encore validé: {{tache.avancement}} %</span>-->
+<!--        </span>-->
     </mat-expansion-panel>
 
   </mat-accordion>
   </div>
-
-<pagination-controls previousLabel="Précédent"
+<pagination-controls previousLabel="Précédent" style="margin-right: 20px"
                      nextLabel="Suivant" (pageChange)="p = $event"></pagination-controls>
 

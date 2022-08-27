@@ -76,6 +76,8 @@ import {ToastModule} from "primeng/toast";
 import {MessageModule} from "primeng/message";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {ConfirmDialog, ConfirmDialogModule} from "primeng/confirmdialog";
+import { DialogAvancementComponent } from './components/mes-taches/dialog-avancement/dialog-avancement.component';
+import { DialogDateFinPrevueComponent } from './components/mes-taches/dialog-date-fin-prevue/dialog-date-fin-prevue.component';
 
 @NgModule({
   declarations: [
@@ -119,6 +121,8 @@ import {ConfirmDialog, ConfirmDialogModule} from "primeng/confirmdialog";
     AuthImagePipe,
     DetailsProjetComponent,
     DialogGanttComponent,
+    DialogAvancementComponent,
+    DialogDateFinPrevueComponent,
   ],
   imports: [
     BrowserModule,
@@ -152,7 +156,7 @@ import {ConfirmDialog, ConfirmDialogModule} from "primeng/confirmdialog";
     TooltipModule,
     ToastModule,
     MessageModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
   ],
   providers: [
     DatePipe,

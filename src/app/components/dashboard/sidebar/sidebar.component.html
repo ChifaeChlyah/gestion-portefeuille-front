@@ -17,39 +17,39 @@
           <span class="menu-collapsed">Accueil</span>
         </div>
       </a>
-      <a href="#submenu1" *ngIf="authService.estGestionnairePortefeuille()" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-start align-items-center">
-          <span class="fa fa-bell fa-fw mr-3"></span>
-          <span class="menu-collapsed">Notifications <span class="badge badge-pill ml-2">5</span></span>
-          <span class="submenu-icon ml-auto"></span>
-        </div>
-      </a>
+<!--      <a href="#submenu1" *ngIf="authService.estGestionnairePortefeuille()" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">-->
+<!--        <div class="d-flex w-100 justify-content-start align-items-center">-->
+<!--          <span class="fa fa-bell fa-fw mr-3"></span>-->
+<!--          <span class="menu-collapsed">Notifications <span class="badge badge-pill ml-2">5</span></span>-->
+<!--          <span class="submenu-icon ml-auto"></span>-->
+<!--        </div>-->
+<!--      </a>-->
       <!-- Submenu content-->
-      <div id='submenu1' class="collapse sidebar-submenu">
-        <a  class="list-group-item list-group-item-action bg-dark text-white">
-          <div class="child-notifications"><span class="menu-collapsed">Progrès </span>
-            <span class="badge badge-pill ml-2">3 <i class="fa-solid fa-bars-progress"></i></span>
-          </div>
-        </a>
-        <a class="list-group-item list-group-item-action bg-dark text-white">
-          <div class="child-notifications"><span class="menu-collapsed">Risques </span>
-            <span class="badge badge-pill ml-2">1 <i class="fa-solid fa-circle-exclamation"></i></span>
-          </div>
-        </a>
-        <a class="list-group-item list-group-item-action bg-dark text-white">
-          <div class="child-notifications"><span class="menu-collapsed">Planning </span>
-            <!--<span class="badge badge-pill ml-2">0 <i class="fa-solid fa-timeline"></i></span>-->
-          </div>
-        </a>
-      </div>
+<!--      <div id='submenu1' class="collapse sidebar-submenu">-->
+<!--        <a  class="list-group-item list-group-item-action bg-dark text-white">-->
+<!--          <div class="child-notifications"><span class="menu-collapsed">Progrès </span>-->
+<!--            <span class="badge badge-pill ml-2">3 <i class="fa-solid fa-bars-progress"></i></span>-->
+<!--          </div>-->
+<!--        </a>-->
+<!--        <a class="list-group-item list-group-item-action bg-dark text-white">-->
+<!--          <div class="child-notifications"><span class="menu-collapsed">Risques </span>-->
+<!--            <span class="badge badge-pill ml-2">1 <i class="fa-solid fa-circle-exclamation"></i></span>-->
+<!--          </div>-->
+<!--        </a>-->
+<!--        <a class="list-group-item list-group-item-action bg-dark text-white">-->
+<!--          <div class="child-notifications"><span class="menu-collapsed">Planning </span>-->
+<!--            &lt;!&ndash;<span class="badge badge-pill ml-2">0 <i class="fa-solid fa-timeline"></i></span>&ndash;&gt;-->
+<!--          </div>-->
+<!--        </a>-->
+<!--      </div>-->
 
-      <a *ngIf="authService.estAdmin()" href="#" class="bg-dark list-group-item list-group-item-action">
-        <div class="d-flex w-100 justify-content-start align-items-center">
-          <span class="fa-solid fa-bug mr-3"></span>
+<!--      <a *ngIf="authService.estAdmin()" href="#" class="bg-dark list-group-item list-group-item-action">-->
+<!--        <div class="d-flex w-100 justify-content-start align-items-center">-->
+<!--          <span class="fa-solid fa-bug mr-3"></span>-->
 
-          <span class="menu-collapsed">Bugs</span>
-        </div>
-      </a>
+<!--          <span class="menu-collapsed">Bugs</span>-->
+<!--        </div>-->
+<!--      </a>-->
       <!-- Separator with title -->
       <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
         <small>OPTIONS</small>

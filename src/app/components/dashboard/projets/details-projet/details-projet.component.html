@@ -47,7 +47,8 @@
             <div [ngClass]="(editMode)?'picture':'picture-disabled'">
               <img [src]="host+'/logoProjet/'+projet.codeProjet| authImage | async"  class="picture-src" id="wizardPicturePreview" title="">
               <i class="fa-solid fa-laptop-file"></i>
-              <input [disabled]="!editMode" (change)="onSelectedFile($event)" type="file" id="wizard-picture" class="">
+              <input [disabled]="!editMode" (change)="onSelectedFile($event)" type="file" id="wizard-picture"
+                     accept="image/x-png,image/gif,image/jpeg">
             </div>
             <h6 *ngIf="editMode" style="color: #880e4f" class="">Logo <i class="fa-solid fa-camera"></i></h6>
           </div>
@@ -92,71 +93,79 @@
         </div>
 
         <p class="titre-group-inputs"><i class="fa-solid fa-angles-right"></i> Dates du projet</p>
-        <div class="inputs-inline" style="margin-bottom: 0px" [ngStyle]="{'height':submitted?'70px':'40px'}">
+        <div class="inputs-inline" style="margin-bottom: 0px" >
           <div class=" input1sur6" style="display: flex;flex-direction: column">
             <label class="form-label" for="dateDebutPlanifiee">Date début planifiée</label>
             <input [disabled]="!editMode"   class="form-control" type="Date" placeholder="Date début planifiée"
-                   [(ngModel)]="dateDebutPlanifiee" [ngModelOptions]="{standalone: true}"
-                    id="dateDebutPlanifiee" [ngClass]="{'is-invalid': submitted && (dateDebutPlanifiee==null||dateDebutPlanifiee=='')}">
-            <div *ngIf="submitted && (dateDebutPlanifiee==null||dateDebutPlanifiee=='')" class=
+                   [(ngModel)]="dateDebutPlanifiee" (change)="predecesseursValidUpdate()" [ngModelOptions]="{standalone: true}"
+                    id="dateDebutPlanifiee" [ngClass]="{'is-invalid': submitted && (dateDebutPlanifiee==null||dateDebutPlanifiee==''||!predecesseursValidPlanifiee)}">
+            <div *ngIf="submitted && (dateDebutPlanifiee==null||dateDebutPlanifiee==''||!predecesseursValidPlanifiee)" class=
               "invalid-feedback">
               <div *ngIf="submitted&&(dateDebutPlanifiee==null||dateDebutPlanifiee=='')">Ce champs est obligatoire</div>
+              <div *ngIf="submitted&&!predecesseursValidPlanifiee">*Les prédécesseurs doivent être terminés avant la date de début du projet: {{predecesseursInvalidPlanifiee}}</div>
             </div>
           </div>
           <div class=" input1sur6" style="display: flex;flex-direction: column">
             <label class="form-label" for="dateFinPlanifiee">Date fin planifiée</label>
             <input [disabled]="!editMode"   class="form-control" type="Date" placeholder="Date fin planifiée"
                    [(ngModel)]="dateFinPlanifiee" [ngModelOptions]="{standalone: true}"
-                   id="dateFinPlanifiee" [ngClass]="{'is-invalid': submitted && (dateFinPlanifiee==null||dateFinPlanifiee=='')}">
-            <div *ngIf="submitted && (dateFinPlanifiee==null||dateFinPlanifiee=='')" class=
+                   id="dateFinPlanifiee" [ngClass]="{'is-invalid': submitted && (dateFinPlanifiee==null||dateFinPlanifiee==''||dateFinPlanifiee<dateDebutPlanifiee)}">
+            <div *ngIf="submitted && (dateFinPlanifiee==null||dateFinPlanifiee==''||dateFinPlanifiee<dateDebutPlanifiee)" class=
               "invalid-feedback">
-              <div *ngIf="submitted&&(dateFinPlanifiee==null||dateFinPlanifiee=='')">Ce champs est obligatoire</div>
+              <div  *ngIf="submitted && (dateFinPlanifiee==null||dateFinPlanifiee=='')" >Ce champs est obligatoire</div>
+              <div  *ngIf="submitted && dateFinPlanifiee<dateDebutPlanifiee" >La date de fin ne peut pas précéder la date de début</div>
             </div>
           </div>
           <div class=" input1sur6" style="display: flex;flex-direction: column">
             <label class="form-label" for="dateDebutPrevue">Date début prévue</label>
             <input [disabled]="!editMode"   class="form-control" type="Date" placeholder="Date début prévue"
-                   [(ngModel)]="dateDebutPrevue" [ngModelOptions]="{standalone: true}"
-                   id="dateDebutPrevue" [ngClass]="{'is-invalid': submitted && (dateDebutPrevue==null||dateDebutPrevue=='')}">
-            <div *ngIf="submitted && (dateDebutPrevue==null||dateDebutPrevue=='')" class=
+                   [(ngModel)]="dateDebutPrevue" (change)="predecesseursValidUpdate()" [ngModelOptions]="{standalone: true}"
+                   id="dateDebutPrevue" [ngClass]="{'is-invalid': submitted && (dateDebutPrevue==null||dateDebutPrevue==''||!predecesseursValidPrevue)}">
+            <div *ngIf="submitted && (dateDebutPrevue==null||dateDebutPrevue==''||!predecesseursValidPrevue)" class=
               "invalid-feedback">
-              <div *ngIf="submitted&&(dateDebutPrevue==null||dateDebutPrevue=='')">Ce champs est obligatoire</div>
+              <div  *ngIf="submitted && (dateDebutPrevue==null||dateDebutPrevue=='')" >Ce champs est obligatoire</div>
+              <div *ngIf="submitted&&!predecesseursValidPrevue">*Les prédécesseurs doivent être terminés avant la date de début du projet: {{predecesseursInvalidPrevue}}</div>
             </div>
           </div>
           <div class=" input1sur6" style="display: flex;flex-direction: column">
             <label class="form-label" for="dateFinPrevue">Date fin prévue</label>
             <input [disabled]="!editMode"    class="form-control" type="Date" placeholder="Date fin prévue"
-                   [(ngModel)]="dateFinPrevue" [ngModelOptions]="{standalone: true}"
-                   id="dateFinPrevue" [ngClass]="{'is-invalid': submitted && (dateFinPrevue==null||dateFinPrevue=='')}">
-            <div *ngIf="submitted && (dateFinPrevue==null||dateFinPrevue=='')" class=
+                   [(ngModel)]="dateFinPrevue"  [ngModelOptions]="{standalone: true}"
+                   id="dateFinPrevue" [ngClass]="{'is-invalid': submitted && (dateFinRelle==null||dateFinRelle==''||dateFinRelle<dateDebutRelle)}">
+            <div *ngIf="submitted && (dateFinPrevue==null||dateFinPrevue==''||dateFinPrevue<dateDebutPrevue)" class=
               "invalid-feedback">
-              <div *ngIf="submitted&&(dateFinPrevue==null||dateFinPrevue=='')">Ce champs est obligatoire</div>
+              <div  *ngIf="submitted && (dateFinPrevue==null||dateFinPrevue=='')" >Ce champs est obligatoire</div>
+              <div  *ngIf="submitted && dateFinPrevue<dateDebutPrevue" >La date de fin ne peut pas précéder la date de début</div>
             </div>
           </div>
           <div class=" input1sur6" style="display: flex;flex-direction: column">
             <label class="form-label" for="dateDebutRelle">Date début Réelle</label>
             <input [disabled]="!editMode" class="form-control" type="Date" placeholder="Date début Réelle"
                    [(ngModel)]="dateDebutRelle" [ngModelOptions]="{standalone: true}"
-                   id="dateDebutRelle" >
+                   id="dateDebutRelle"  [ngClass]="{'is-invalid': submitted && !predecesseursValidReelle}">
+            <div *ngIf="submitted && !predecesseursValidReelle" class=
+              "invalid-feedback">
+              <div *ngIf="submitted&&!predecesseursValidReelle">*Les prédécesseurs doivent être terminés avant la date de début du projet: {{predecesseursInvalidReelle}}</div>
+            </div>
           </div>
           <div class=" input1sur6" style="display: flex;flex-direction: column">
             <label class="form-label" for="dateFinRelle">Date fin Réelle</label>
-            <input [disabled]="!editMode"  class="form-control" type="Date" placeholder="Date fin Réelle"
-                   [(ngModel)]="dateFinRelle" [ngModelOptions]="{standalone: true}"
-                   id="dateFinRelle">
-            <div *ngIf="submitted && avancement==null" class=
+            <input [disabled]="!editMode"  class="form-control" type="Date" placeholder="Date fin Réelle" (change)="changeDateFinReelle()"
+                   [(ngModel)]="dateFinRelle" (change)="predecesseursValidUpdate()" [ngModelOptions]="{standalone: true}"
+                   id="dateFinRelle" [ngClass]="{'is-invalid': submitted && (dateFinRelle!=null&&dateFinRelle!=''&&dateFinRelle<dateDebutRelle)}">
+            <div *ngIf="submitted && (dateFinRelle!=null&&dateFinRelle!=''&&dateFinRelle<dateDebutRelle)" class=
               "invalid-feedback">
-              <div *ngIf="submitted&&avancement==null">Ce champs est obligatoire</div>
+              <div  *ngIf="submitted &&dateFinRelle!=null&&dateFinRelle!=''&& dateFinRelle<dateDebutRelle" >La date de fin ne peut pas précéder la date de début</div>
             </div>
           </div>
 
         </div >
 
         <p style="margin-top: 10px" class="titre-group-inputs"><i class="fa-solid fa-angles-right"></i> Avancement et coûts du projet</p>
-        <div class="inputs-inline" style="margin-bottom: 10px" [ngStyle]="{'height':submitted?'70px':'40px'}">
+        <div class="inputs-inline" style="margin-bottom: 10px" >
           <div class=" input1sur3" style="display: flex;flex-direction: column">
             <label for="avancement" class="form-label">Avancement %</label>
-            <input [disabled]="!editMode"  style="width: 98%" type="number" min="0" max="100" placeholder="Avancement %" class="form-control" id="avancement" [(ngModel)]="avancement"
+            <input [disabled]="true"  style="width: 98%" type="number" min="0" max="100" placeholder="Avancement %" class="form-control" id="avancement" [(ngModel)]="avancement"
                    [ngModelOptions]="{standalone: true}" (change)="avancementChange()"  name="titre"
                    [ngClass]="{'is-invalid': submitted && avancement==null}">
             <div *ngIf="submitted && avancement==null" class=
@@ -186,7 +195,7 @@
 
         <p class="titre-group-inputs"><i class="fa-solid fa-angles-right"></i> Gestion du projet</p>
 
-        <div class="inputs-inline" [ngStyle]="{'height':submitted&&(chef==null||intervenants==null||statut==null)?'60px':'40px'}">
+        <div class="inputs-inline">
           <div class="dropdown input1sur5 form-group" >
             <label *ngIf="authService.estChefDeProjet()" for="chefProjet1" class="form-label">Chef de Projet</label>
             <label  *ngIf="!authService.estChefDeProjet()"for="chefProjet" class="form-label">Chef de Projet</label>
@@ -309,12 +318,18 @@
       <div class="tab-pane container fade" id="predecesseurs" style="padding-top:10px;max-width: 95%; ">
         <div id="alerts-container-predecesseurs"></div>
         <div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 10px">
+          <div>
           <ngx-select-dropdown  (change)="selectionChangedPredecesseurs($event)"
                                [ngModelOptions]="{standalone: true}" [ngModel]="predecesseurs" [multiple]="true"
                                [config]="configDropdownPredecesseurs" [options]="dropdownOptionsPredecesseurs"
                                *ngIf="editModePredecesseurs"
-                               style="width: 30%">
+                               [class.is-invalid]="(!predecesseursValid)">
           </ngx-select-dropdown>
+            <div *ngIf="(!predecesseursValid)" class=
+              "invalid-feedback">
+<!--              <div>*Les prédécesseurs doivent être terminés avant la date de début du projet: {{predecesseursInvalid}}</div>-->
+            </div>
+          </div>
           <div></div>
           <div style="float:right;font-size: x-large">
            <span title="Modifier"  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
@@ -324,7 +339,9 @@
             <i (click)="saveEditPredecesseurs()"*ngIf="editModePredecesseurs" mat-raised-button matTooltip="Enregistrer"  class="fa-solid fa-check"></i>
             <i (click)="annulerEditPredecesseurs()" *ngIf="editModePredecesseurs" mat-raised-button matTooltip="Annuler"  class="fa-solid fa-x"></i>
           </div>
+
         </div>
+
         <table class="table align-middle mb-0 bg-white">
           <thead class="bg-light">
           <tr>
@@ -410,81 +427,79 @@
 
       </div>
       <div class="tab-pane container fade" id="risques" style="padding-top:10px;max-width: 95%; ">
+        <div  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()" data-toggle="modal" data-target="#modalRisque" class="addRisque"  >
+          <div title="Ajouter un risque" data-toggle="tooltip"> <i class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
+        </div>
         <div id="risquesContainer">
 
 
           <div id="risquesFaibles"  class="risque1sur3">
-
-            <div  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
-                  data-toggle="modal" data-target="#modalRisqueFaible" class="addRisque"  >
-              <div mat-raised-button matTooltip="Ajouter un risque faible"  > <i  class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
-            </div>
+            <h3 class="titre-risque">Risques de niveau faible</h3>
             <div *ngFor="let rf of projet.risques;let i=index">
-              <div *ngIf="rf.severite=='Faible'">
+              <div *ngIf="rf.severity*rf.probabilite/100<33">
                 <div [id]="'risqueFaible-'+i" class="ligne-risque-container">
                   <i  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
                       class="fa-solid fa-x" mat-raised-button matTooltip="Supprimer"  (click)="deleteRisque(rf.idRisque)"></i>
                   <div  class="ligne-risque-btn" type="button" data-toggle="collapse" [attr.data-target]="'#collapseRisqueFaible'+i" aria-expanded="false">
                     <button mat-raised-button matTooltip="Détails" class="ligne-risque btn form-control">
                       <span class="titre-risque-btn">{{rf.titre}}</span><span class="proba-risque-btn">
-                                  {{rf.probabilite}} % <i class="fa-solid fa-angle-down"></i></span>
+                                  {{rf.severity*rf.probabilite/100}} % <i class="fa-solid fa-angle-down"></i></span>
                     </button>
                   </div>
                 </div>
                 <div class="collapse" [id]="'collapseRisqueFaible'+i" >
                   <div class="card card-body">
                     {{rf.description}}
+                    <p class='risqueproba'>Sévérité du risque: {{rf.severity}}%</p>
+                    <p class='risqueproba'>Probabilité du risque: {{rf.probabilite}}%</p>
                   </div>
                 </div>
               </div>
-          </div>
+            </div>
           </div>
           <div id="risquesMoyens" class="risque1sur3">
-            <div data-toggle="modal" data-target="#modalRisqueMoyen" class="addRisque"  >
-              <div  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
-                   mat-raised-button matTooltip="Ajouter un risque Moyen" >
-                <i class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
-            </div>
+            <h3 class="titre-risque">Risques de niveau moyen</h3>
             <div *ngFor="let rf of projet.risques;let i=index">
-              <div *ngIf="rf.severite=='Moyen'">
+              <div *ngIf="rf.severity*rf.probabilite/100<66&&rf.severity*rf.probabilite/100>33">
                 <div [id]="'risqueMoyen-'+i" class="ligne-risque-container">
                   <i  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
                       mat-raised-button matTooltip="Supprimer" class="fa-solid fa-x" (click)="deleteRisque(rf.idRisque)"></i>
                   <div  class="ligne-risque-btn ligne-risqueM-btn" type="button" data-toggle="collapse" [attr.data-target]="'#collapseRisqueMoyen'+i" aria-expanded="false">
                     <button  mat-raised-button matTooltip="Détails" class="ligne-risqueM btn form-control">
                       <span class="titre-risqueM-btn">{{rf.titre}}</span><span class="proba-risque-btn">
-                                  {{rf.probabilite}} % <i class="fa-solid fa-angle-down"></i></span>
+                                  {{rf.severity*rf.probabilite/100}} % <i class="fa-solid fa-angle-down"></i></span>
                     </button>
                   </div>
                 </div>
                 <div class="collapse" [id]="'collapseRisqueMoyen'+i" >
                   <div class="card card-body">
                     {{rf.description}}
+                    <p class='risqueproba'>Sévérité du risque: {{rf.severity}}%</p>
+                    <p class='risqueproba'>Probabilité du risque: {{rf.probabilite}}%</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div id="risquesEleves" class="risque1sur3">
-            <div data-toggle="modal" data-target="#modalRisqueEleve" class="addRisque"  >
-              <div mat-raised-button matTooltip="Ajouter un risque élevé"  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
-              > <i class="fa-solid fa-plus"></i><i class="fa-solid fa-circle-exclamation"></i></div>
-            </div>
+            <h3 class="titre-risque">Risques de niveau élevé</h3>
             <div *ngFor="let rf of projet.risques;let i=index">
-              <div *ngIf="rf.severite=='Elevé'">
+              <div *ngIf="rf.severity*rf.probabilite/100>66">
                 <div [id]="'risqueEleve-'+i" class="ligne-risque-container">
                   <i mat-raised-button matTooltip="Supprimer"  *ngIf="authService.estChefDeProjet()||authService.estAdmin()||authService.estGestionnairePortefeuille()"
-                      class="fa-solid fa-x" (click)="deleteRisque(rf.idRisque)"></i>
+                     class="fa-solid fa-x" (click)="deleteRisque(rf.idRisque)"></i>
                   <div  class="ligne-risque-btn ligne-risqueE-btn" type="button" data-toggle="collapse" [attr.data-target]="'#collapseRisqueEleve'+i" aria-expanded="false">
                     <button  mat-raised-button matTooltip="Détails" class="ligne-risqueE btn form-control">
                       <span class="titre-risqueM-btn">{{rf.titre}}</span><span class="proba-risque-btn">
-                                  {{rf.probabilite}} % <i class="fa-solid fa-angle-down"></i></span>
+                                  {{rf.severity*rf.probabilite/100}} % <i class="fa-solid fa-angle-down"></i></span>
                     </button>
                   </div>
                 </div>
                 <div class="collapse" [id]="'collapseRisqueEleve'+i" >
                   <div class="card card-body">
                     {{rf.description}}
+                    <p class='risqueproba'>Sévérité du risque: {{rf.severity}}%</p>
+                    <p class='risqueproba'>Probabilité du risque: {{rf.probabilite}}%</p>
                   </div>
                 </div>
               </div>
@@ -537,8 +552,6 @@
               <th scope="col">Date début (réelle)</th>
               <th scope="col">Date fin (réelle)</th>
               <th scope="col">Avancement</th>
-              <th scope="col">Coût Initial</th>
-              <th scope="col">Coût Réel</th>
               <th scope="col">Tâche mère</th>
               <th scope="col">Dépendances</th>
               <th scope="col">Interventions</th>
@@ -548,54 +561,234 @@
             <tbody *ngFor="let n of nbTaches" [id]="'tr'+n">
             <tr *ngIf="taches[n]">
               <!--              <th scope="row"></th>-->
-              <td>
-                <input type="text" [disabled]="!editModePlanning" [value]="(taches[n].titre)?taches[n].titre:''" (change)="titreTacheChange($event,n)" class="form-control">
+              <td [ngStyle]="{'background':((taches[n].titre==null||taches[n].titre=='')&&planningSubmitted)?'#f8e5e5':'#dee2e6'}">
+                <input type="text" [disabled]="!editModePlanning" [value]="(taches[n].titre)?taches[n].titre:''"
+                       (change)="titreTacheChange($event,n)" class="form-control"
+                       [class.is-invalid]=" (taches[n].titre==null||taches[n].titre=='')&&planningSubmitted">
+                <div *ngIf="(taches[n].titre==null||taches[n].titre=='')&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*Ce champs est obligatoire</div>
+                </div>
               </td>
-              <td>
-                <textarea type="text" [disabled]="!editModePlanning" [value]="(taches[n].description)?taches[n].description:''"  rows="1"(change)="descTacheChange($event,n)"  class="form-control"></textarea>
+              <td [ngStyle]="{'background':((taches[n].description==null||taches[n].description=='')&&planningSubmitted)?'#f8e5e5':'#dee2e6'}">
+                <textarea type="text" [disabled]="!editModePlanning" rows="1"(change)="descTacheChange($event,n)"  class="form-control"
+                          [class.is-invalid]="(taches[n].description==null||taches[n].description=='')&&planningSubmitted" [value]="taches[n].description"></textarea>
+                <div *ngIf="(taches[n].description==null||taches[n].description=='')&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*Ce champs est obligatoire</div>
+                </div>
               </td>
-              <td>
-                <input type="date" class="form-control"[disabled]="!editModePlanning"  [value]="taches[n].dateDebutPlanifiee"  (change)="dateDebutPlanifieeTacheChange($event,n)">
+              <td [ngStyle]="{'background':((taches[n].dateDebutPlanifiee==null||taches[n].dateDebutPlanifiee==''
+              ||toDate(taches[n].dateDebutPlanifiee)<toDate(dateDebutPlanifiee))&&planningSubmitted)?'#f8e5e5':'#dee2e6'}">
+                <input type="date" [disabled]="!editModePlanning"  [value]="taches[n].dateDebutPlanifiee"
+                       class="form-control" (change)="dateDebutPlanifieeTacheChange($event,n)"
+                       [ngClass]="{'is-invalid': (taches[n].dateDebutPlanifiee==null||taches[n].dateDebutPlanifiee==''||
+                     toDate(taches[n].dateDebutPlanifiee)<toDate(dateDebutPlanifiee))&&planningSubmitted}">
+                <div *ngIf="(taches[n].dateDebutPlanifiee==null||taches[n].dateDebutPlanifiee=='')&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*Ce champs est obligatoire</div>
+                </div>
+                <div *ngIf="(toDate(taches[n].dateDebutPlanifiee)<toDate(dateDebutPlanifiee))&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*La tache ne peut pas débuter avant le projet !</div>
+                </div>
               </td>
-              <td>
-                <input type="date" class="form-control" [disabled]="!editModePlanning" [value]="taches[n].dateFinPlanifiee"  (change)="dateFinPlanifieeTacheChange($event,n)">
+              <td [ngStyle]="{'background':((taches[n].dateFinPlanifiee==null||taches[n].dateFinPlanifiee==''
+              ||toDate(taches[n].dateDebutPlanifiee) > toDate(taches[n].dateFinPlanifiee)||toDate(taches[n].dateFinPlanifiee)>toDate(dateFinPlanifiee)
+              )&&planningSubmitted)?'#f8e5e5':'#dee2e6'}">
+                <input type="date" [disabled]="!editModePlanning" [value]="taches[n].dateFinPlanifiee" class="form-control" (change)="dateFinPlanifieeTacheChange($event,n)"
+                       [ngClass]="{'is-invalid': (taches[n].dateFinPlanifiee==null||taches[n].dateFinPlanifiee==''||
+                       toDate(taches[n].dateDebutPlanifiee) > toDate(taches[n].dateFinPlanifiee)||
+                       toDate(taches[n].dateFinPlanifiee)>toDate(dateFinPlanifiee))&&planningSubmitted}">
+                <div *ngIf="(taches[n].dateFinPlanifiee==null||taches[n].dateFinPlanifiee=='')&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*Ce champs est obligatoire</div>
+                </div>
+                <div *ngIf="(toDate(taches[n].dateDebutPlanifiee) > toDate(taches[n].dateFinPlanifiee))&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*La date de fin doit-être après la date de début !</div>
+                </div>
+                <div *ngIf="(toDate(taches[n].dateFinPlanifiee)>toDate(dateFinPlanifiee))&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*La tache ne peut pas se terminer après la fin du projet !</div>
+                </div>
               </td>
-              <td>
-                <input type="date" class="form-control" [disabled]="!editModePlanning" [value]="taches[n].dateDebutPrevue" (change)="dateDebutPrevueTacheChange($event,n)">
+              <td [ngStyle]="{'background':((taches[n].dateDebutPrevue==null||taches[n].dateDebutPrevue==''
+              ||toDate(taches[n].dateDebutPrevue)<toDate(dateDebutPrevue))&&planningSubmitted)?'#f8e5e5':'#dee2e6'}">
+              <input type="date" [disabled]="!editModePlanning"  [value]="taches[n].dateDebutPrevue"
+                     class="form-control" (change)="dateDebutPrevueTacheChange($event,n)"
+                     [ngClass]="{'is-invalid': (taches[n].dateDebutPrevue==null||taches[n].dateDebutPrevue==''||
+                     toDate(taches[n].dateDebutPrevue)<toDate(dateDebutPrevue))&&planningSubmitted}">
+              <div *ngIf="(taches[n].dateDebutPrevue==null||taches[n].dateDebutPrevue=='')&&planningSubmitted" class=
+                "invalid-feedback">
+                <div>*Ce champs est obligatoire</div>
+              </div>
+              <div *ngIf="(toDate(taches[n].dateDebutPrevue)<toDate(dateDebutPrevue))&&planningSubmitted" class=
+                "invalid-feedback">
+                <div>*La tache ne peut pas débuter avant le projet !</div>
+              </div>
+            </td>
+              <td [ngStyle]="{'background':((taches[n].dateFinPrevue==null||taches[n].dateFinPrevue==''
+              ||toDate(taches[n].dateDebutPrevue) > toDate(taches[n].dateFinPrevue)||toDate(taches[n].dateFinPrevue)>toDate(dateFinPrevue)
+              )&&planningSubmitted)?'#f8e5e5':'#dee2e6'}">
+                <input type="date" [disabled]="!editModePlanning" [value]="taches[n].dateFinPrevue" class="form-control" (change)="dateFinPrevueTacheChange($event,n)"
+                       [ngClass]="{'is-invalid': (taches[n].dateFinPrevue==null||taches[n].dateFinPrevue==''||
+                       toDate(taches[n].dateDebutPrevue) > toDate(taches[n].dateFinPrevue)||
+                       toDate(taches[n].dateFinPrevue)>toDate(dateFinPrevue))&&planningSubmitted}">
+                <div *ngIf="(taches[n].dateFinPrevue==null||taches[n].dateFinPrevue=='')&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*Ce champs est obligatoire</div>
+                </div>
+                <div *ngIf="(toDate(taches[n].dateDebutPrevue) > toDate(taches[n].dateFinPrevue))&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*La date de fin doit-être après la date de début !</div>
+                </div>
+                <div *ngIf="(toDate(taches[n].dateFinPrevue)>toDate(dateFinPrevue))&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*La tache ne peut pas se terminer après la fin du projet !</div>
+                </div>
               </td>
-              <td>
-                <input type="date" class="form-control" [disabled]="!editModePlanning" [value]="taches[n].dateFinPrevue" (change)="dateFinPrevueTacheChange($event,n)">
+              <td [ngStyle]="{'background':(toDate(taches[n].dateDebutRelle)<toDate(dateDebutRelle)||
+              ((taches[n].dateDebutRelle==null||taches[n].dateDebutRelle=='')&&taches[n].avancement>0)&&planningSubmitted)?'#f8e5e5':'#dee2e6'}">
+              <input type="date" [disabled]="!editModePlanning"  [value]="taches[n].dateDebutRelle"
+                     class="form-control" (change)="dateDebutRelleTacheChange($event,n)"
+                     [ngClass]="{'is-invalid': ( (toDate(taches[n].dateDebutRelle)<toDate(dateDebutRelle)||
+                     (taches[n].dateDebutRelle==null||taches[n].dateDebutRelle=='')&&taches[n].avancement>0))&&planningSubmitted}">
+              <div *ngIf="(taches[n].dateDebutRelle!=null&&taches[n].dateDebutRelle!=''&&dateDebutRelle!=null&&dateDebutRelle!=''&&toDate(taches[n].dateDebutRelle)<toDate(dateDebutRelle))&&planningSubmitted" class=
+                "invalid-feedback">
+                <div>*La tache ne peut pas débuter avant le projet !</div>
+              </div>
+                <div *ngIf="((taches[n].dateDebutRelle==null||taches[n].dateDebutRelle=='')&&taches[n].avancement>0)&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*Si l'avancement est supérieur à 0, ce champs devient obligatoire !</div>
+                </div>
+            </td>
+              <td [ngStyle]="{'background':(((
+              (taches[n].dateDebutRelle&&taches[n].dateFinRelle&&toDate(taches[n].dateDebutRelle) > toDate(taches[n].dateFinRelle)
+              ||taches[n].dateFinRelle&&dateFinRelle&&toDate(taches[n].dateFinRelle)>toDate(dateFinRelle))
+              ||((taches[n].dateFinRelle==null||taches[n].dateFinRelle=='')&&taches[n].avancement==100))
+              )&&planningSubmitted)?'#f8e5e5':'#dee2e6'}">
+                <input type="date" [disabled]="!editModePlanning" [value]="taches[n].dateFinRelle" class="form-control" (change)="dateFinRelleTacheChange($event,n)"
+                       [ngClass]="{'is-invalid': ((
+                       toDate(taches[n].dateDebutRelle) > toDate(taches[n].dateFinRelle)||
+                       toDate(taches[n].dateFinRelle)>toDate(dateFinRelle))||
+                       ((taches[n].dateFinRelle==null||taches[n].dateFinRelle=='')&&taches[n].avancement==100)
+                       )&&planningSubmitted}">
+
+                <div *ngIf="taches[n].dateFinRelle!=null&&taches[n].dateFinRelle!=''&&taches[n].dateDebutRelle!=null&&taches[n].dateDebutRelle!=''&&(toDate(taches[n].dateDebutRelle) > toDate(taches[n].dateFinRelle))&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*La date de fin doit-être après la date de début !</div>
+                </div>
+                <div *ngIf="((taches[n].dateFinRelle==null||taches[n].dateFinRelle=='')&&taches[n].avancement==100)&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*Si l'avancement est égal à 100, ce champs devient obligatoire !</div>
+                </div>
+                <div *ngIf="taches[n].dateFinRelle!=null&&taches[n].dateFinRelle!=''&&dateFinRelle!=null&&dateFinRelle!=''&&(toDate(taches[n].dateFinRelle)>toDate(dateFinRelle))&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*La tache ne peut pas se terminer après la fin du projet !</div>
+                </div>
               </td>
-              <td>
-                <input type="date" class="form-control" [disabled]="!editModePlanning" [value]="taches[n].dateDebutRelle"  (change)="dateDebutRelleTacheChange($event,n)">
+              <td [ngStyle]="{'background':((taches[n].avancement>100||taches[n].avancement<0)
+                ||(taches[n].dateFinRelle&&taches[n].avancement!=100 ))&&planningSubmitted?'#f8e5e5':'#dee2e6'}">
+                <input type="number" [disabled]="!editModePlanning" (change)="avancementTacheChange($event,n)"  class="form-control"
+                       [class.is-invalid]="((taches[n].avancement>100||taches[n].avancement<0)
+                ||(taches[n].dateFinRelle&&taches[n].avancement!=100 ))&&planningSubmitted" [value]="taches[n].avancement">
+                <div *ngIf="((taches[n].avancement>100||taches[n].avancement<0))&&planningSubmitted" class="invalid-feedback">
+                  <div>*L'avancement doit être compris entre 0 et 100 !</div>
+                </div><div *ngIf="((taches[n].dateFinRelle&&taches[n].avancement!=100 ))&&planningSubmitted" class="invalid-feedback">
+                  <div>*Si la date de fin est précisée, l'avancement doit être à 100% !</div>
+                </div>
               </td>
-              <td>
-                <input type="date" class="form-control" [disabled]="!editModePlanning" [value]="taches[n].dateFinRelle" (change)="dateFinRelleTacheChange($event,n)">
-              </td>
-              <td>
-                <input type="number" [disabled]="!editModePlanning" [value]="taches[n].avancement"  (change)="avancementTacheChange($event,n)"  class="form-control">
-              </td>
-              <td>
-                <input type="number" [disabled]="!editModePlanning" [value]="taches[n].coutInitial"  (change)="coutInitialTacheChange($event,n)"  class="form-control">
-              </td>
-              <td>
-                <input type="number" [disabled]="!editModePlanning" [value]="taches[n].coutReel"  (change)="coutReelTacheChange($event,n)"  class="form-control">
-              </td>
-              <td class="dropdown-table" >
+              <td class="dropdown-table"
+                  [ngStyle]="{'background':(taches[n].tacheMere!=null&&
+                                      (toDate(taches[n].dateDebutPlanifiee)<toDate(taches[n].tacheMere.dateDebutPlanifiee)||
+                                      toDate(taches[n].dateDebutPrevue)<toDate(taches[n].tacheMere.dateDebutPrevue)||
+                                      toDate(taches[n].dateDebutRelle)<toDate(taches[n].tacheMere.dateDebutRelle)||
+                                      toDate(taches[n].dateFinPlanifiee)>toDate(taches[n].tacheMere.dateFinPlanifiee)||
+                                      toDate(taches[n].dateFinPrevue)>toDate(taches[n].tacheMere.dateFinPrevue)||
+                                      toDate(taches[n].dateFinRelle)>toDate(taches[n].tacheMere.dateFinRelle))&&planningSubmitted)?'#f8e5e5':'#dee2e6'}">
                 <ngx-select-dropdown  [config]="configDropdownTacheMere"
                                       [options]="dropdownOptionsTacheMere[n]"
                                       (change)="selectionChangedTacheMere($event,n)"
+                                      [disabled]="!editModePlanning"
                                       [_value]="taches[n].tacheMere"
-                                      [disabled]="!editModePlanning">
+                                      [class.is-invalid]="taches[n].tacheMere!=null&&
+                                      (toDate(taches[n].dateDebutPlanifiee)<toDate(taches[n].tacheMere.dateDebutPlanifiee)||
+                                      toDate(taches[n].dateDebutPrevue)<toDate(taches[n].tacheMere.dateDebutPrevue)||
+                                      toDate(taches[n].dateDebutRelle)<toDate(taches[n].tacheMere.dateDebutRelle)||
+                                      toDate(taches[n].dateFinPlanifiee)>toDate(taches[n].tacheMere.dateFinPlanifiee)||
+                                      toDate(taches[n].dateFinPrevue)>toDate(taches[n].tacheMere.dateFinPrevue)||
+                                      toDate(taches[n].dateFinRelle)>toDate(taches[n].tacheMere.dateFinRelle))&&planningSubmitted">
                 </ngx-select-dropdown>
+                <div *ngIf="taches[n].tacheMere!=null
+                &&taches[n].dateDebutPlanifiee!=null&&taches[n].dateDebutPlanifiee!=''
+                &&taches[n].tacheMere.dateDebutPlanifiee!=null&&taches[n].tacheMere.dateDebutPlanifiee!=''
+                &&taches[n].dateDebutPrevue!=null&&taches[n].dateDebutPrevue!=''
+                &&taches[n].tacheMere.dateDebutPrevue!=null&&taches[n].tacheMere.dateDebutPrevue!=''
+                &&taches[n].dateDebutRelle!=null&&taches[n].dateDebutRelle!=''
+                &&taches[n].tacheMere.dateDebutRelle!=null&&taches[n].tacheMere.dateDebutRelle!=''&&
+                                      (toDate(taches[n].dateDebutPlanifiee)<toDate(taches[n].tacheMere.dateDebutPlanifiee)||
+                                      toDate(taches[n].dateDebutPrevue)<toDate(taches[n].tacheMere.dateDebutPrevue)||
+                                      toDate(taches[n].dateDebutRelle)<toDate(taches[n].tacheMere.dateDebutRelle))&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*La tache fille ne peut pas débuter avant la tâche mère (
+                    <span *ngIf="toDate(taches[n].dateDebutPlanifiee)<toDate(taches[n].tacheMere.dateDebutPlanifiee)">date planifiée</span>
+                    <span *ngIf="toDate(taches[n].dateDebutPrevue)<toDate(taches[n].tacheMere.dateDebutPrevue)">
+                    <span *ngIf="toDate(taches[n].dateDebutPlanifiee)<toDate(taches[n].tacheMere.dateDebutPlanifiee)">,</span>
+                      date prévue
+                    </span>
+                    <span *ngIf="toDate(taches[n].dateDebutRelle)<toDate(taches[n].tacheMere.dateDebutRelle)">
+                    <span *ngIf="toDate(taches[n].dateDebutPlanifiee)<toDate(taches[n].tacheMere.dateDebutPlanifiee)||
+                      toDate(taches[n].dateDebutPlanifiee)<toDate(taches[n].tacheMere.dateDebutPlanifiee)">,</span>
+                      date réelle
+                    </span>
+                    )!</div>
+                </div>
+                <div *ngIf="taches[n].tacheMere!=null
+                &&taches[n].dateFinPlanifiee!=null&&taches[n].dateFinPlanifiee!=''
+                &&taches[n].tacheMere.dateFinPlanifiee!=null&&taches[n].tacheMere.dateFinPlanifiee!=''
+                &&taches[n].dateFinPrevue!=null&&taches[n].dateFinPrevue!=''
+                &&taches[n].tacheMere.dateFinPrevue!=null&&taches[n].tacheMere.dateFinPrevue!=''
+                &&taches[n].dateFinRelle!=null&&taches[n].dateFinRelle!=''
+                &&taches[n].tacheMere.dateFinRelle!=null&&taches[n].tacheMere.dateFinRelle!=''&&
+                                      (toDate(taches[n].dateFinPlanifiee)>toDate(taches[n].tacheMere.dateFinPlanifiee)||
+                                      toDate(taches[n].dateFinPrevue)>toDate(taches[n].tacheMere.dateFinPrevue)||
+                                      toDate(taches[n].dateFinRelle)>toDate(taches[n].tacheMere.dateFinRelle))&&planningSubmitted&&planningSubmitted" class=
+                  "invalid-feedback">
+                  <div>*La tache fille ne peut pas se terminer après la tâche mère (
+                    <span *ngIf="toDate(taches[n].dateFinPlanifiee)>toDate(taches[n].tacheMere.dateFinPlanifiee)">date planifiée</span>
+                    <span *ngIf="toDate(taches[n].dateFinPrevue)>toDate(taches[n].tacheMere.dateFinPrevue)">
+                    <span *ngIf="toDate(taches[n].dateFinPlanifiee)>toDate(taches[n].tacheMere.dateFinPlanifiee)">,</span>
+                      date prévue
+                    </span>
+                    <span *ngIf="toDate(taches[n].dateFinRelle)>toDate(taches[n].tacheMere.dateFinRelle)">
+                    <span *ngIf="toDate(taches[n].dateFinPlanifiee)>toDate(taches[n].tacheMere.dateFinPlanifiee)||
+                      toDate(taches[n].dateFinPlanifiee)>toDate(taches[n].tacheMere.dateFinPlanifiee)">,</span>
+                      date réelle
+                    </span>
+                    )!</div>
+                </div>
               </td>
-              <td class="dropdown-table">
+<!--              <td class="dropdown-table" >-->
+<!--                <ngx-select-dropdown  [config]="configDropdownTacheMere"-->
+<!--                                      [options]="dropdownOptionsTacheMere[n]"-->
+<!--                                      (change)="selectionChangedTacheMere($event,n)"-->
+<!--                                      [_value]="taches[n].tacheMere"-->
+<!--                                      [disabled]="!editModePlanning">-->
+<!--                </ngx-select-dropdown>-->
+<!--              </td>-->
+              <td class="dropdown-table"
+                  [ngStyle]="{'background':(textErreurDependancesTaches[n]!=''&&textErreurDependancesTaches[n]!=null&&planningSubmitted)?'#f8e5e5':'#dee2e6'}">
                 <ngx-select-dropdown   [config]="configDropdownTacheDependances"
                                        [options]="dropdownOptionsTacheDependances[n]"
                                        (change)="selectionChangedTacheDependances($event,n)"
                                        [multiple]="true"  [_value]="taches[n].dependances"
-                                       [disabled]="!editModePlanning">
+                                       [disabled]="!editModePlanning"[class.is-invalid]="(textErreurDependancesTaches[n]!=''&&planningSubmitted)">
                 </ngx-select-dropdown>
+                <div *ngIf="(textErreurDependancesTaches[n]!=''&&planningSubmitted)" class=
+                  "invalid-feedback">
+                  <div>{{textErreurDependancesTaches[n]}}</div>
+                </div>
               </td>
               <td>
                 <button class="btn btn-dark" data-toggle="collapse" [attr.data-target]="'#demo'+n">
@@ -740,49 +933,68 @@
   </div>
 </div>
 <!--Modal risque Eleve -->
-<div data-backdrop="false" class="modal" id="modalRisqueEleve">
+<div data-backdrop="false" class="modal" id="modalRisque">
   <div class="modal-dialog">
     <div class="modal-content">
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">Ajouter risque élevé <i class="fa-solid fa-circle-exclamation"></i></h4>
+        <h4 class="modal-title">Ajouter risque <i class="fa-solid fa-circle-exclamation"></i></h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body">
         <div class="form-group input-first-line">
-          <label class="form-label" for="titreRisqueE">Titre du risque</label>
-          <input type="text" [(ngModel)]="titreRisqueE" placeholder="Titre du risque" class="form-control" id="titreRisqueE"
+          <label class="form-label" for="titreRisque">Titre du risque</label>
+          <input type="text" [(ngModel)]="titreRisque" placeholder="Titre du risque" class="form-control" id="titreRisque"
                  name="titreRisqueE">
         </div>
         <div class="form-group input-first-line">
-          <label class="form-label" for="probaRisqueE">Probabilité du risque %</label>
-          <input type="number" [(ngModel)]="probaRisqueE" placeholder="Probabilité du risque %" class="form-control" id="probaRisqueE"
-                 name="probaRisqueE" min="1" max="100">
-        </div>
+          <label class="form-label" for="probaRisque">Probabilité du risque %</label>
+          <input type="number" [(ngModel)]="probaRisque" placeholder="Probabilité du risque %" class="form-control" id="probaRisque"
+                 name="probaRisque" min="1" max="100"
+                 [class.is-invalid]="((probaRisque>100||probaRisque<0)&&risqueErr)">
+          <div *ngIf="(probaRisque>100||probaRisque<0)&&risqueErr" class="invalid-feedback">
+            <div>*La probabilité doit être comprise entre 0 et 100 !</div>
+          </div>
+          <div class="form-group input-first-line">
+            <label class="form-label" for="sevRisque">Sévérité du risque %</label>
+            <input type="number" [(ngModel)]="sevRisque" placeholder="Probabilité du risque %" class="form-control" id="sevRisque"
+                   name="sevRisque" min="1" max="100"
+                   [class.is-invalid]="((sevRisque>100||sevRisque<0)&&risqueErr)">
+            <div *ngIf="(sevRisque>100||sevRisque<0)&&risqueErr" class="invalid-feedback">
+              <div>*La sévérité; doit être comprise entre 0 et 100 !</div>
+            </div>
+          </div>
 
-        <div class="form-group">
-          <label class="form-label" for="descriptionRisqueE">Description du risque</label>
-          <textarea rows="4" [(ngModel)]="descriptionRisqueE" id="descriptionRisqueE" placeholder="Description du risque" class="form-control"
-                    name="descriptionRisqueE">
+          <div class="form-group">
+            <label class="form-label" for="descriptionRisque">Description du risque</label>
+            <textarea rows="4" [(ngModel)]="descriptionRisque" id="descriptionRisque" placeholder="Description du risque" class="form-control"
+                      name="descriptionRisque">
       </textarea>
+          </div>
         </div>
-      </div>
 
-      <!-- Modal footer -->
-      <div *ngIf="!(descriptionRisqueE!=''&&titreRisqueE!=''&&probaRisqueE!=null)" data-toggle="tooltip"
-           title="Veuillez remplir tous les champs"
-           class="modal-footer form-group">
-        <button type="button" class="btn btn-dark form-control"
-                disabled
-                (click)="ajoutRisqueE()" data-dismiss="modal">Enregistrer</button>
-      </div>
-      <div *ngIf="(descriptionRisqueE!=''&&titreRisqueE!=''&&probaRisqueE!=null)" data-toggle="tooltip"
-           class="modal-footer form-group">
-        <button type="button" class="btn btn-dark form-control"
-                (click)="ajoutRisqueE()" data-dismiss="modal" >Enregistrer</button>
+        <!-- Modal footer -->
+        <div *ngIf="!(descriptionRisque!=''&&titreRisque!=''&&probaRisque!=null&&sevRisque!=null)" data-toggle="tooltip"
+             title="Veuillez remplir tous les champs"
+             class="modal-footer form-group">
+          <button type="button" class="btn btn-dark form-control"
+                  disabled
+                  (click)="ajoutRisque()" data-dismiss="modal">Enregistrer</button>
+        </div>
+        <div *ngIf="descriptionRisque!=''&&titreRisque!=''&&probaRisque!=null&&sevRisque!=null
+      &&probaRisque<=100&&probaRisque>=0 &&sevRisque<=100&&sevRisque>=0" data-toggle="tooltip"
+             class="modal-footer form-group">
+          <button type="button" class="btn btn-dark form-control"
+                  (click)="ajoutRisque()" data-dismiss="modal" >Enregistrer</button>
+        </div>
+        <div *ngIf="(descriptionRisque!=''&&titreRisque!=''&&probaRisque!=null&&sevRisque!=null)&&
+      !(probaRisque<=100&&probaRisque>=0 &&sevRisque<=100&&sevRisque>=0)" data-toggle="tooltip"
+             class="modal-footer form-group">
+          <button type="button" class="btn btn-dark form-control" (click)="risqueErr=true;">Enregistrer</button>
+        </div>
       </div>
     </div>
   </div>

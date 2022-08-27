@@ -7,6 +7,7 @@ import {Ressource} from "../../model/Ressource.model";
 import {Tache} from "../../model/Tache.model";
 import {DatePipe} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
+import {MessageService} from "primeng/api";
 declare var $ :any;
 @Component({
   selector: 'app-mon-emploi',
@@ -39,8 +40,9 @@ export class MonEmploiComponent implements OnInit {
   //dropdown Taches-----------------------------------
   page: any=1;
   pageSize: any=10;
+  submitted: boolean=false;
   constructor(private ressourcesService:RessourcesService,public authService:AuthentificationService
-  ,public datePipe:DatePipe,private router:Router,private route:ActivatedRoute) { }
+  ,public datePipe:DatePipe,private router:Router,private route:ActivatedRoute,private messageService: MessageService) { }
 
   ngOnInit(): void {
     if(this.router.url=="/ma-feuille-de-temps")
@@ -110,32 +112,50 @@ export class MonEmploiComponent implements OnInit {
 
   saveEdit() {
     let activites:Activite[]=new Array();
-    this.activites.forEach(t=>
-    {
-      if(t!=null)
-        activites.push(t);
-    })
-    this.ressourcesService.deleteAllActivites(this.user.codeRessource).subscribe(data=>{
-      this.ressourcesService.ajouterActivites(this.user.codeRessource,activites).subscribe(
-        data=>{
-          this.initActivites();
-          var alert=$("<div class=\"alert alert-success alert-dismissible\">\n" +
-            "             <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-            "             <strong>Succès !</strong> Vos modifications ont bien été entregistées.\n" +
-            "           </div>");
-          $("#alerts-container").append(alert);
-          this.editMode=false;
-        })
-    })
-
+    this.submitted=true;
+    let activitesInvalides=false;
+    this.activites.forEach(
+      a=>{
+        // @ts-ignore
+        if(a.date==null||a.date==''
+        ||a.description==null||a.description==''
+        ||a.tache==null
+        )
+          activitesInvalides=true;
+      }
+    )
+    if(!activitesInvalides) {
+      this.activites.forEach(t => {
+        if (t != null)
+          activites.push(t);
+      })
+      this.ressourcesService.deleteAllActivites(this.user.codeRessource).subscribe(data => {
+        this.ressourcesService.ajouterActivites(this.user.codeRessource, activites).subscribe(
+          data => {
+            this.initActivites();
+            this.addSingleSuccess("Succès !", "Vos modifications ont bien été enregistrées.")
+            this.editMode = false;
+            this.submitted=false;
+          })
+      })
+    }
   }
   annulerEdit() {
     this.initActivites();
-    var alert=$("<div class=\"alert alert-secondary alert-dismissible\">\n" +
-      "             <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-      "             <strong>Annulé !</strong> Vos modifications ont été annulées.\n" +
-      "           </div>");
-    $("#alerts-container").append(alert);
+    this.addSingleDanger("Annulé !", "Vos modifications ont été annulées.")
     this.editMode=false;
+    this.submitted=false;
   }
+  addSingleSuccess(summary, detail) {
+    this.messageService.add({severity: 'success', summary: summary, detail: detail});
+  }
+
+  addSingleInfo(summary, detail) {
+    this.messageService.add({severity: 'info', summary: summary, detail: detail});
+  }
+
+  addSingleDanger(summary, detail) {
+    this.messageService.add({severity: 'error', summary: summary, detail: detail});
+  }
+
 }

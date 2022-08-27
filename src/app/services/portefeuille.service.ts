@@ -20,9 +20,9 @@ export class PortefeuilleService {
       {headers:new HttpHeaders({'Authorization':this.authService.getToken()})});
   }
 
-  save(portefeuille:FamilleProjet):Observable<FamilleProjet> {
+  save(portefeuille:FamilleProjet):Observable<boolean> {
     let host = environment.host;
-    return this.http.post<FamilleProjet>(host + "/familleProjets/", portefeuille,
+    return this.http.post<boolean>(host + "/add-portefeuille/", portefeuille,
       {headers: new HttpHeaders({'Authorization': this.authService.getToken()})});
   }
   get(code?:string):Observable<FamilleProjet>{
