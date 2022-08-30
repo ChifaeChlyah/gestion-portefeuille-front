@@ -1,1 +1,38 @@
-<p>statistiques works!</p>
+<div class="cards-container" *ngIf="projets">
+<p-card class="stats-card">
+  <div class="my-card-header">
+    <div class="card-header-text">
+      <span class="name"><i class="icon fa-solid fa-file"></i> Projets</span>
+      <span class="value">{{projets.length}}</span>
+    </div>
+  </div>
+</p-card>
+  <p-card class="stats-card">
+    <div class="my-card-header">
+      <div class="card-header-text">
+        <span class="name"><i class="icon fa-solid fa-calendar-xmark"></i> Retards</span>
+        <span class="value">{{nbRetard}}</span>
+      </div>
+    </div>
+</p-card>
+  <p-card class="stats-card">
+    <div class="my-card-header">
+      <div class="card-header-text">
+        <span class="name"><i class="icon fa-solid fa-clipboard-check"></i> Complets</span>
+        <span class="value">{{nbComplets}}</span>
+      </div>
+    </div>
+</p-card>
+  <p-card class="stats-card">
+    <div class="my-card-header">
+      <div class="card-header-text">
+        <span class="name"><i class="icon fa-solid fa-circle-exclamation"></i> Risques</span>
+        <span class="value">{{nbRisques}}</span>
+      </div>
+    </div>
+</p-card>
+</div>
+<!--<app-risques-par-projets-bar-chart *ngIf="projets&&portefeuilles" [projets]="projets" [portefeuilles]="portefeuilles"></app-risques-par-projets-bar-chart>-->
+<app-retards-par-portefeuilles-chart></app-retards-par-portefeuilles-chart>
+<p-divider></p-divider>
+<app-risques-par-projets-chart></app-risques-par-projets-chart>

@@ -78,6 +78,10 @@ import {ConfirmationService, MessageService} from "primeng/api";
 import {ConfirmDialog, ConfirmDialogModule} from "primeng/confirmdialog";
 import { DialogAvancementComponent } from './components/mes-taches/dialog-avancement/dialog-avancement.component';
 import { DialogDateFinPrevueComponent } from './components/mes-taches/dialog-date-fin-prevue/dialog-date-fin-prevue.component';
+import {CardModule} from "primeng/card";
+import { RetardsParPortefeuillesChartComponent } from './components/dashboard/projets/statistiques/retards-par-portefeuilles-chart/retards-par-portefeuilles-chart.component';
+import { RisquesParProjetsChartComponent } from './components/dashboard/projets/statistiques/risques-par-projets-chart/risques-par-projets-chart.component';
+import {Divider, DividerModule} from "primeng/divider";
 
 @NgModule({
   declarations: [
@@ -123,6 +127,8 @@ import { DialogDateFinPrevueComponent } from './components/mes-taches/dialog-dat
     DialogGanttComponent,
     DialogAvancementComponent,
     DialogDateFinPrevueComponent,
+    RetardsParPortefeuillesChartComponent,
+    RisquesParProjetsChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -157,6 +163,8 @@ import { DialogDateFinPrevueComponent } from './components/mes-taches/dialog-dat
     ToastModule,
     MessageModule,
     ConfirmDialogModule,
+    CardModule,
+    DividerModule
   ],
   providers: [
     DatePipe,

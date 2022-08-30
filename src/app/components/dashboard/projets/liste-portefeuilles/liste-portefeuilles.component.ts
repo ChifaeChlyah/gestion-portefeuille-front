@@ -9,6 +9,8 @@ import {DataTableDirective} from "angular-datatables";
 import {Subject} from "rxjs";
 import * as FileSaver from 'file-saver';
 import {MessageService} from "primeng/api";
+import {EventDrivenService} from "../../../../services/event-driven.service";
+import {ActionEvent, ProjectActionTypes} from "../../../../state/appData.state";
 declare var $:any;
 @Component({
   selector: 'app-liste-portefeuilles',
@@ -18,6 +20,7 @@ declare var $:any;
 export class ListePortefeuillesComponent implements OnInit {
   exportColumns: any[];
   rows = 10;
+  projetsFiltres:Projet[];
   private cols: ({ field: string; header: string; customExportHeader: string } | { field: string; header: string } | { field: string; header: string })[];
 
   exportPdf() {
@@ -49,27 +52,56 @@ export class ListePortefeuillesComponent implements OnInit {
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
   }
   portefeuilles$:FamilleProjet[]
+  tousPortefeuilles$:FamilleProjet[]
   constructor(private portefeuilleService:PortefeuilleService,private fb:FormBuilder,private authService:AuthentificationService
-  ,private messageService: MessageService) { }
+  ,private messageService: MessageService,private eventDrivenService:EventDrivenService) { }
 
   ngOnInit(): void {
     this.tousLesPortefeuilles();
   }
 
   tousLesPortefeuilles() {
-    this.portefeuilleService.tousLesPortefeuilles().subscribe((ret:FamilleProjet[])=>{
-      this.portefeuilles$=ret;
-      this.cols = [
-        { field: 'codeFamille', header: 'Code'},
-        { field: 'titreFamille', header: 'Titre' },
-        { field: 'description', header: 'description' },
-      ];
-      this.exportColumns = this.cols.map(col => ({title: col.header, dataKey: col.field}));
-      console.log(ret)
-    },error => {
-      console.log(error)
+    this.portefeuilleService.tousLesPortefeuilles().subscribe(portefeuilles => {
+      this.portefeuilles$ = portefeuilles;
+      this.tousPortefeuilles$ = portefeuilles;
     })
-  }
+    this.eventDrivenService.sourceEventSubjectObservable.subscribe(
+      (actionEvent: ActionEvent) => {
+        let ret: FamilleProjet[] = []
+        let projets: Projet[] = actionEvent.payload;
+          if (actionEvent.type != ProjectActionTypes.Filtre_Non_Projets) {
+            projets.forEach(p => {
+              let found = false;
+              ret.forEach(r => {
+                if (r.codeFamille == p.familleProjet.codeFamille)
+                  found = true;
+              })
+              if (!found)
+                ret.push(p.familleProjet);
+            })
+
+            this.portefeuilles$ = ret;
+          }else{
+            this.portefeuilles$=this.tousPortefeuilles$;
+          }
+
+          console.log("actionEvent.type")
+          console.log(actionEvent.type)
+
+        this.cols = [
+          { field: 'codeFamille', header: 'Code'},
+          { field: 'titreFamille', header: 'Titre' },
+          { field: 'description', header: 'description' },
+        ];
+        this.exportColumns = this.cols.map(col => ({title: col.header, dataKey: col.field}));
+        console.log(ret)
+      },error => {
+        console.log(error)
+      })
+
+      }
+
+
 
   //modifier un portefeuille
   portefeuilleFormGroup: FormGroup;

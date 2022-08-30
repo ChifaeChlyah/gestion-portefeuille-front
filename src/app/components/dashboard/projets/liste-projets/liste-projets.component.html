@@ -10,7 +10,8 @@
            [globalFilterFields]="['codeFamille','titreFamille','description']" [resizableColumns]="true" columnResizeMode="expand"
            currentPageReportTemplate=" {first} sur {last} de {totalRecords} projets" [rowsPerPageOptions]="[5,10,15,20]"
            [exportHeader]="'customExportHeader'"
-           styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" responsiveLayout="scroll">
+           styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" responsiveLayout="scroll"
+           [style]="{'width': '100%'}">
     <ng-template pTemplate="caption" style="display:flex;justify-content:space-between">
       <div class="flex" style="width: fit-content">
         <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"></button>

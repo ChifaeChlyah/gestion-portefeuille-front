@@ -4,8 +4,9 @@ export enum DataStateEnum
   LOADED,
   ERROR
 }
-  export enum ProductActionsTypes{
-    GET_ALL_PRODUCTS="[Product] Get All products",
+  export enum ProjectActionTypes{
+    Filtre_Projets="projets_filres",
+    Filtre_Non_Projets="projets_Non_filres",
     GET_SELECTED_PRODUCTS="[Product] Get Selected products",
     GET_AVAILABLE_PRODUCTS="[Product] Get Available products",
     SEARCH_PRODUCTS="[Product] Search products",
@@ -20,7 +21,7 @@ export interface ActionEvent{
   // cette interface est crée pour gérer les cas des evenements
   // ou il faut transmettre des valeurs (search par expl)
   // cet valeur passé est appelé payload
-  type:ProductActionsTypes;
+  type:ProjectActionTypes;
   payload?:any;
 }
 

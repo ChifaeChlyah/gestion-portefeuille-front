@@ -80,6 +80,11 @@ export class MesTachesComponent implements OnInit {
           this.taches = taches;
           this.taches.forEach(
             t => {
+              if(t.interventions)
+                t.interventions.forEach(i=>{
+                  if(i.intervenant.codeRessource+''==this.route.snapshot.paramMap.get('codeRessource'))
+                    this.interventions.push(i);
+                })
               this.ressourcesService.projetParTache(t.idTache).subscribe(
                 projet => {
                   t.projet = projet;

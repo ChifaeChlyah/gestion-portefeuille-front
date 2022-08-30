@@ -561,7 +561,7 @@
         </div>
         <div class="form-group input-first-line">
           <label class="form-label" for="sevRisque">Sévérité du risque %</label>
-          <input type="number" [(ngModel)]="sevRisque" placeholder="Probabilité du risque %" class="form-control" id="sevRisque"
+          <input type="number" [(ngModel)]="sevRisque" placeholder="Sévérité du risque %" class="form-control" id="sevRisque"
                  name="sevRisque" min="1" max="100"
                  [class.is-invalid]="((sevRisque>100||sevRisque<0)&&risqueErr)">
           <div *ngIf="(sevRisque>100||sevRisque<0)&&risqueErr" class="invalid-feedback">

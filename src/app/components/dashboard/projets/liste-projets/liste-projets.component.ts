@@ -10,6 +10,8 @@ import {RessourcesService} from "../../../../services/ressources.service";
 declare var $ :any;
 import * as FileSaver from 'file-saver';
 import {MessageService} from "primeng/api";
+import {ActionEvent} from "../../../../state/appData.state";
+import {EventDrivenService} from "../../../../services/event-driven.service";
 
 @Component({
   selector: 'app-liste-projets',
@@ -29,7 +31,8 @@ export class ListeProjetsComponent implements OnInit {
   submitted:boolean[]=new Array();
   projetASupprimer:Projet;
   constructor(private serviceProjets:ProjetsService,public datepipe: DatePipe,
-              private ressourceService:RessourcesService,private messageService: MessageService) { }
+              private ressourceService:RessourcesService,private messageService: MessageService
+    ,private eventDrivenService:EventDrivenService) { }
 
   exportPdf() {
     import("jspdf").then(jsPDF => {
@@ -143,8 +146,14 @@ export class ListeProjetsComponent implements OnInit {
     });
   }
   tousLesProjets() {
-   this.serviceProjets.tousLesProjets().subscribe((ret:Projet[])=>{
-     this.projets$=ret;
+    // console.log("this.projets$")
+    // console.log(this.projets$)
+    this.eventDrivenService.sourceEventSubjectObservable.subscribe(
+      (actionEvent:ActionEvent)=> {
+        let ret=actionEvent.payload;
+        this.projets$=ret;
+        console.log("this.projets$")
+        console.log(this.projets$)
      this.cols = [
        { field: 'codeProjet', header: 'Code'},
        { field: 'titreProjet', header: 'Titre' },

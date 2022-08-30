@@ -7,6 +7,8 @@ import {DatePipe} from "@angular/common";
 import {colors} from "@angular/cli/src/utilities/color";
 import {ProjetsService} from "../../../../services/projets.service";
 import {Projet} from "../../../../model/Projet.model";
+import {EventDrivenService} from "../../../../services/event-driven.service";
+import {ActionEvent} from "../../../../state/appData.state";
 declare var $ :any
 
 declare var angular: any;
@@ -23,7 +25,8 @@ export class GanttComponent implements OnInit {
   public data: any;
   projets:Projet[];
   constructor(public fb: FormBuilder,public datepipe: DatePipe,
-              private projetsService:ProjetsService) {}
+              private projetsService:ProjetsService
+    ,private eventDrivenService:EventDrivenService) {}
 
   ngOnInit() {
     this.editorOptions = {
@@ -45,24 +48,26 @@ export class GanttComponent implements OnInit {
     this.data = this.initialDataDiagrammeDeTache();
   }
   else{
-    this.projetsService.tousLesProjets().subscribe(
-      projets=>{
+    this.editorOptions = {
+      vFormat: "quarter",
+      vEditable: false,
+      vEventsChange: {
+        taskname: () => {
+          console.log("taskname");
+        }
+      },
+      vShowEndDate:false,
+      vShowStartDate:false,
+      vShowRes:false,
+      vShowDur:false,
+      vShowComp:false
+    };
+    this.eventDrivenService.sourceEventSubjectObservable.subscribe(
+      (actionEvent:ActionEvent)=> {
+        let projets=actionEvent.payload;
         this.projets=projets;
         this.data=this.initialDataDiagrammeDeProjets();
-        this.editorOptions = {
-          vFormat: "quarter",
-          vEditable: false,
-          vEventsChange: {
-            taskname: () => {
-              console.log("taskname");
-            }
-          },
-          vShowEndDate:false,
-          vShowStartDate:false,
-          vShowRes:false,
-          vShowDur:false,
-          vShowComp:false
-        };
+
       });
   }
   }
@@ -71,6 +76,11 @@ export class GanttComponent implements OnInit {
 
   initialDataDiagrammeDeTache() {
     let tasks=new Array();
+    let i=1;
+    this.tachesProjetInput.forEach(t=>{
+      t.idTache=i;
+      i++;
+    })
     this.tachesProjetInput.forEach(tache=>{
       let ressources=new Array();
       tache.interventions.forEach(

@@ -1,0 +1,40 @@
+.cards-container{
+  display: flex;
+  justify-content: space-between;
+  margin-top:30px;
+}
+.stats-card{
+  width: 23%;
+}
+.my-card-header{
+  display: flex;
+  flex-direction: column;
+  padding-left: 6%;
+  flex-wrap: wrap;
+  font-size: large;
+}
+
+.icon{
+  color: #343a40;
+  font-size: x-large;
+  margin-right: 10px;
+}
+
+.card-header-text{
+  display: flex;
+  justify-content: space-around;
+}
+
+.value{
+  background: rgb(196 135 167 / 31%);
+  color: black;
+  width: 50px;
+  text-align: center;
+  border-radius: 5px;
+}
+:host ::ng-deep .p-card{
+  background: #faf7f7;
+}
+:host ::ng-deep .p-card .p-card-body {
+  padding: 0;
+}

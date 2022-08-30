@@ -26,15 +26,16 @@ export class RisquesParProjetsBarChartComponent implements OnInit {
         if(p.familleProjet.codeFamille==this.portefeuilles[i].codeFamille)
         {
           p.risques.forEach(r=>{
-            if(r.severite=="Faible")
+            let niveau=r.severity*r.probabilite/100;
+            if(niveau<=33)
             {
               faible[i]++;
             }
-            if(r.severite=="Moyen")
+            if(niveau>33&&niveau<=66)
             {
               moyen[i]++;
             }
-            if(r.severite=="Elevé")
+            if(niveau>66&&niveau<=100)
             {
               fort[i]++;
             }
@@ -86,7 +87,7 @@ export class RisquesParProjetsBarChartComponent implements OnInit {
       plotOptions: {
         bar: {
           horizontal: false,
-          borderRadius: 10
+          borderRadius: 10,
         },
       },
       xaxis: {
@@ -101,8 +102,8 @@ export class RisquesParProjetsBarChartComponent implements OnInit {
         opacity: 1
       }
     };
-    $("#chart").empty();
-    let chart = new ApexCharts(document.querySelector("#chart"), options);
+    $("#chart3").empty();
+    let chart = new ApexCharts(document.querySelector("#chart3"), options);
     chart.render();
 
   }
