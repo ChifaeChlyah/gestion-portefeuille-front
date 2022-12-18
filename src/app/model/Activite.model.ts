@@ -7,4 +7,7 @@ export class Activite {
   date:Date;
   tache:Tache;
   intervenant:Ressource;
+  constructor() {
+    let activite=new Activite();
+  }
 }

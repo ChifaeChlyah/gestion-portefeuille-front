@@ -10,6 +10,7 @@ export const environment = {
   GESTIONNAIRE_PORTEFEUILLES_ROLE:"Gestionnaire de portefeuilles",
   CHEF_PROJET_ROLE:"Chef de projets",
   INTERVENANT_DEVELOPPEUR_ROLE:"Utilisateur",
+  
 };
 
 /*

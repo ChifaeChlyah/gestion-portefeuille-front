@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthentificationService} from "../../../services/authentification.service";
-declare var $: any;
+  declare var $: any;
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',

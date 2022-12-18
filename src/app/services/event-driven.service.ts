@@ -11,11 +11,10 @@ export class EventDrivenService {
   publishEvent(event:ActionEvent)
   {
     this.sourceEventSubject.next(event);
-    //c'est la méthode qui va être appelé à chaque fois qu'un composant
+    // c'est la méthode qui va être appelé à chaque fois qu'un composant
     // voudra émettre un évènement, il sera donc ajouté à
     // sourceEventSubject
     // Pour que d'autres composants reçoivent l'évènement, il suffit
     // qu'ils fassent un subscribe au "sourceEventSubjectObservable"
   }
-
 }
